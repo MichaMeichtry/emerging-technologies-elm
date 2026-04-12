@@ -4,10 +4,10 @@ This repository is the result of a group project carried out as part of the modu
 
 The goal of the module is to discover, evaluate, and transmit an emerging technology to fellow students and professors. This project covers the **Elm programming language** - from understanding the problem it solves, to comparing it with alternatives, to building a working prototype.
 
-> **Module:** 63-51 Emerging Technologies
-> **Degree:** Business Information Technology - HES-SO Valais Wallis
+> **Module:** 63-51 Emerging Technologies  
+> **Degree:** Business Information Technology - HES-SO Valais Wallis  
 > **Repository:** https://github.com/MichaMeichtry/emerging-technologies-elm  
-> **Group members:** Bregy Noah, Donnet-Money Mégane, Meichtry Micha
+> **Group members:** Bregy Noah, Donnet-Money Mégane, Meichtry Micha  
 > **Presentation date:** 28.05.2026
 
 ---
