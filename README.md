@@ -57,8 +57,11 @@ emerging-technologies-elm/
 │   │   ├── 04-how-to-run.md
 │   │   └── 05-test-scenarios.md
 │   │
-│   ├── examples/
-│   │   └── 01-examples.md                          # Standalone code examples with explanations
+│   └── examples/                                   # Small code examples
+│   │   ├── 01-counter/                             # Elm Architecture
+│   │   ├── 02-traffic-light/                       # Custom types + pattern matching
+│   │   ├── 03-temperature-converter/               # Maybe + form input
+│   │   └── 04-ports-websocket/                     # JS interop trade-off
 │   │
 │   └── 99-resources/                               # Research sources and further reading
 │       └── 01-resources.md
