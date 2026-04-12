@@ -55,11 +55,8 @@ The recommended reading order follows the four layers above:
 1. [What is Elm?](../02-elm-theory/01-what-is-elm.md)
 2. [Core Concepts](../02-elm-theory/02-core-concepts.md)
 3. [The Elm Architecture](../02-elm-theory/03-the-elm-architecture.md)
-4. [Type System and Safety](../02-elm-theory/04-type-system-and-safety.md)
-5. [JSON and HTTP](../02-elm-theory/05-json-and-http.md)
-6. [Strengths and Limitations](../02-elm-theory/06-strengths-limitations.md)
-7. [Comparison Overview](../03-comparison/01-comparison-overview.md)
-8. [Prototype Description](../04-prototype/01-prototype-description.md)
+4. [Comparison Overview](../03-comparison/01-comparison-overview.md)
+5. [Prototype Description](../04-prototype/01-prototype-description.md)
 
 Each file is also written to be readable on its own if you want to jump directly to a specific topic.
 

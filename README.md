@@ -31,6 +31,9 @@ emerging-technologies-elm/
 ├── .gitignore
 │
 ├── docs/
+│   ├── 00-setup/                                   # Environment setup and installation
+│   │   └── 01-environment-setup.md
+│   │
 │   ├── 01-project-overview/                        # Project goals and repo navigation
 │   │   └── 01-project-overview.md
 │   │
@@ -38,9 +41,6 @@ emerging-technologies-elm/
 │   │   ├── 01-what-is-elm.md
 │   │   ├── 02-core-concepts.md
 │   │   ├── 03-the-elm-architecture.md
-│   │   ├── 04-type-system-and-safety.md
-│   │   ├── 05-json-and-http.md
-│   │   └── 06-strengths-limitations.md
 │   │
 │   ├── 03-comparison/                              # Elm compared to other technologies
 │   │   ├── 01-comparison-overview.md
@@ -57,8 +57,11 @@ emerging-technologies-elm/
 │   │   ├── 04-how-to-run.md
 │   │   └── 05-test-scenarios.md
 │   │
-│   └── examples/
-│       └── 01-examples.md                          # Standalone code examples with explanations
+│   ├── examples/
+│   │   └── 01-examples.md                          # Standalone code examples with explanations
+│   │
+│   └── 99-resources/                               # Research sources and further reading
+│       └── 01-resources.md
 │
 └── prototype/                                      # The working Elm application
     ├── README.md                                   # How to install and run the prototype
@@ -78,6 +81,10 @@ emerging-technologies-elm/
 
 ## How to Navigate This Project
 
+#### If You Need to Set Up the Environment First
+
+[Environment Setup](docs/00-setup/01-environment-setup.md) — install Node.js, Elm, and elm-live, and verify everything works before running any code.
+
 #### If You Want to Understand Elm
 
 Start with the theory section in order:
@@ -85,9 +92,6 @@ Start with the theory section in order:
 1. [What is Elm?](docs/02-elm-theory/01-what-is-elm.md)
 2. [Core Concepts](docs/02-elm-theory/02-core-concepts.md)
 3. [The Elm Architecture](docs/02-elm-theory/03-the-elm-architecture.md)
-4. [Type System and Safety](docs/02-elm-theory/04-type-system-and-safety.md)
-5. [JSON and HTTP](docs/02-elm-theory/05-json-and-http.md)
-6. [Strengths and Limitations](docs/02-elm-theory/06-strengths-limitations.md)
 
 #### If You Want to See How Elm Compares to Other Technologies
 
@@ -124,6 +128,8 @@ Small standalone examples showing specific Elm concepts with explanations. Each 
 - Elm compiler: `npm install -g elm`
 - Optional, for hot reload: `npm install -g elm-live`
 
+See [docs/00-setup/01-environment-setup.md](docs/00-setup/01-environment-setup.md) for the full setup guide.
+
 ### Run
 
 ```bash
@@ -157,6 +163,12 @@ This project covers the following requirements:
 | Test core functionalities                | [docs/04-prototype/05-test-scenarios.md](docs/04-prototype/05-test-scenarios.md) |
 | Create a prototype to showcase potential | [prototype/](prototype/)                                                         |
 | Document the process                     | [docs/](docs/)                                                                   |
+
+---
+
+## Resources
+
+Research sources and recommended further reading are listed in [docs/99-resources/01-resources.md](docs/99-resources/01-resources.md).
 
 ---
 
