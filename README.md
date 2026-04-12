@@ -86,7 +86,7 @@ emerging-technologies-elm/
 
 #### If You Need to Set Up the Environment First
 
-[Environment Setup](docs/00-setup/01-environment-setup.md) — install Node.js, Elm, and elm-live, and verify everything works before running any code.
+[Environment Setup](docs/00-setup/01-environment-setup.md) - install Node.js, Elm, and elm-live, and verify everything works before running any code.
 
 #### If You Want to Understand Elm
 

@@ -1,4 +1,4 @@
-# Example 01 — Counter (The Elm Architecture)
+# Example 01 - Counter (The Elm Architecture)
 
 ## Concept
 
@@ -14,7 +14,7 @@ A counter with three buttons: **Increment**, **Decrement**, and **Reset**.
 
 ## What to Show
 
-- The `Model` is just an `Int` — the simplest possible state
+- The `Model` is just an `Int` - the simplest possible state
 - The `Msg` type defines every possible action (`Increment | Decrement | Reset`)
 - The `update` function handles each message explicitly with pattern matching
 - The `view` function renders the current model and produces messages on click
@@ -22,11 +22,11 @@ A counter with three buttons: **Increment**, **Decrement**, and **Reset**.
 
 ## Key Point
 
-The architecture is not optional or a convention — it is the only way to write an Elm application. This constraint is what makes Elm applications predictable: you always know where state lives and how it can change.
+The architecture is not optional or a convention - it is the only way to write an Elm application. This constraint is what makes Elm applications predictable: you always know where state lives and how it can change.
 
 ## Where This Is Referenced
 
-- `docs/02-elm-theory/03-the-elm-architecture.md` — as the concrete implementation of the TEA pattern
+- `docs/02-elm-theory/03-the-elm-architecture.md` - as the concrete implementation of the TEA pattern
 
 ## Ellie Link
 
@@ -35,5 +35,5 @@ The architecture is not optional or a convention — it is the only way to write
 ## Implementation Notes
 
 - Keep it under ~40 lines
-- Do not add extra features — the value of this example is its simplicity
+- Do not add extra features - the value of this example is its simplicity
 - Add inline comments explaining each part (Model, Msg, update, view, main)

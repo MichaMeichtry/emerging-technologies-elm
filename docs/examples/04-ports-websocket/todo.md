@@ -1,8 +1,8 @@
-# Example 04 — Ports and localStorage (The JS Interop Trade-off)
+# Example 04 - Ports and localStorage (The JS Interop Trade-off)
 
 ## Concept
 
-This example demonstrates **ports** — Elm's only mechanism for communicating with JavaScript. It shows that any interaction with browser APIs outside Elm's core (localStorage, WebSockets, third-party JS libraries, etc.) requires explicit glue code on both sides. This is intentional, not an oversight.
+This example demonstrates **ports** - Elm's only mechanism for communicating with JavaScript. It shows that any interaction with browser APIs outside Elm's core (localStorage, WebSockets, third-party JS libraries, etc.) requires explicit glue code on both sides. This is intentional, not an oversight.
 
 ## What to Build
 
@@ -26,14 +26,14 @@ A simple note that persists across page reloads using `localStorage`.
 
 ## Key Point
 
-Elm cannot touch `localStorage` directly. The boundary is explicit and intentional — Elm guarantees no runtime errors within its own code, and enforcing a hard border with JS is how that guarantee is maintained. The trade-off is verbosity: something that takes one line in JavaScript takes two files and a message-passing protocol in Elm.
+Elm cannot touch `localStorage` directly. The boundary is explicit and intentional - Elm guarantees no runtime errors within its own code, and enforcing a hard border with JS is how that guarantee is maintained. The trade-off is verbosity: something that takes one line in JavaScript takes two files and a message-passing protocol in Elm.
 
-This is not a flaw — it is a design decision. But it is a real cost that should inform the choice of whether to use Elm for a given project.
+This is not a flaw - it is a design decision. But it is a real cost that should inform the choice of whether to use Elm for a given project.
 
 ## Where This Is Referenced
 
-- `docs/02-elm-theory/06-strengths-limitations.md` — as a concrete illustration of the JS interop constraint
-- `docs/03-comparison/06-when-elm-is-not-a-good-choice.md` — as the primary argument for when Elm's constraints outweigh its benefits
+- `docs/02-elm-theory/06-strengths-limitations.md` - as a concrete illustration of the JS interop constraint
+- `docs/03-comparison/06-when-elm-is-not-a-good-choice.md` - as the primary argument for when Elm's constraints outweigh its benefits
 
 ## Ellie Link
 
@@ -42,7 +42,7 @@ This is not a flaw — it is a design decision. But it is a real cost that shoul
 
 ## Implementation Notes
 
-- Keep the Elm code minimal — the point is the ports boilerplate, not the application logic
+- Keep the Elm code minimal - the point is the ports boilerplate, not the application logic
 - Show both files side by side in the documentation: the Elm port declarations and the JS subscription code
-- Comment every line of the JS glue code — this is what readers are least likely to be familiar with
+- Comment every line of the JS glue code - this is what readers are least likely to be familiar with
 - Mention explicitly that this same pattern applies to WebSockets, third-party libraries, and any other browser API Elm does not natively support
