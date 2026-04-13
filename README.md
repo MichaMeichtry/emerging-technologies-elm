@@ -117,7 +117,7 @@ The prototype is an **IT Service Desk Ticket System** built entirely in Elm. It 
 
 #### If You Want to See Focused Code Examples
 
-[Examples](docs/examples/01-examples.md)
+[Examples](docs/examples/)
 
 Small standalone examples showing specific Elm concepts with explanations. Each example includes a link to run it live in the browser via [Ellie](https://ellie-app.com).
 
