@@ -62,6 +62,7 @@ emerging-technologies-elm/
 │   │   ├── 02-traffic-light/                       # Custom types + pattern matching
 │   │   ├── 03-temperature-converter/               # Maybe + form input
 │   │   └── 04-ports-websocket/                     # JS interop trade-off
+│   │   └── 05-weather-app/                         # External data sources
 │   │
 │   └── 99-resources/                               # Research sources and further reading
 │       └── 01-resources.md
