@@ -6,7 +6,7 @@ A note that survives page reloads using `localStorage`. It demonstrates **ports*
 
 Ellie has no access to a custom `index.html` and therefore cannot run this example.
 
-**Just open `index.html` directly in your browser** — double-click it in your file explorer or drag it into a browser tab. No installation or compilation needed; the compiled `main.js` is already included in the repository.
+**Just open `index.html` directly in your browser** - double-click it in your file explorer or drag it into a browser tab. No installation or compilation needed; the compiled `main.js` is already included in the repository.
 
 `main.js` was generated from `Main.elm` using the following command and then committed to the repository:
 
