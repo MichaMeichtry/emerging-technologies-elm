@@ -4,7 +4,7 @@ A minimal weather app that fetches the current temperature for cities around the
 
 ## Run it instantly
 
-Open the example directly in your browser: **[ellie-app.com/yvjRFMXKfhFa1](https://ellie-app.com/yvjRFMXKfhFa1)**
+Open the example directly in your browser: **[ellie-app.com/yvjRFMXKfhFa1](https://ellie-app.com/yvk66GngrgZa1)**
 
 Click **▶ Compile** to run it. No account or local setup required.
 
