@@ -14,7 +14,8 @@ A traffic light with a single **Next** button.
 
 - Starts at `Red`
 - Each click advances the state: `Red → Green → Yellow → Red`
-- The circle color and label update to reflect the current state
+- The active light is bright, the other two are dimmed to simulate unlit bulbs
+- A label below the housing describes the current state
 
 ## How the code is structured
 
@@ -23,8 +24,8 @@ A traffic light with a single **Next** button.
 ```elm
 type TrafficLight
     = Red
-    | Green
     | Yellow
+    | Green
 ```
 
 `TrafficLight` is a custom type with exactly three variants. There is no string, no integer, no boolean - the type itself encodes every valid state. It is impossible to represent an invalid traffic light state like `"orange"` or `4`.
@@ -44,18 +45,49 @@ update msg model =
 
 Every transition is listed explicitly. The compiler verifies that all variants of `TrafficLight` are handled. If you add a new variant and forget to handle it here, the code will not compile.
 
-### View
+### Helper functions
+
+Two pure helper functions are defined outside the view and called once per render.
+
+`lightColor` returns the active hex color for the current state, or a dimmed gray for inactive lights:
 
 ```elm
-let
-    ( color, label ) =
-        case model of
-            Red    -> ( "#e74c3c", "Red - Stop" )
-            Green  -> ( "#2ecc71", "Green - Go" )
-            Yellow -> ( "#f1c40f", "Yellow - Caution" )
+lightColor : TrafficLight -> TrafficLight -> String
+lightColor active light =
+    if light == active then
+        case light of
+            Red    -> "#e74c3c"
+            Yellow -> "#f1c40f"
+            Green  -> "#2ecc71"
+    else
+        "#333333"
 ```
 
-The same exhaustiveness rule applies in the view. Both `update` and `view` must handle every variant - the compiler checks both independently.
+`label` returns a description of the current state:
+
+```elm
+label : TrafficLight -> String
+label model =
+    case model of
+        Red    -> "Red - Stop"
+        Yellow -> "Yellow - Caution"
+        Green  -> "Green - Go"
+```
+
+Both functions use exhaustive pattern matching. The compiler checks each independently - all variants must be handled in both.
+
+### View
+
+The view renders three `circle` elements inside a dark housing div, ordered top to bottom: `Red`, `Yellow`, `Green`. Each circle calls `lightColor` with the active model and its own variant to determine whether it is lit or dimmed:
+
+```elm
+[ circle model Red
+, circle model Yellow
+, circle model Green
+]
+```
+
+The same exhaustiveness rule applies wherever a `TrafficLight` value is pattern matched. Adding a new variant requires handling it in `update`, `lightColor`, and `label` - the compiler reports every missing case.
 
 ## What happens when you add a fourth state
 
@@ -69,7 +101,7 @@ type TrafficLight
     | Flashing
 ```
 
-The code will not compile until you handle `Flashing` in both `update` and `view`. The compiler tells you exactly which cases are missing. In JavaScript, a missing `case` in a `switch` silently falls through or does nothing - the bug reaches production undetected.
+The code will not compile until you handle `Flashing` in `update`, `lightColor`, and `label`. The compiler tells you exactly which cases are missing. In JavaScript, a missing `case` in a `switch` silently falls through or does nothing - the bug reaches production undetected.
 
 ## Key takeaway
 
