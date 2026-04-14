@@ -6,7 +6,7 @@ A note that survives page reloads using `localStorage`. It demonstrates **ports*
 
 Ellie has no access to a custom `index.html` and therefore cannot run this example.
 
-**Just open `index.html` directly in your browser** - double-click it in your file explorer or drag it into a browser tab. No installation or compilation needed; the compiled `main.js` is already included in the repository.
+**Just open `index.html` directly in your browser** — double-click it in your file explorer or drag it into a browser tab. No installation or compilation needed; the compiled `main.js` is already included in the repository.
 
 `main.js` was generated from `Main.elm` using the following command and then committed to the repository:
 
@@ -24,6 +24,19 @@ A single textarea where the user types a note.
 - On **page reload**, the note is read back from `localStorage` and pre-filled into the textarea
 - A character count below the textarea confirms how many characters are stored
 - If nothing has been saved yet, a neutral message is shown instead
+
+
+## Verify it is working
+
+Type something into the textarea, then open your browser's DevTools to confirm the value is actually stored in localStorage.
+
+**How to open DevTools:** press `F12` → go to the **Application** tab → expand **Storage → Local storage** → click the entry for your file.
+
+You should see the key `elm-note` with your text as the value, exactly as shown below:
+
+![DevTools showing elm-note key in localStorage](../../images/example-04-F12.png)
+
+Try reloading the page — the note should reappear, confirming that the full round-trip through the ports works correctly.
 
 ## How the code is structured
 
