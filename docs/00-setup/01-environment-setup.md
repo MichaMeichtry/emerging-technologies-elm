@@ -83,7 +83,7 @@ Full setup details and run options are in [prototype/README.md](../../prototype/
 
 ## Running the Code Examples
 
-The standalone examples in [docs/examples/01-examples.md](../examples/01-examples.md) may include links to run each example directly in the browser via [Ellie](https://ellie-app.com). No local installation is needed for those.
+The standalone examples in [docs/examples/README.md](../examples/README.md) may include links to run each example directly in the browser via [Ellie](https://ellie-app.com). No local installation is needed for those.
 
 To run an example locally instead:
 
