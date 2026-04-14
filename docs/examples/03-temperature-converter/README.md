@@ -16,7 +16,7 @@ A single text input accepts a Celsius value. As the user types, three results ap
 - The equivalent in **Kelvin**
 - The input echoed back as **Celsius**
 
-Each result is followed by the formula used to compute it. If the input is not a valid number, a clear error message is shown instead. No button press is needed - the output updates live.
+Each result is followed by the formula used to compute it. All values are rounded to two decimal places. If the input is not a valid number, a clear error message is shown instead. No button press is needed - the output updates live.
 
 ## Conversion formulas
 
@@ -51,7 +51,6 @@ The raw input is stored as a `String`, not a parsed number. This avoids fighting
 case String.toFloat model.input of
     Nothing ->
         -- input is empty or not a valid number
-        -- no Float exists here, only an error message can be rendered
 
     Just celsius ->
         -- celsius is a plain Float, safe to pass to toFahrenheit and toKelvin
@@ -59,7 +58,7 @@ case String.toFloat model.input of
 
 The `case` is the only way to get to the `Float` inside a `Maybe`. There is no way to skip it or bypass it - if you try to use a `Maybe Float` as a `Float` directly, the code will not compile. This is what makes it different from JavaScript's `null` or `undefined`, which can be passed into functions silently and only fail later at runtime.
 
-This is the core point of the example. In JavaScript, `parseFloat("abc")` returns `NaN`, which propagates silently through arithmetic and can appear as `NaN` in the UI or corrupt downstream logic without any warning.
+In JavaScript, `parseFloat("abc")` returns `NaN`, which propagates silently through arithmetic and can appear as `NaN` in the UI or corrupt downstream logic without any warning.
 
 ### Conversions
 
@@ -74,6 +73,25 @@ toKelvin celsius =
 ```
 
 Both functions take a plain `Float` - not a `Maybe Float`. They only receive a value after the `Maybe` has already been unwrapped in the view. This keeps the conversion logic clean and free of null-handling.
+
+### Rounding
+
+```elm
+round2 : Float -> Float
+round2 n =
+    toFloat (round (n * 100)) / 100
+```
+
+All three results are passed through `round2` before display. This avoids floating-point noise like `32.00000000000001` appearing in the output.
+
+### View helpers
+
+Two helper functions render each row of output:
+
+- `resultRow` renders a label and a computed value on one line
+- `formulaRow` renders the formula used in a smaller, muted style below it
+
+These are pure functions that take strings and return `Html Msg`. They are called once per result in the `Just celsius` branch of the view.
 
 ### View branching
 
