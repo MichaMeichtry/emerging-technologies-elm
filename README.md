@@ -163,7 +163,7 @@ This project covers the following requirements:
 | ---------------------------------------- | -------------------------------------------------------------------------------- |
 | Understand the problem Elm addresses     | [docs/02-elm-theory/01-what-is-elm.md](docs/02-elm-theory/01-what-is-elm.md)     |
 | Compare Elm with other solutions         | [docs/03-comparison/](docs/03-comparison/)                                       |
-| Try Elm in a basic environment           | [docs/examples/01-examples.md](docs/examples/01-examples.md)                     |
+| Try Elm in a basic environment           | [docs/examples/README.md](docs/examples/README.md)                               |
 | Test core functionalities                | [docs/04-prototype/05-test-scenarios.md](docs/04-prototype/05-test-scenarios.md) |
 | Create a prototype to showcase potential | [prototype/](prototype/)                                                         |
 | Document the process                     | [docs/](docs/)                                                                   |
