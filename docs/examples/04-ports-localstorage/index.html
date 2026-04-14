@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Example 04 – Ports and localStorage</title>
+</head>
+<body>
+  <div id="app"></div>
+
+  <!--
+    The compiled Elm application.
+    Run: elm make src/Main.elm --output=main.js
+    See the root README.md for full setup instructions.
+  -->
+  <script src="main.js"></script>
+
+  <script>
+    // Start the Elm application and mount it into the #app div.
+    var app = Elm.Main.init({ node: document.getElementById("app") });
+
+    // ── Incoming port: load the note from localStorage on startup ──────────────
+    //
+    // app.ports.loadNote.send() pushes a value into Elm.
+    // Elm receives it as the NoteLoaded msg via the loadNote subscription.
+    //
+    // localStorage.getItem returns null if the key does not exist.
+    // We coerce null to an empty string so Elm always receives a String,
+    // not null - Elm's String type has no null variant.
+    var stored = localStorage.getItem("elm-note") || "";
+    app.ports.loadNote.send(stored);
+
+    // ── Outgoing port: save the note to localStorage whenever it changes ───────
+    //
+    // app.ports.saveNote.subscribe() registers a callback that runs every time
+    // Elm calls the saveNote port (i.e. on every keystroke in the textarea).
+    // The single argument is the current note string sent from Elm.
+    app.ports.saveNote.subscribe(function(note) {
+      localStorage.setItem("elm-note", note);
+    });
+  </script>
+</body>
+</html>

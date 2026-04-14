@@ -61,7 +61,7 @@ emerging-technologies-elm/
 │   │   ├── 01-counter/                             # Elm Architecture
 │   │   ├── 02-traffic-light/                       # Custom types + pattern matching
 │   │   ├── 03-temperature-converter/               # Maybe + form input
-│   │   └── 04-ports-websocket/                     # JS interop trade-off
+│   │   └── 04-ports-localstorage/                  # JS interop trade-off
 │   │   └── 05-weather-app/                         # External data sources
 │   │
 │   └── 99-resources/                               # Research sources and further reading
