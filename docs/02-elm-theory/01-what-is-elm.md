@@ -50,4 +50,4 @@ Elm resolves these issues by ensuring that reliability is built into the languag
     https://guide.elm-lang.org/
 
 ---
-<sub>Next | [Core Concepts](02-core-concepts.md)</sub>
+<sub>Previous | [Project Overview](../01-project-overview/01-project-overview.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [Core Concepts](02-core-concepts.md)</sub>
