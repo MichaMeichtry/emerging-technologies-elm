@@ -96,6 +96,7 @@ Start with the theory section in order:
 1. [What is Elm?](docs/02-elm-theory/01-what-is-elm.md)
 2. [Core Concepts](docs/02-elm-theory/02-core-concepts.md)
 3. [The Elm Architecture](docs/02-elm-theory/03-the-elm-architecture.md)
+3. [The Elm Ecosystem](docs/02-elm-theory/04-elm-ecosystem.md)
 
 #### If You Want to See How Elm Compares to Other Technologies
 
