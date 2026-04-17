@@ -22,28 +22,28 @@ The relevant alternatives are the tools a frontend developer or a small team wou
 
 The comparisons that follow use a consistent set of criteria. Not every criterion matters equally in every situation, but defining them upfront makes the analysis more transparent.
 
-**Type safety**
+**Type safety**  
 How much does the type system prevent incorrect code from being written in the first place, and how much does it catch at compile time vs. at runtime?
 
-**Runtime error prevention**
+**Runtime error prevention**  
 How likely is the application to crash or behave unexpectedly in production due to unhandled states, missing cases, or null-related failures?
 
-**Architecture and state management**
+**Architecture and state management**  
 Does the technology impose a structure for managing application state, or is that left to the developer's discretion?
 
-**Learning curve**
+**Learning curve**  
 How long does it take a developer with a standard web development background to become productive, and what is the shape of that learning process?
 
-**Ecosystem and library availability**
+**Ecosystem and library availability**  
 How much can third-party packages cover, and how much needs to be built from scratch or handled through workarounds?
 
-**JavaScript interoperability**
+**JavaScript interoperability**  
 How easily does the technology integrate with existing JavaScript code, browser APIs, and third-party libraries written in JavaScript?
 
-**Team suitability**
+**Team suitability**  
 How easy is it to hire developers who already know the technology, and how steep is onboarding for developers who do not?
 
-**Development speed**
+**Development speed**  
 How quickly can a working application be built, and how does that change over time as the application grows?
 
 ---
