@@ -48,3 +48,6 @@ Elm resolves these issues by ensuring that reliability is built into the languag
 
 [4] Czaplicki, E. *An Introduction to Elm*. Official Elm Guide.
     https://guide.elm-lang.org/
+
+---
+<sub>Next | [Core Concepts](02-core-concepts.md)</sub>
