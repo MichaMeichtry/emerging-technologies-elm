@@ -149,8 +149,6 @@ Then open `public/index.html` directly in your browser.
 > extension in VS Code and use "Open with Live Server" on `public/index.html`.
 > The browser will automatically refresh after each `elm make` run.
 
-Full setup details are in [prototype/README.md](prototype/README.md).
-
 ---
 
 ## Project Goals
