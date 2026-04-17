@@ -42,40 +42,23 @@ Expected output: `0.19.1`
 
 ---
 
-## Optional: elm-live (Hot Reload)
-
-`elm-live` is a development server that automatically recompiles and reloads the browser when a file changes. It is not required but makes development faster.
-
-```bash
-npm install -g elm-live
-```
-
-Verify:
-
-```bash
-elm-live --version
-```
-
----
-
 ## Running the Prototype
 
-Once Elm is installed, navigate to the prototype folder and start the development server:
+Once Elm is installed, navigate to the prototype folder and compile the application:
 
 ```bash
 cd prototype
-elm reactor
-```
 
-Then open http://localhost:8000/public/index.html in your browser.
-
-Alternatively, compile to a JavaScript file manually:
-
-```bash
+# Compile to a JavaScript file
 elm make src/Main.elm --output=public/app.js
 ```
 
-Then open `public/index.html` directly in the browser.
+Then open `public/index.html` directly in your browser.
+
+> **Tip:** Install the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
+> extension in VS Code and use "Open with Live Server" on `public/index.html`.
+> The browser will automatically refresh after each `elm make` run.
+> You still need to re-run `elm make` manually after each code change.
 
 Full setup details and run options are in [prototype/README.md](../../prototype/README.md).
 

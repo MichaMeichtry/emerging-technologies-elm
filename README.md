@@ -130,7 +130,6 @@ Small standalone examples showing specific Elm concepts with explanations. Each 
 
 - [Node.js](https://nodejs.org/) (required for the Elm toolchain)
 - Elm compiler: `npm install -g elm`
-- Optional, for hot reload: `npm install -g elm-live`
 
 See [docs/00-setup/01-environment-setup.md](docs/00-setup/01-environment-setup.md) for the full setup guide.
 
@@ -140,16 +139,15 @@ See [docs/00-setup/01-environment-setup.md](docs/00-setup/01-environment-setup.m
 # Navigate to the prototype folder
 cd prototype
 
-# Start the development server (no build step needed)
-elm reactor
-```
-
-Then open http://localhost:8000/public/index.html in your browser.
-
-```bash
-# Alternative: compile to a JavaScript file
+# Compile to a JavaScript file
 elm make src/Main.elm --output=public/app.js
 ```
+
+Then open `public/index.html` directly in your browser.
+
+> **Tip:** Install the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
+> extension in VS Code and use "Open with Live Server" on `public/index.html`.
+> The browser will automatically refresh after each `elm make` run.
 
 Full setup details are in [prototype/README.md](prototype/README.md).
 
