@@ -44,16 +44,21 @@ Expected output: `0.19.1`
 
 ## Running the Prototype
 
-Once Elm is installed, navigate to the prototype folder and compile the application:
+Once Elm is installed, navigate to the prototype folder.
+
+If you have not made any changes to the Elm source files, the application is already compiled.
+You can open `public/index.html` directly in your browser - no build step needed.
+
+If you have made changes to the Elm source files, recompile first:
 
 ```bash
 cd prototype
 
-# Compile to a JavaScript file
+# Recompile after changes
 elm make src/Main.elm --output=public/app.js
 ```
 
-Then open `public/index.html` directly in your browser.
+Then open `public/index.html` in your browser.
 
 > **Tip:** Install the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
 > extension in VS Code and use "Open with Live Server" on `public/index.html`.
