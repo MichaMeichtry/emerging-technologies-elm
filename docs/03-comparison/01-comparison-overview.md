@@ -70,15 +70,15 @@ No comparison can be fully objective. The criteria above are weighted toward cor
 
 ---
 
-## How This Section Is Organised
+## Files in This Section
 
-| File                                                                       | Content                                                                                                       |
-| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| [Elm vs JavaScript](./02-elm-vs-javascript.md)                             | The most fundamental comparison - what Elm gives up and what it gains relative to the language it compiles to |
-| [Elm vs TypeScript Frameworks](./03-elm-vs-typescript-frameworks.md)       | Type safety, architecture, and ecosystem compared to React and Vue with TypeScript                            |
-| [Elm vs Other Functional Options](./04-elm-vs-other-functional-options.md) | How Elm compares to ReScript and PureScript as typed functional alternatives                                  |
-| [When Elm Is a Good Choice](./05-when-elm-is-a-good-choice.md)             | Conditions and project types where Elm's trade-offs are worth making                                          |
-| [When Elm Is Not a Good Choice](./06-when-elm-is-not-a-good-choice.md)     | Conditions and project types where Elm's trade-offs work against you                                          |
+| File                                                                           | What it covers                                |
+| ------------------------------------------------------------------------------ | --------------------------------------------- |
+| [02-elm-vs-javascript.md](02-elm-vs-javascript.md)                             | Elm compared to plain JavaScript              |
+| [03-elm-vs-typescript-frameworks.md](03-elm-vs-typescript-frameworks.md)       | Elm compared to React and Vue with TypeScript |
+| [04-elm-vs-other-functional-options.md](04-elm-vs-other-functional-options.md) | Elm compared to ReScript and PureScript       |
+| [05-when-elm-is-a-good-choice.md](05-when-elm-is-a-good-choice.md)             | Scenarios where Elm is a strong fit           |
+| [06-when-elm-is-not-a-good-choice.md](06-when-elm-is-not-a-good-choice.md)     | Scenarios where Elm is not the right tool     |
 
 ---
 
