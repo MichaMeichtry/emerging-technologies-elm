@@ -198,7 +198,7 @@ The cost is verbosity. Something that takes one line in JavaScript requires a po
 
 ## Team Suitability
 
-Every frontend developer knows JavaScript. Finding developers, onboarding new team members, and reviewing code requires no specialist knowledge.
+Every frontend developer knows JavaScript. According to the Stack Overflow Developer Survey 2025, JavaScript was used by 66% of all respondents and 68.8% of professional developers, making it the most widely used programming language for the thirteenth consecutive year [10]. Finding developers, onboarding new team members, and reviewing code requires no specialist knowledge.
 
 Elm developers are rare. Most teams adopting Elm will need to train developers who have no prior exposure to functional programming or static typing. However, because Elm's language surface is small and intentionally beginner-friendly, onboarding a motivated developer is more feasible than it might seem [8]. The harder challenge is hiring. The pool of developers with existing Elm experience is narrow, and most job postings looking for Elm expertise go unfilled for longer than equivalent JavaScript or TypeScript roles [5].
 
@@ -256,6 +256,8 @@ For a full picture of where these trade-offs favour Elm and where they do not, s
 [8] Sam Ritchie - The Case for Elm. https://samritchie.net/posts/the-case-for-elm/
 
 [9] Lahiru Rajapakshe - Understanding the Imperative Programming Paradigm in Software Development. https://medium.com/@lahirurajapakshe.stack/understanding-the-imperative-programming-paradigm-in-software-development-ec04a4ee5f02
+
+[10] Stack Overflow Developer Survey 2025 - Most popular programming languages. https://survey.stackoverflow.co/2025/technology
 
 ---
 
