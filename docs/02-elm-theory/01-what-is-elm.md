@@ -20,19 +20,19 @@ Following his graduation, Czaplicki joined Google's Gmail team for a short perio
 JavaScript - the dominant language of the web - was not designed with large,
 complex front-end applications in mind. It suffers from:
 
-- **Runtime errors**: These are crashes that occur when a user runs a program. They are difficult to detect before the program is released. [2]
-- **Unpredictable state**: The presence of mutable values and side effects in code can make it challenging to understand and maintain. [4]
-- **Ecosystem fragility**: The typical approach to achieving reliability in JavaScript involves the combination of numerous libraries (e.g. React + Redux + TypeScript + Babel), each of which introduces a degree of complexity [4]
+- **Runtime errors**: These are crashes that occur when a user runs a program. They are difficult to detect before the program is released [4].
+- **Unpredictable state**: The presence of mutable values and side effects in code can make it challenging to understand and maintain [4].
+- **Ecosystem fragility**: The typical approach to achieving reliability in JavaScript involves the combination of numerous libraries (e.g. React + Redux + TypeScript + Babel), each of which introduces a degree of complexity [4].
 
 Elm resolves these issues by ensuring that reliability is built into the language itself, rather than being an additional feature [4].
 
 ## Key Characteristics
 
-- **Purely functional**: All values are considered constant, and functions consistently generate the same output for equivalent inputs. [1]
-- **Statically typed with type inference**: The compiler's primary function is to identify errors before the program is executed. While type annotations are not mandatory, they are strongly recommended. [1]
-- **Compiles to JavaScript**: This software is compatible with all modern browsers and does not require the installation of any additional plug-ins. [1]
-- **Domain-specific**: This language has been intentionally designed for front-end web development, rather than being a general-purpose language. [1]
-- **Friendly error messages**: The compiler has been developed to provide guidance to developers on how to resolve issues, rather than simply reporting failures. [4]
+- **Purely functional**: All values are considered constant, and functions consistently generate the same output for equivalent inputs [1].
+- **Statically typed with type inference**: The compiler's primary function is to identify errors before the program is executed. While type annotations are not mandatory, they are strongly recommended [1].
+- **Compiles to JavaScript**: This software is compatible with all modern browsers and does not require the installation of any additional plugins [1].
+- **Domain-specific**: This language has been intentionally designed for front-end web development, rather than being a general-purpose language [1].
+- **Friendly error messages**: The compiler has been developed to provide guidance to developers on how to resolve issues, rather than simply reporting failures [4].
 
 ## Sources
 

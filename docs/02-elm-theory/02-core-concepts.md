@@ -2,7 +2,7 @@
 
 ## 1. Immutability
 
-In Elm, values are immutable by design. This means that once values have been created, they cannot be modified. Elm is designed to produce new values that incorporate the desired changes, rather than modifying existing data. [1].
+In Elm, values are immutable by design. This means that once values have been created, they cannot be modified. Elm is designed to produce new values that incorporate the desired changes, rather than modifying existing data [1].
 
 ```elm
 counter : Int
@@ -17,11 +17,11 @@ newCounter = counter + 1
 ```
 
 The advantages of immutability are concrete [1][2]:
-- **Predictability** - The values are consistent and consistent only throughout the programme
+- **Predictability** - The values are predictable and stable throughout the program.
 - **Easier debugging** - It is not possible for data to be mutated from a distant part of the codebase unexpectedly.
 - **Safer concurrency** - The absence of a shared mutable state eliminates the possibility of race conditions.
 
-As you can see in every example, immutability is in full effect. In
+Immutability is demonstrated in every example. In
 [01-counter/Main.elm](../examples/01-counter/Main.elm), the `update` function never modifies the existing
 model; it always returns a brand new one.
 
@@ -62,8 +62,8 @@ label model =
         Green  -> "Green - Go"
 ```
 
-It should be noted that the language itself does not handle side effects (HTTP requests, randomness, etc.). These are managed by the Elm runtime via *commands* and
-*subscriptions* [3]. Please refer to [05-weather-app/Main.elm](../examples/05-weather-app/Main.elm) for a comprehensive illustration of
+The language itself does not handle side effects (HTTP requests, randomness, etc.). These are managed by the Elm runtime via *commands* and
+*subscriptions* [3]. See [05-weather-app/Main.elm](../examples/05-weather-app/Main.elm) for a comprehensive illustration of
 HTTP as a side effect expressed as a `Cmd`.
 
 ## 3. Static Typing with Type Inference
@@ -151,7 +151,7 @@ The compiler ensures that developers must address both `Just`/`Nothing` and
 `Ok`/`Err` cases through pattern matching. It is impossible to overlook
 an error case [3].
 
-[03-temperature-converter/Main.elm](../examples/03-temperature-converter/Main.elm) is a practical example of the use of the `Maybe` function. Please note that `String.toFloat` returns a `Maybe Float`, not a `Float`. The view
+[03-temperature-converter/Main.elm](../examples/03-temperature-converter/Main.elm) is a practical example of the use of the `Maybe` type. Note that `String.toFloat` returns a `Maybe Float`, not a `Float`. The view
 is required to handle both branches. The conversion functions `toFahrenheit`
 and `toKelvin` only ever receive a plain `Float` after the `Maybe` has already
 been unwrapped:
@@ -166,7 +166,7 @@ case String.toFloat model.input of
 ```
 
 [05-weather-app/Main.elm](../examples/05-weather-app/Main.elm) shows `Result` within a real HTTP context. The response
-from the Open-Meteo API is returned as an `Result Http.Error Float`. The system has been configured to handle both success and failure, and the compiler verifies that both are handled in `update`.
+from the Open-Meteo API is returned as a `Result Http.Error Float`. The system has been configured to handle both success and failure, and the compiler verifies that both are handled in `update`.
 
 ## Sources
 

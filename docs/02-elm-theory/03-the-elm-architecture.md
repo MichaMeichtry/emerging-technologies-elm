@@ -37,7 +37,7 @@ Since values in Elm are immutable, the Model is never modified directly. The `up
 
 ### 2. Msg
 
-The `Msg` type is custom-defined and lists every possible action that can be triggered by the user system. The pattern matching in `update` is exhaustive - the compiler will not accept a program that fails to handle every variant [1].
+The `Msg` type is custom-defined and lists every possible action that can be triggered by the user or the system. The pattern matching in `update` is exhaustive - the compiler will not accept a program that fails to handle every variant [1].
 
 ```elm
 type Msg

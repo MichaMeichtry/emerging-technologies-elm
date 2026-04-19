@@ -146,8 +146,8 @@ For teams that need a predictable, low-churn technology choice, this is an advan
 [4] avh4. *elm-format*. GitHub.
     https://github.com/avh4/elm-format
 
-[5] Westby, L. *Ellie - The Elm Live Editor*.
-    https://ellie-app.com
+[5] Westby, L. *ellie-app/ellie - The Elm Live Editor*. GitHub.
+    https://github.com/ellie-app/ellie
 
 ---
 <sub>Previous | [The Elm Architecture](03-the-elm-architecture.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [Comparison Overview](../03-comparison/01-comparison-overview.md)</sub>
