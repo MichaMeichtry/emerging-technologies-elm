@@ -183,4 +183,4 @@ from the Open-Meteo API is returned as an `Result Http.Error Float`. The system 
     https://exercism.org/tracks/elm/concepts/pattern-matching
 
 ---
-<sub>Previous | [What is Elm?](01-what-is-elm.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [Elm Architecture](03-the-elm-architecture.md)</sub>
+<sub>Previous | [What is Elm?](01-what-is-elm.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [The Elm Architecture](03-the-elm-architecture.md)</sub>
