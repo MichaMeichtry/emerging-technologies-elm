@@ -40,7 +40,8 @@ emerging-technologies-elm/
 │   ├── 02-elm-theory/                              # What Elm is and how it works
 │   │   ├── 01-what-is-elm.md
 │   │   ├── 02-core-concepts.md
-│   │   └── 03-the-elm-architecture.md
+│   │   ├── 03-the-elm-architecture.md
+│   │   └── 04-elm-ecosystem.md
 │   │
 │   ├── 03-comparison/                              # Elm compared to other technologies
 │   │   ├── 01-comparison-overview.md
