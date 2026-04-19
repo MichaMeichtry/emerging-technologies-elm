@@ -1,5 +1,7 @@
 # The Elm Ecosystem
 
+> **New to Elm?** Start with the [Environment Setup guide](../00-setup/01-environment-setup.md) to install Elm before reading this page.
+
 ## Overview
 
 The Elm ecosystem is deliberately small and self-contained. While JavaScript projects usually comprise a build pipeline made up of dozens of separate tools and packages, Elm provides a single binary that covers compilation, package management, a development server and a code formatter. This is not an accident - it reflects a conscious design philosophy that prioritises stability and a reliable out-of-the-box experience over extensibility [1].

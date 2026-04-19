@@ -1,6 +1,6 @@
 # Core Concepts
 
-## 1. Immutability
+## Immutability
 
 In Elm, values are immutable by design. This means that once values have been created, they cannot be modified. Elm is designed to produce new values that incorporate the desired changes, rather than modifying existing data [1].
 
@@ -17,9 +17,9 @@ newCounter = counter + 1
 ```
 
 The advantages of immutability are concrete [1][2]:
-- **Predictability** - The values are predictable and stable throughout the program.
-- **Easier debugging** - It is not possible for data to be mutated from a distant part of the codebase unexpectedly.
-- **Safer concurrency** - The absence of a shared mutable state eliminates the possibility of race conditions.
+- **Predictability**: The values are predictable and stable throughout the program.
+- **Easier debugging**: It is not possible for data to be mutated from a distant part of the codebase unexpectedly.
+- **Safer concurrency**: The absence of a shared mutable state eliminates the possibility of race conditions.
 
 Immutability is demonstrated in every example. In
 [01-counter/Main.elm](../examples/01-counter/Main.elm), the `update` function never modifies the existing
@@ -34,7 +34,7 @@ update msg model =
         Reset     -> 0
 ```
 
-## 2. Pure Functions
+## Pure Functions
 
 A pure function always produces the same output given the same input, and has no side effects [2]. All functions in Elm are pure by design.
 
@@ -45,9 +45,9 @@ add a b = a + b
 ```
 
 The following are direct practical benefits [2]:
-- **Easy to test** - It is not necessary to mock external state or to worry about side effects.
-- **Easy to debug** - Should an unexpected output be produced by a function, then the issue must lie within that function's logic and not in any external factors.
-- **Composable** - Simple, pure functions can be combined to solve complex problems.
+- **Easy to test**: It is not necessary to mock external state or to worry about side effects.
+- **Easy to debug**: Should an unexpected output be produced by a function, then the issue must lie within that function's logic and not in any external factors.
+- **Composable**: Simple, pure functions can be combined to solve complex problems.
 
 An excellent example of pure helper functions can be found in [02-traffic-light/Main.elm](../examples/02-traffic-light/Main.elm),
 where `lightColor` and `label` are defined outside the view and called once
@@ -66,7 +66,7 @@ The language itself does not handle side effects (HTTP requests, randomness, etc
 *subscriptions* [3]. See [05-weather-app/Main.elm](../examples/05-weather-app/Main.elm) for a comprehensive illustration of
 HTTP as a side effect expressed as a `Cmd`.
 
-## 3. Static Typing with Type Inference
+## Static Typing with Type Inference
 
 Elm is statically typed, meaning the compiler verifies types before the program ever runs. Type annotations are optional since Elm infers types automatically, but they are strongly encouraged for the purpose of documentation [3].
 
@@ -80,7 +80,7 @@ Types in Elm include primitives (`Int`, `Float`, `String`, `Bool`), and
 compound structures such as lists, tuples, and records. Custom types allow
 developers to model domain data precisely [3].
 
-## 4. Custom Types and Pattern Matching
+## Custom Types and Pattern Matching
 
 Custom types, also known as union types, enable a value to be assigned to one of several explicit variants. Pattern matching via `case` expressions requires developers to consider every possible variant. The compiler will not accept a program that contains any missing branches [4].
 
@@ -121,7 +121,7 @@ type State
 There is no boolean `isLoading` flag or nullable field. The compiler enforces
 that `viewResult` handles all four variants.
 
-## 5. Maybe and Result - No Null, No Exceptions
+## Maybe and Result - No Null, No Exceptions
 
 Elm is a language without `null`, `undefined`, or exceptions. Instead, the absence of
 a value or the possibility of failure is made explicit in the type system
