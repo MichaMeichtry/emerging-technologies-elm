@@ -80,6 +80,44 @@ Types in Elm include primitives (`Int`, `Float`, `String`, `Bool`), and
 compound structures such as lists, tuples, and records. Custom types allow
 developers to model domain data precisely [3].
 
+## Tuples
+ 
+Tuples store a fixed number of values of potentially different types. They are created with parentheses and comma-separated elements [5].
+ 
+```elm
+-- A pair of strings
+( "Lausanne", "Switzerland" )
+ 
+-- A mixed-type triple: name, age, active status
+( "Alice", 30, True )
+```
+ 
+Unlike lists, tuples can hold values of different types. Unlike records, they have no field names - position carries the meaning. Elm limits tuples to a maximum of three elements; use a record for anything larger [5].
+ 
+Tuples are commonly used to return multiple values from a function. This pattern appears in TEA itself: `update` returns `( Model, Cmd Msg )` whenever commands are involved.
+ 
+```elm
+-- Returning a result and a display colour from one function
+validateEmail : String -> ( String, String )
+validateEmail email =
+    if String.contains "@" email then
+        ( "Valid email", "green" )
+    else
+        ( "Invalid email", "red" )
+```
+ 
+Values are extracted either with `Tuple.first` / `Tuple.second` for pairs, or via pattern matching for all sizes:
+ 
+```elm
+-- Pattern matching to name each element
+( city, country ) = ( "Lausanne", "Switzerland" )
+ 
+-- Three-element destructuring
+( name, age, active ) = ( "Alice", 30, True )
+```
+ 
+Tuples are immutable like everything else in Elm. There are no functions to add or remove elements - the size is fixed at creation time and is part of the type. `( Int, String )` and `( Int, String, Bool )` are entirely distinct types [5].
+
 ## Custom Types and Pattern Matching
 
 Custom types, also known as union types, enable a value to be assigned to one of several explicit variants. Pattern matching via `case` expressions requires developers to consider every possible variant. The compiler will not accept a program that contains any missing branches [4].
@@ -107,6 +145,40 @@ verifies that every `case` expression covers all three - in `update`,
 `lightColor`, and `label` independently. The [README](../examples/02-traffic-light/README.md) for the example also
 shows what happens when you add a fourth variant: the code refuses to compile
 until every case is handled everywhere.
+
+### Friendly Compiler Error Messages
+
+One of Elm's distinguishing qualities is the clarity of its error messages. When a `case` expression does not cover all variants, the compiler does not produce a generic failure - it names the exact missing branch and explains what to do next.
+
+For example, adding an `Blue` variant to the `TrafficLight` type without updating the `case` expressions produces:
+
+```
+Missing Patterns
+Line 41, Column 13
+
+This `case` does not have branches for all possibilities:
+
+    case model of
+        Red ->
+            Green
+
+        Green ->
+            Yellow
+
+        Yellow ->
+            Red
+
+Missing possibilities include:
+
+    Blue
+
+I would have to crash if I saw one of those. Add branches for them!
+
+Hint: If you want to write the code for each branch later,
+use `Debug.todo` as a placeholder.
+```
+
+The compiler identifies the unhandled variant by name, explains the consequence (a crash), and offers a concrete workaround (`Debug.todo`). This is representative of how Elm treats compiler output as developer guidance rather than a bare failure report [3].
 
 The same principle applies to the request lifecycle in [05-weather-app/Main.elm](../examples/05-weather-app/Main.elm). The `State` type makes every phase explicit:
 
@@ -181,6 +253,9 @@ from the Open-Meteo API is returned as a `Result Http.Error Float`. The system h
 
 [4] exercism.org. *Pattern Matching in Elm*.
     https://exercism.org/tracks/elm/concepts/pattern-matching
+
+[5] elmprogramming.com. *Tuple*.
+    https://elmprogramming.com/tuple.html
 
 ---
 <sub>Previous | [What is Elm?](01-what-is-elm.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [The Elm Architecture](03-the-elm-architecture.md)</sub>
