@@ -12,3 +12,13 @@ main =
         , update = Update.update
         , view = View.view
         }
+
+{- 
+    Message Variant :
+    "TakeTicket
+    | ChangeStatus Int
+    | ToggleStatusCloseOrOpen Int
+    | GoToDashboard
+    | GoToTickets
+    "
+-}
