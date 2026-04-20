@@ -1,9 +1,10 @@
 module Model exposing (Model, Ticket, Status(..), Page(..), init)
 
 type Status
-    = Waiting
+    = Open
     | InProgress
-    | Done
+    | Resolved
+    | Closed
 
 
 type alias Ticket =
