@@ -32,6 +32,6 @@ init =
         , { id = 3, status = Resolved }
         , { id = 4, status = Closed }
     ]
-    , nextId = 1
+    , nextId = 5
     , page = Dashboard
     }
