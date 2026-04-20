@@ -82,4 +82,4 @@ No comparison can be fully objective. The criteria above are weighted toward cor
 
 ---
 
-<sub>Previous | [Project Overview](../01-project-overview/01-project-overview.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [Elm vs JavaScript](./02-elm-vs-javascript.md)</sub>
+<sub>Previous | [ELM Ecosystem](../02-elm-theory/04-elm-ecosystem.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [Elm vs JavaScript](./02-elm-vs-javascript.md)</sub>

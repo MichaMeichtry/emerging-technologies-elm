@@ -48,7 +48,8 @@ emerging-technologies-elm/
 │   │   ├── 03-elm-vs-typescript-frameworks.md
 │   │   ├── 04-elm-vs-other-functional-options.md
 │   │   ├── 05-when-elm-is-a-good-choice.md
-│   │   └── 06-when-elm-is-not-a-good-choice.md
+│   │   ├── 06-when-elm-is-not-a-good-choice.md
+│   │   └── 07-summary.md
 │   │
 │   ├── 04-prototype/                               # Documentation of the prototype
 │   │   ├── 01-prototype-description.md
@@ -107,6 +108,7 @@ Go to the comparison section:
 4. [Elm vs Other Functional Options](docs/03-comparison/04-elm-vs-other-functional-options.md)
 5. [When Elm Is a Good Choice](docs/03-comparison/05-when-elm-is-a-good-choice.md)
 6. [When Elm Is Not a Good Choice](docs/03-comparison/06-when-elm-is-not-a-good-choice.md)
+7. [Summary](docs/03-comparison/07-summary.md)
 
 #### If You Want to Run the Prototype
 
