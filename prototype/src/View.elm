@@ -58,6 +58,9 @@ viewTicket ticket =
         
         , button [ onClick (ToggleStatusCloseOrOpen ticket.id) ]
             [ text "Close/Open" ]
+
+        , button [ onClick (SelectTicket ticket) ]
+            [ text "See details" ]
         ]
 
 

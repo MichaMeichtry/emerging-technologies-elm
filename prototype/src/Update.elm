@@ -33,6 +33,12 @@ update msg model =
         GoToTickets ->
             { model | page = Model.TicketsPage }
 
+        SelectTicket ticket ->
+            { model | selectedTicket = Just ticket }
+
+        CloseDetail ->
+            { model | selectedTicket = Nothing }
+
 
 updateTicket : Int -> Ticket -> Ticket
 updateTicket id ticket =

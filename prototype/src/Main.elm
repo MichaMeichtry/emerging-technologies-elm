@@ -20,5 +20,7 @@ main =
     | ToggleStatusCloseOrOpen Int
     | GoToDashboard
     | GoToTickets
+    | SelectTicket Ticket
+    | CloseDetail
     "
 -}

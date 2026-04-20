@@ -22,6 +22,7 @@ type alias Model =
     { tickets : List Ticket
     , nextId : Int
     , page : Page
+    , selectedTicket : Maybe Ticket
     }
 
 
@@ -34,4 +35,5 @@ init =
     ]
     , nextId = 5
     , page = Dashboard
+    , selectedTicket = Nothing
     }
