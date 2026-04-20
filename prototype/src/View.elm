@@ -58,14 +58,18 @@ viewTicket ticket =
         ]
 
 
+
 statusToString : Status -> String
 statusToString status =
     case status of
-        Waiting ->
-            "Waiting"
+        Open ->
+            "Open"
 
         InProgress ->
             "In Progress"
 
-        Done ->
-            "Done"
+        Resolved ->
+            "Resolved"
+        
+        Closed ->
+            "Closed"

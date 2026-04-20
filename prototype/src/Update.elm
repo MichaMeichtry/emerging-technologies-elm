@@ -11,7 +11,7 @@ update msg model =
             { model
                 | tickets =
                     model.tickets
-                        ++ [ { id = model.nextId, status = Waiting } ]
+                        ++ [ { id = model.nextId, status = Open } ]
                 , nextId = model.nextId + 1
             }
 
@@ -36,15 +36,26 @@ updateTicket id ticket =
     else
         ticket
 
-
 nextStatus : Status -> Status
 nextStatus status =
     case status of
-        Waiting ->
+        Open ->
             InProgress
 
         InProgress ->
-            Done
+            Resolved
 
-        Done ->
-            Waiting
+        Resolved ->
+            Open
+
+        Closed ->
+            Closed
+
+closeTiquet : Status -> Status
+closeTiquet _ =
+    Closed
+
+
+
+
+            
