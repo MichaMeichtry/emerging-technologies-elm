@@ -21,6 +21,12 @@ update msg model =
                     List.map (updateTicket id) model.tickets
             }
 
+        ToggleStatusCloseOrOpen id ->
+            { model
+                | tickets =
+                    List.map (toggleStatus id) model.tickets
+            }
+
         GoToDashboard ->
             { model | page = Model.Dashboard }
 
@@ -51,9 +57,22 @@ nextStatus status =
         Closed ->
             Closed
 
-closeTiquet : Status -> Status
-closeTiquet _ =
-    Closed
+toggleStatus : Int -> Ticket -> Ticket
+toggleStatus id ticket =
+    if ticket.id == id then
+        { ticket | status = toggleStatusHelp ticket.status }
+
+    else
+        ticket
+
+toggleStatusHelp : Status -> Status
+toggleStatusHelp status =
+    case status of
+        Closed ->
+            Open
+
+        _ ->
+            Closed
 
 
 
