@@ -79,6 +79,7 @@ No comparison can be fully objective. The criteria above are weighted toward cor
 | [04-elm-vs-other-functional-options.md](04-elm-vs-other-functional-options.md) | Elm compared to ReScript and PureScript       |
 | [05-when-elm-is-a-good-choice.md](05-when-elm-is-a-good-choice.md)             | Scenarios where Elm is a strong fit           |
 | [06-when-elm-is-not-a-good-choice.md](06-when-elm-is-not-a-good-choice.md)     | Scenarios where Elm is not the right tool     |
+| [07-summary.md](07-summary.md)                                                 | Summary of the comparisons                    |
 
 ---
 

@@ -36,7 +36,7 @@ There is no opt-out in Elm. Every value in an Elm program is type-checked. This 
 
 ## Runtime Error Prevention
 
-Several categories of JavaScript error appear repeatedly in real-world applications [3, 4]:
+Several categories of JavaScript error appear repeatedly in real-world applications [3][4]:
 
 - `TypeError: Cannot read properties of undefined`
 - `TypeError: x is not a function`
