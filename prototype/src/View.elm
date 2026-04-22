@@ -10,16 +10,20 @@ import Html exposing (h2, p)
 
 view : Model -> Html Msg
 view model =
-    div []
+    div [ class "app" ]
         [ nav
-        , case model.page of
-            Dashboard ->
-                viewDashboard model
-
-            TicketsPage ->
-                viewTickets model
+        , content model
         ]
 
+
+content : Model -> Html Msg
+content model =
+    case model.page of
+        Dashboard ->
+            viewDashboard model
+
+        TicketsPage ->
+            viewTickets model
 
 nav : Html Msg
 nav =
@@ -31,7 +35,7 @@ nav =
 
 viewDashboard : Model -> Html Msg
 viewDashboard model =
-    div [ class "app" ]
+    div []
         [ viewHeader
         , viewIntro
         , viewStats
