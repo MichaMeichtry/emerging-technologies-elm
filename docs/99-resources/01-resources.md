@@ -36,4 +36,20 @@ A browser-based editor for writing and running Elm code without any local instal
 
 ---
 
+## Industry Surveys
+
+### Stack Overflow Developer Survey 2024
+
+https://survey.stackoverflow.co/2024/technology
+
+Annual survey of over 65,000 developers covering programming languages, frameworks, tools, and developer preferences. Used as a reference for technology adoption rates and industry usage figures in the comparison section.
+
+### Stack Overflow Developer Survey 2025
+
+https://survey.stackoverflow.co/2025/technology
+
+Annual survey of over 49,000 developers. Covers the same categories as the 2024 edition. Used alongside the 2024 results to show adoption trends over time for languages and frameworks referenced in this project.
+
+---
+
 <sub>Previous | [Test Scenarios](../04-prototype/05-test-scenarios.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [README](../../README.md)</sub>
