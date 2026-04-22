@@ -28,10 +28,10 @@ type alias Model =
 
 init : Model
 init =
-    { tickets = [{ id = 1, status = Open }
+    { tickets = [{ id = 3, status = Open }
         , { id = 2, status = InProgress }
-        , { id = 3, status = Resolved }
-        , { id = 4, status = Closed }
+        , { id = 1, status = Resolved }
+        , { id = 0, status = Closed }
     ]
     , nextId = 5
     , page = Dashboard
