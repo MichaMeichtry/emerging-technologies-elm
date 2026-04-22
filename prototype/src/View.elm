@@ -4,6 +4,8 @@ import Html exposing (Html, button, div, h1, li, text, ul)
 import Html.Events exposing (onClick)
 import Model exposing (Model, Ticket, Status(..), Page(..))
 import Msg exposing (Msg(..))
+import Html.Attributes exposing (class)
+import Html exposing (h2, p)
 
 
 view : Model -> Html Msg
@@ -29,9 +31,44 @@ nav =
 
 viewDashboard : Model -> Html Msg
 viewDashboard model =
-    div []
-        [ h1 [] [ text "Dashboard" ]
-        , div [] [ text ("Total tickets: " ++ String.fromInt (List.length model.tickets)) ]
+    div [ class "app" ]
+        [ viewHeader
+        , viewIntro
+        , viewStats
+        ]
+
+viewHeader : Html Msg
+viewHeader =
+    div [ class "header" ]
+        [ h1 [] [ text "IT Service Desk" ]
+        , Html.p [] [ text "Ticket Management System" ]
+        ]
+
+
+viewIntro : Html Msg
+viewIntro =
+    div [ class "intro" ]
+        [ Html.h2 [] [ text "Overview" ]
+        , Html.p [] [ text "This application allows IT support agents to create, track, and resolve support tickets." ]
+        , Html.p [] [ text "Use the filters to browse tickets by status or priority, search by keyword, and update ticket states as work progresses." ]
+        ]
+
+
+viewStats : Html Msg
+viewStats =
+    div [ class "stats" ]
+        [ statCard "Open" "3" "card-open"
+        , statCard "In Progress" "2" "card-inprogress"
+        , statCard "Resolved" "1" "card-resolved"
+        , statCard "Closed" "0" "card-closed"
+        ]
+
+
+statCard : String -> String -> String -> Html Msg
+statCard label count cardClass =
+    div [ class ("stat-card " ++ cardClass) ]
+        [ div [ class "stat-count" ] [ text count ]
+        , div [ class "stat-label" ] [ text label ]
         ]
 
 
