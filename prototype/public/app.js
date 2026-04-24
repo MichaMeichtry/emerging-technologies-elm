@@ -80,87 +80,6 @@ function A9(fun, a, b, c, d, e, f, g, h, i) {
 console.warn('Compiled in DEV mode. Follow the advice at https://elm-lang.org/0.19.1/optimize for better performance and smaller assets.');
 
 
-var _List_Nil_UNUSED = { $: 0 };
-var _List_Nil = { $: '[]' };
-
-function _List_Cons_UNUSED(hd, tl) { return { $: 1, a: hd, b: tl }; }
-function _List_Cons(hd, tl) { return { $: '::', a: hd, b: tl }; }
-
-
-var _List_cons = F2(_List_Cons);
-
-function _List_fromArray(arr)
-{
-	var out = _List_Nil;
-	for (var i = arr.length; i--; )
-	{
-		out = _List_Cons(arr[i], out);
-	}
-	return out;
-}
-
-function _List_toArray(xs)
-{
-	for (var out = []; xs.b; xs = xs.b) // WHILE_CONS
-	{
-		out.push(xs.a);
-	}
-	return out;
-}
-
-var _List_map2 = F3(function(f, xs, ys)
-{
-	for (var arr = []; xs.b && ys.b; xs = xs.b, ys = ys.b) // WHILE_CONSES
-	{
-		arr.push(A2(f, xs.a, ys.a));
-	}
-	return _List_fromArray(arr);
-});
-
-var _List_map3 = F4(function(f, xs, ys, zs)
-{
-	for (var arr = []; xs.b && ys.b && zs.b; xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
-	{
-		arr.push(A3(f, xs.a, ys.a, zs.a));
-	}
-	return _List_fromArray(arr);
-});
-
-var _List_map4 = F5(function(f, ws, xs, ys, zs)
-{
-	for (var arr = []; ws.b && xs.b && ys.b && zs.b; ws = ws.b, xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
-	{
-		arr.push(A4(f, ws.a, xs.a, ys.a, zs.a));
-	}
-	return _List_fromArray(arr);
-});
-
-var _List_map5 = F6(function(f, vs, ws, xs, ys, zs)
-{
-	for (var arr = []; vs.b && ws.b && xs.b && ys.b && zs.b; vs = vs.b, ws = ws.b, xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
-	{
-		arr.push(A5(f, vs.a, ws.a, xs.a, ys.a, zs.a));
-	}
-	return _List_fromArray(arr);
-});
-
-var _List_sortBy = F2(function(f, xs)
-{
-	return _List_fromArray(_List_toArray(xs).sort(function(a, b) {
-		return _Utils_cmp(f(a), f(b));
-	}));
-});
-
-var _List_sortWith = F2(function(f, xs)
-{
-	return _List_fromArray(_List_toArray(xs).sort(function(a, b) {
-		var ord = A2(f, a, b);
-		return ord === $elm$core$Basics$EQ ? 0 : ord === $elm$core$Basics$LT ? -1 : 1;
-	}));
-});
-
-
-
 var _JsArray_empty = [];
 
 function _JsArray_singleton(value)
@@ -790,6 +709,87 @@ function _Utils_ap(xs, ys)
 	}
 	return root;
 }
+
+
+
+var _List_Nil_UNUSED = { $: 0 };
+var _List_Nil = { $: '[]' };
+
+function _List_Cons_UNUSED(hd, tl) { return { $: 1, a: hd, b: tl }; }
+function _List_Cons(hd, tl) { return { $: '::', a: hd, b: tl }; }
+
+
+var _List_cons = F2(_List_Cons);
+
+function _List_fromArray(arr)
+{
+	var out = _List_Nil;
+	for (var i = arr.length; i--; )
+	{
+		out = _List_Cons(arr[i], out);
+	}
+	return out;
+}
+
+function _List_toArray(xs)
+{
+	for (var out = []; xs.b; xs = xs.b) // WHILE_CONS
+	{
+		out.push(xs.a);
+	}
+	return out;
+}
+
+var _List_map2 = F3(function(f, xs, ys)
+{
+	for (var arr = []; xs.b && ys.b; xs = xs.b, ys = ys.b) // WHILE_CONSES
+	{
+		arr.push(A2(f, xs.a, ys.a));
+	}
+	return _List_fromArray(arr);
+});
+
+var _List_map3 = F4(function(f, xs, ys, zs)
+{
+	for (var arr = []; xs.b && ys.b && zs.b; xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
+	{
+		arr.push(A3(f, xs.a, ys.a, zs.a));
+	}
+	return _List_fromArray(arr);
+});
+
+var _List_map4 = F5(function(f, ws, xs, ys, zs)
+{
+	for (var arr = []; ws.b && xs.b && ys.b && zs.b; ws = ws.b, xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
+	{
+		arr.push(A4(f, ws.a, xs.a, ys.a, zs.a));
+	}
+	return _List_fromArray(arr);
+});
+
+var _List_map5 = F6(function(f, vs, ws, xs, ys, zs)
+{
+	for (var arr = []; vs.b && ws.b && xs.b && ys.b && zs.b; vs = vs.b, ws = ws.b, xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
+	{
+		arr.push(A5(f, vs.a, ws.a, xs.a, ys.a, zs.a));
+	}
+	return _List_fromArray(arr);
+});
+
+var _List_sortBy = F2(function(f, xs)
+{
+	return _List_fromArray(_List_toArray(xs).sort(function(a, b) {
+		return _Utils_cmp(f(a), f(b));
+	}));
+});
+
+var _List_sortWith = F2(function(f, xs)
+{
+	return _List_fromArray(_List_toArray(xs).sort(function(a, b) {
+		var ord = A2(f, a, b);
+		return ord === $elm$core$Basics$EQ ? 0 : ord === $elm$core$Basics$LT ? -1 : 1;
+	}));
+});
 
 
 
@@ -4378,8 +4378,6 @@ function _Browser_load(url)
 		}
 	}));
 }
-var $elm$core$Basics$EQ = {$: 'EQ'};
-var $elm$core$Basics$LT = {$: 'LT'};
 var $elm$core$List$cons = _List_cons;
 var $elm$core$Elm$JsArray$foldr = _JsArray_foldr;
 var $elm$core$Array$foldr = F3(
@@ -4457,7 +4455,27 @@ var $elm$core$Set$toList = function (_v0) {
 	var dict = _v0.a;
 	return $elm$core$Dict$keys(dict);
 };
+var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
+var $elm$core$Basics$LT = {$: 'LT'};
+var $author$project$Model$Closed = {$: 'Closed'};
+var $author$project$Model$Dashboard = {$: 'Dashboard'};
+var $author$project$Model$InProgress = {$: 'InProgress'};
+var $elm$core$Maybe$Nothing = {$: 'Nothing'};
+var $author$project$Model$Open = {$: 'Open'};
+var $author$project$Model$Resolved = {$: 'Resolved'};
+var $author$project$Model$init = {
+	nextId: 5,
+	page: $author$project$Model$Dashboard,
+	selectedTicket: $elm$core$Maybe$Nothing,
+	tickets: _List_fromArray(
+		[
+			{id: 3, status: $author$project$Model$Open},
+			{id: 2, status: $author$project$Model$InProgress},
+			{id: 1, status: $author$project$Model$Resolved},
+			{id: 0, status: $author$project$Model$Closed}
+		])
+};
 var $elm$core$Result$Err = function (a) {
 	return {$: 'Err', a: a};
 };
@@ -4484,7 +4502,6 @@ var $elm$core$Basics$add = _Basics_add;
 var $elm$core$Maybe$Just = function (a) {
 	return {$: 'Just', a: a};
 };
-var $elm$core$Maybe$Nothing = {$: 'Nothing'};
 var $elm$core$String$all = _String_all;
 var $elm$core$Basics$and = _Basics_and;
 var $elm$core$Basics$append = _Utils_append;
@@ -5188,6 +5205,98 @@ var $elm$browser$Browser$sandbox = function (impl) {
 			view: impl.view
 		});
 };
+var $author$project$Model$TicketsPage = {$: 'TicketsPage'};
+var $author$project$Update$toggleStatusHelp = function (status) {
+	if (status.$ === 'Closed') {
+		return $author$project$Model$Open;
+	} else {
+		return $author$project$Model$Closed;
+	}
+};
+var $author$project$Update$toggleStatus = F2(
+	function (id, ticket) {
+		return _Utils_eq(ticket.id, id) ? _Utils_update(
+			ticket,
+			{
+				status: $author$project$Update$toggleStatusHelp(ticket.status)
+			}) : ticket;
+	});
+var $author$project$Update$nextStatus = function (status) {
+	switch (status.$) {
+		case 'Open':
+			return $author$project$Model$InProgress;
+		case 'InProgress':
+			return $author$project$Model$Resolved;
+		case 'Resolved':
+			return $author$project$Model$Open;
+		default:
+			return $author$project$Model$Closed;
+	}
+};
+var $author$project$Update$updateTicket = F2(
+	function (id, ticket) {
+		return _Utils_eq(ticket.id, id) ? _Utils_update(
+			ticket,
+			{
+				status: $author$project$Update$nextStatus(ticket.status)
+			}) : ticket;
+	});
+var $author$project$Update$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 'TakeTicket':
+				return _Utils_update(
+					model,
+					{
+						nextId: model.nextId + 1,
+						tickets: _Utils_ap(
+							model.tickets,
+							_List_fromArray(
+								[
+									{id: model.nextId, status: $author$project$Model$Open}
+								]))
+					});
+			case 'ChangeStatus':
+				var id = msg.a;
+				return _Utils_update(
+					model,
+					{
+						tickets: A2(
+							$elm$core$List$map,
+							$author$project$Update$updateTicket(id),
+							model.tickets)
+					});
+			case 'ToggleStatusCloseOrOpen':
+				var id = msg.a;
+				return _Utils_update(
+					model,
+					{
+						tickets: A2(
+							$elm$core$List$map,
+							$author$project$Update$toggleStatus(id),
+							model.tickets)
+					});
+			case 'GoToDashboard':
+				return _Utils_update(
+					model,
+					{page: $author$project$Model$Dashboard});
+			case 'GoToTickets':
+				return _Utils_update(
+					model,
+					{page: $author$project$Model$TicketsPage});
+			case 'SelectTicket':
+				var ticket = msg.a;
+				return _Utils_update(
+					model,
+					{
+						selectedTicket: $elm$core$Maybe$Just(ticket)
+					});
+			default:
+				return _Utils_update(
+					model,
+					{selectedTicket: $elm$core$Maybe$Nothing});
+		}
+	});
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -5202,7 +5311,7 @@ var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$p = _VirtualDom_node('p');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$Main$viewHeader = A2(
+var $author$project$View$viewHeader = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
 		[
@@ -5226,7 +5335,7 @@ var $author$project$Main$viewHeader = A2(
 				]))
 		]));
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
-var $author$project$Main$viewIntro = A2(
+var $author$project$View$viewIntro = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
 		[
@@ -5256,7 +5365,7 @@ var $author$project$Main$viewIntro = A2(
 					$elm$html$Html$text('Use the filters to browse tickets by status or priority, search by keyword, and update ticket states as work progresses.')
 				]))
 		]));
-var $author$project$Main$statCard = F3(
+var $author$project$View$statCard = F3(
 	function (label, count, cardClass) {
 		return A2(
 			$elm$html$Html$div,
@@ -5288,7 +5397,7 @@ var $author$project$Main$statCard = F3(
 						]))
 				]));
 	});
-var $author$project$Main$viewStats = A2(
+var $author$project$View$viewStats = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
 		[
@@ -5296,29 +5405,182 @@ var $author$project$Main$viewStats = A2(
 		]),
 	_List_fromArray(
 		[
-			A3($author$project$Main$statCard, 'Open', '3', 'card-open'),
-			A3($author$project$Main$statCard, 'In Progress', '2', 'card-inprogress'),
-			A3($author$project$Main$statCard, 'Resolved', '1', 'card-resolved'),
-			A3($author$project$Main$statCard, 'Closed', '0', 'card-closed')
+			A3($author$project$View$statCard, 'Open', '3', 'card-open'),
+			A3($author$project$View$statCard, 'In Progress', '2', 'card-inprogress'),
+			A3($author$project$View$statCard, 'Resolved', '1', 'card-resolved'),
+			A3($author$project$View$statCard, 'Closed', '0', 'card-closed')
 		]));
-var $author$project$Main$view = A2(
+var $author$project$View$viewDashboard = function (model) {
+	return A2(
+		$elm$html$Html$div,
+		_List_Nil,
+		_List_fromArray(
+			[$author$project$View$viewHeader, $author$project$View$viewIntro, $author$project$View$viewStats]));
+};
+var $author$project$Msg$TakeTicket = {$: 'TakeTicket'};
+var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $elm$html$Html$ul = _VirtualDom_node('ul');
+var $author$project$Msg$ChangeStatus = function (a) {
+	return {$: 'ChangeStatus', a: a};
+};
+var $author$project$Msg$SelectTicket = function (a) {
+	return {$: 'SelectTicket', a: a};
+};
+var $author$project$Msg$ToggleStatusCloseOrOpen = function (a) {
+	return {$: 'ToggleStatusCloseOrOpen', a: a};
+};
+var $elm$html$Html$li = _VirtualDom_node('li');
+var $author$project$View$statusToString = function (status) {
+	switch (status.$) {
+		case 'Open':
+			return 'Open';
+		case 'InProgress':
+			return 'In Progress';
+		case 'Resolved':
+			return 'Resolved';
+		default:
+			return 'Closed';
+	}
+};
+var $author$project$View$viewTicket = function (ticket) {
+	return A2(
+		$elm$html$Html$li,
+		_List_Nil,
+		_List_fromArray(
+			[
+				$elm$html$Html$text(
+				'Ticket ' + ($elm$core$String$fromInt(ticket.id) + (' - ' + $author$project$View$statusToString(ticket.status)))),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						$author$project$Msg$ChangeStatus(ticket.id))
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Next status')
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						$author$project$Msg$ToggleStatusCloseOrOpen(ticket.id))
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Close/Open')
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						$author$project$Msg$SelectTicket(ticket))
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('See details')
+					]))
+			]));
+};
+var $author$project$View$viewTickets = function (model) {
+	return A2(
+		$elm$html$Html$div,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$h1,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Tickets')
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick($author$project$Msg$TakeTicket)
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Take a ticket')
+					])),
+				A2(
+				$elm$html$Html$ul,
+				_List_Nil,
+				A2($elm$core$List$map, $author$project$View$viewTicket, model.tickets))
+			]));
+};
+var $author$project$View$content = function (model) {
+	var _v0 = model.page;
+	if (_v0.$ === 'Dashboard') {
+		return $author$project$View$viewDashboard(model);
+	} else {
+		return $author$project$View$viewTickets(model);
+	}
+};
+var $author$project$Msg$GoToDashboard = {$: 'GoToDashboard'};
+var $author$project$Msg$GoToTickets = {$: 'GoToTickets'};
+var $author$project$View$nav = A2(
 	$elm$html$Html$div,
+	_List_Nil,
 	_List_fromArray(
 		[
-			$elm$html$Html$Attributes$class('app')
-		]),
-	_List_fromArray(
-		[$author$project$Main$viewHeader, $author$project$Main$viewIntro, $author$project$Main$viewStats]));
+			A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Events$onClick($author$project$Msg$GoToDashboard)
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('Dashboard')
+				])),
+			A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Events$onClick($author$project$Msg$GoToTickets)
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('Tickets')
+				]))
+		]));
+var $author$project$View$view = function (model) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('app')
+			]),
+		_List_fromArray(
+			[
+				$author$project$View$nav,
+				$author$project$View$content(model)
+			]));
+};
 var $author$project$Main$main = $elm$browser$Browser$sandbox(
-	{
-		init: _Utils_Tuple0,
-		update: F2(
-			function (_v0, model) {
-				return model;
-			}),
-		view: function (_v1) {
-			return $author$project$Main$view;
-		}
-	});
+	{init: $author$project$Model$init, update: $author$project$Update$update, view: $author$project$View$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
