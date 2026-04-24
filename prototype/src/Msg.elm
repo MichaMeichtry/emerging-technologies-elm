@@ -9,8 +9,13 @@ import Types exposing (FilterState, Priority, TicketStatus)
 
 
 type Msg
-    = -- Form field updates - each input is wired to its own Msg
-      UpdateFormTitle String
+    = -- No-op used internally by stopPropagationOn to absorb backdrop click events
+      NoOp
+      -- Modal form - OpenForm shows the overlay, CloseForm hides it and resets fields
+    | OpenForm
+    | CloseForm
+      -- Form field updates - each input is wired to its own Msg
+    | UpdateFormTitle String
     | UpdateFormDescription String
     | UpdateFormPriority Priority
     | UpdateFormCategory String

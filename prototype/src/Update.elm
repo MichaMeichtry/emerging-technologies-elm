@@ -13,6 +13,25 @@ import Types exposing (Ticket, TicketStatus(..))
 update : Msg -> Model -> Model
 update msg model =
     case msg of
+        -- No-op - leaves the model unchanged.
+        -- Used by stopPropagationOn in the modal to absorb click events on the box.
+        NoOp ->
+            model
+
+        -- Modal form - OpenForm shows the overlay, CloseForm hides it and resets all fields.
+        OpenForm ->
+            { model | showForm = True }
+
+        CloseForm ->
+            { model
+                | showForm = False
+                , formTitle = ""
+                , formDescription = ""
+                , formPriority = Types.Medium
+                , formCategory = "Software"
+                , formError = Nothing
+            }
+
         -- Step 6 - form field handlers
         -- Each one replaces a single field in the model record.
         UpdateFormTitle title ->
@@ -30,6 +49,7 @@ update msg model =
         -- Step 6 - ticket submission with validation
         -- Validates required fields before creating a ticket.
         -- On failure, sets formError so the view can display the message.
+        -- On success, the modal is closed and fields are reset.
         SubmitTicket ->
             case validateForm model of
                 Just errorMsg ->
@@ -51,6 +71,7 @@ update msg model =
                     { model
                         | tickets = model.tickets ++ [ newTicket ]
                         , nextId = model.nextId + 1
+                        , showForm = False
                         , formTitle = ""
                         , formDescription = ""
                         , formPriority = Types.Medium
@@ -78,7 +99,7 @@ update msg model =
         CloseDetail ->
             { model | selectedTicket = Nothing }
 
-        -- Step 9 - filter and search (skeleton - handled by view helpers)
+        -- Step 9 - filter and search
         SetFilter filterState ->
             { model | filter = filterState }
 

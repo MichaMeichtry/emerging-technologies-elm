@@ -4379,6 +4379,7 @@ function _Browser_load(url)
 	}));
 }
 var $author$project$Types$All = {$: 'All'};
+var $elm$core$Basics$False = {$: 'False'};
 var $author$project$Types$Medium = {$: 'Medium'};
 var $elm$core$Maybe$Nothing = {$: 'Nothing'};
 var $elm$core$List$cons = _List_cons;
@@ -4505,7 +4506,7 @@ var $author$project$Model$seedTickets = _List_fromArray(
 		title: 'Reset domain password'
 	}
 	]);
-var $author$project$Model$init = {filter: $author$project$Types$All, formCategory: 'Software', formDescription: '', formError: $elm$core$Maybe$Nothing, formPriority: $author$project$Types$Medium, formTitle: '', nextId: 5, searchQuery: '', selectedTicket: $elm$core$Maybe$Nothing, tickets: $author$project$Model$seedTickets};
+var $author$project$Model$init = {filter: $author$project$Types$All, formCategory: 'Software', formDescription: '', formError: $elm$core$Maybe$Nothing, formPriority: $author$project$Types$Medium, formTitle: '', nextId: 5, searchQuery: '', selectedTicket: $elm$core$Maybe$Nothing, showForm: false, tickets: $author$project$Model$seedTickets};
 var $elm$core$Result$Err = function (a) {
 	return {$: 'Err', a: a};
 };
@@ -4527,7 +4528,6 @@ var $elm$core$Result$Ok = function (a) {
 var $elm$json$Json$Decode$OneOf = function (a) {
 	return {$: 'OneOf', a: a};
 };
-var $elm$core$Basics$False = {$: 'False'};
 var $elm$core$Basics$add = _Basics_add;
 var $elm$core$String$all = _String_all;
 var $elm$core$Basics$and = _Basics_and;
@@ -5247,6 +5247,16 @@ var $author$project$Update$validateForm = function (model) {
 var $author$project$Update$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
+			case 'NoOp':
+				return model;
+			case 'OpenForm':
+				return _Utils_update(
+					model,
+					{showForm: true});
+			case 'CloseForm':
+				return _Utils_update(
+					model,
+					{formCategory: 'Software', formDescription: '', formError: $elm$core$Maybe$Nothing, formPriority: $author$project$Types$Medium, formTitle: '', showForm: false});
 			case 'UpdateFormTitle':
 				var title = msg.a;
 				return _Utils_update(
@@ -5296,6 +5306,7 @@ var $author$project$Update$update = F2(
 							formPriority: $author$project$Types$Medium,
 							formTitle: '',
 							nextId: model.nextId + 1,
+							showForm: false,
 							tickets: _Utils_ap(
 								model.tickets,
 								_List_fromArray(
@@ -5346,6 +5357,8 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$core$List$filter = F2(
 	function (isGood, list) {
 		return A3(
@@ -5446,8 +5459,6 @@ var $author$project$View$statusLabel = function (status) {
 			return 'Closed';
 	}
 };
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Msg$ChangeStatus = F2(
 	function (a, b) {
 		return {$: 'ChangeStatus', a: a, b: b};
@@ -5633,6 +5644,7 @@ var $author$project$View$viewDetail = function (ticket) {
 					]))
 			]));
 };
+var $author$project$Msg$OpenForm = {$: 'OpenForm'};
 var $author$project$Msg$UpdateSearch = function (a) {
 	return {$: 'UpdateSearch', a: a};
 };
@@ -5713,207 +5725,6 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $elm$html$Html$ul = _VirtualDom_node('ul');
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
-var $author$project$Msg$SubmitTicket = {$: 'SubmitTicket'};
-var $author$project$Msg$UpdateFormDescription = function (a) {
-	return {$: 'UpdateFormDescription', a: a};
-};
-var $author$project$Msg$UpdateFormTitle = function (a) {
-	return {$: 'UpdateFormTitle', a: a};
-};
-var $elm$html$Html$textarea = _VirtualDom_node('textarea');
-var $author$project$Msg$UpdateFormCategory = function (a) {
-	return {$: 'UpdateFormCategory', a: a};
-};
-var $author$project$View$viewCategoryBtn = F2(
-	function (cat, current) {
-		return A2(
-			$elm$html$Html$button,
-			_List_fromArray(
-				[
-					$elm$html$Html$Events$onClick(
-					$author$project$Msg$UpdateFormCategory(cat)),
-					$elm$html$Html$Attributes$class(
-					_Utils_eq(cat, current) ? 'btn-active' : 'btn-option')
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text(cat)
-				]));
-	});
-var $author$project$View$viewCategorySelector = function (current) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('selector')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$p,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Category')
-					])),
-				A2($author$project$View$viewCategoryBtn, 'Hardware', current),
-				A2($author$project$View$viewCategoryBtn, 'Software', current),
-				A2($author$project$View$viewCategoryBtn, 'Network', current),
-				A2($author$project$View$viewCategoryBtn, 'Access', current),
-				A2($author$project$View$viewCategoryBtn, 'Other', current)
-			]));
-};
-var $author$project$View$viewFormError = function (maybeError) {
-	if (maybeError.$ === 'Nothing') {
-		return $elm$html$Html$text('');
-	} else {
-		var msg = maybeError.a;
-		return A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('form-error')
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text(msg)
-				]));
-	}
-};
-var $author$project$Msg$UpdateFormPriority = function (a) {
-	return {$: 'UpdateFormPriority', a: a};
-};
-var $author$project$View$viewPrioritySelector = function (current) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('selector')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$p,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Priority')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Msg$UpdateFormPriority($author$project$Types$Low)),
-						$elm$html$Html$Attributes$class(
-						_Utils_eq(current, $author$project$Types$Low) ? 'btn-active' : 'btn-option')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Low')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Msg$UpdateFormPriority($author$project$Types$Medium)),
-						$elm$html$Html$Attributes$class(
-						_Utils_eq(current, $author$project$Types$Medium) ? 'btn-active' : 'btn-option')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Medium')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Msg$UpdateFormPriority($author$project$Types$High)),
-						$elm$html$Html$Attributes$class(
-						_Utils_eq(current, $author$project$Types$High) ? 'btn-active' : 'btn-option')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('High')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Msg$UpdateFormPriority($author$project$Types$Critical)),
-						$elm$html$Html$Attributes$class(
-						_Utils_eq(current, $author$project$Types$Critical) ? 'btn-active' : 'btn-option')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Critical')
-					]))
-			]));
-};
-var $author$project$View$viewCreateForm = function (model) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('form-panel')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$h2,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Create New Ticket')
-					])),
-				$author$project$View$viewFormError(model.formError),
-				A2(
-				$elm$html$Html$input,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$placeholder('Title (min 5 characters)'),
-						$elm$html$Html$Attributes$value(model.formTitle),
-						$elm$html$Html$Events$onInput($author$project$Msg$UpdateFormTitle),
-						$elm$html$Html$Attributes$class('form-input')
-					]),
-				_List_Nil),
-				A2(
-				$elm$html$Html$textarea,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$placeholder('Description (min 10 characters)'),
-						$elm$html$Html$Attributes$value(model.formDescription),
-						$elm$html$Html$Events$onInput($author$project$Msg$UpdateFormDescription),
-						$elm$html$Html$Attributes$class('form-input')
-					]),
-				_List_Nil),
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('form-row')
-					]),
-				_List_fromArray(
-					[
-						$author$project$View$viewPrioritySelector(model.formPriority),
-						$author$project$View$viewCategorySelector(model.formCategory)
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick($author$project$Msg$SubmitTicket),
-						$elm$html$Html$Attributes$class('btn-primary')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Submit Ticket')
-					]))
-			]));
-};
 var $author$project$Msg$SelectTicket = function (a) {
 	return {$: 'SelectTicket', a: a};
 };
@@ -6015,6 +5826,61 @@ var $author$project$View$viewTicketCard = function (ticket) {
 					]))
 			]));
 };
+var $author$project$Types$ByStatus = function (a) {
+	return {$: 'ByStatus', a: a};
+};
+var $author$project$Msg$SetFilter = function (a) {
+	return {$: 'SetFilter', a: a};
+};
+var $author$project$View$filterBtn = F3(
+	function (lbl, target, active) {
+		var isActive = _Utils_eq(target, active);
+		var cls = isActive ? 'filter-btn filter-btn-active' : 'filter-btn';
+		return A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Events$onClick(
+					$author$project$Msg$SetFilter(target)),
+					$elm$html$Html$Attributes$class(cls)
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(lbl)
+				]));
+	});
+var $author$project$View$viewToolbar = function (active) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('toolbar')
+			]),
+		_List_fromArray(
+			[
+				A3($author$project$View$filterBtn, 'All', $author$project$Types$All, active),
+				A3(
+				$author$project$View$filterBtn,
+				'Open',
+				$author$project$Types$ByStatus($author$project$Types$Open),
+				active),
+				A3(
+				$author$project$View$filterBtn,
+				'In Progress',
+				$author$project$Types$ByStatus($author$project$Types$InProgress),
+				active),
+				A3(
+				$author$project$View$filterBtn,
+				'Resolved',
+				$author$project$Types$ByStatus($author$project$Types$Resolved),
+				active),
+				A3(
+				$author$project$View$filterBtn,
+				'Closed',
+				$author$project$Types$ByStatus($author$project$Types$Closed),
+				active)
+			]));
+};
 var $author$project$View$viewTicketList = function (model) {
 	var visible = A3($author$project$View$applyFilter, model.filter, model.searchQuery, model.tickets);
 	return A2(
@@ -6025,11 +5891,12 @@ var $author$project$View$viewTicketList = function (model) {
 			]),
 		_List_fromArray(
 			[
+				$author$project$View$viewToolbar(model.filter),
 				A2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('search-row')
+						$elm$html$Html$Attributes$class('list-header')
 					]),
 				_List_fromArray(
 					[
@@ -6042,9 +5909,19 @@ var $author$project$View$viewTicketList = function (model) {
 								$elm$html$Html$Events$onInput($author$project$Msg$UpdateSearch),
 								$elm$html$Html$Attributes$class('search-input')
 							]),
-						_List_Nil)
+						_List_Nil),
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Events$onClick($author$project$Msg$OpenForm),
+								$elm$html$Html$Attributes$class('btn-create')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('+ New Ticket')
+							]))
 					])),
-				$author$project$View$viewCreateForm(model),
 				A2(
 				$elm$html$Html$ul,
 				_List_fromArray(
@@ -6068,6 +5945,278 @@ var $author$project$View$viewBody = function (model) {
 	} else {
 		return $author$project$View$viewTicketList(model);
 	}
+};
+var $author$project$Msg$CloseForm = {$: 'CloseForm'};
+var $author$project$Msg$NoOp = {$: 'NoOp'};
+var $author$project$Msg$SubmitTicket = {$: 'SubmitTicket'};
+var $author$project$Msg$UpdateFormDescription = function (a) {
+	return {$: 'UpdateFormDescription', a: a};
+};
+var $author$project$Msg$UpdateFormTitle = function (a) {
+	return {$: 'UpdateFormTitle', a: a};
+};
+var $elm$html$Html$label = _VirtualDom_node('label');
+var $elm$html$Html$textarea = _VirtualDom_node('textarea');
+var $author$project$Msg$UpdateFormCategory = function (a) {
+	return {$: 'UpdateFormCategory', a: a};
+};
+var $author$project$View$viewCategoryBtn = F2(
+	function (cat, current) {
+		return A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Events$onClick(
+					$author$project$Msg$UpdateFormCategory(cat)),
+					$elm$html$Html$Attributes$class(
+					_Utils_eq(cat, current) ? 'btn-active' : 'btn-option')
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(cat)
+				]));
+	});
+var $author$project$View$viewCategorySelector = function (current) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('selector')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$p,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('selector-label')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Category')
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('selector-btns')
+					]),
+				_List_fromArray(
+					[
+						A2($author$project$View$viewCategoryBtn, 'Hardware', current),
+						A2($author$project$View$viewCategoryBtn, 'Software', current),
+						A2($author$project$View$viewCategoryBtn, 'Network', current),
+						A2($author$project$View$viewCategoryBtn, 'Access', current),
+						A2($author$project$View$viewCategoryBtn, 'Other', current)
+					]))
+			]));
+};
+var $author$project$View$viewFormError = function (maybeError) {
+	if (maybeError.$ === 'Nothing') {
+		return $elm$html$Html$text('');
+	} else {
+		var msg = maybeError.a;
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('form-error')
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(msg)
+				]));
+	}
+};
+var $author$project$Msg$UpdateFormPriority = function (a) {
+	return {$: 'UpdateFormPriority', a: a};
+};
+var $author$project$View$priorityBtn = F2(
+	function (target, current) {
+		return A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Events$onClick(
+					$author$project$Msg$UpdateFormPriority(target)),
+					$elm$html$Html$Attributes$class(
+					_Utils_eq(target, current) ? 'btn-active' : 'btn-option')
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(
+					$author$project$View$priorityLabel(target))
+				]));
+	});
+var $author$project$View$viewPrioritySelector = function (current) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('selector')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$p,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('selector-label')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Priority')
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('selector-btns')
+					]),
+				_List_fromArray(
+					[
+						A2($author$project$View$priorityBtn, $author$project$Types$Low, current),
+						A2($author$project$View$priorityBtn, $author$project$Types$Medium, current),
+						A2($author$project$View$priorityBtn, $author$project$Types$High, current),
+						A2($author$project$View$priorityBtn, $author$project$Types$Critical, current)
+					]))
+			]));
+};
+var $author$project$View$viewFormModal = function (model) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('modal-backdrop'),
+				$elm$html$Html$Events$onClick($author$project$Msg$CloseForm)
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('modal-box'),
+						A2(
+						$elm$html$Html$Events$stopPropagationOn,
+						'click',
+						$elm$json$Json$Decode$succeed(
+							_Utils_Tuple2($author$project$Msg$NoOp, true)))
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('modal-header')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$h2,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text('New Ticket')
+									])),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Events$onClick($author$project$Msg$CloseForm),
+										$elm$html$Html$Attributes$class('modal-close')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('x')
+									]))
+							])),
+						$author$project$View$viewFormError(model.formError),
+						A2(
+						$elm$html$Html$label,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('form-label')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Title')
+							])),
+						A2(
+						$elm$html$Html$input,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$placeholder('Min 5 characters'),
+								$elm$html$Html$Attributes$value(model.formTitle),
+								$elm$html$Html$Events$onInput($author$project$Msg$UpdateFormTitle),
+								$elm$html$Html$Attributes$class('form-input')
+							]),
+						_List_Nil),
+						A2(
+						$elm$html$Html$label,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('form-label')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Description')
+							])),
+						A2(
+						$elm$html$Html$textarea,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$placeholder('Min 10 characters'),
+								$elm$html$Html$Attributes$value(model.formDescription),
+								$elm$html$Html$Events$onInput($author$project$Msg$UpdateFormDescription),
+								$elm$html$Html$Attributes$class('form-input form-textarea')
+							]),
+						_List_Nil),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('form-row')
+							]),
+						_List_fromArray(
+							[
+								$author$project$View$viewPrioritySelector(model.formPriority),
+								$author$project$View$viewCategorySelector(model.formCategory)
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('modal-footer')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Events$onClick($author$project$Msg$CloseForm),
+										$elm$html$Html$Attributes$class('btn-secondary')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Cancel')
+									])),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Events$onClick($author$project$Msg$SubmitTicket),
+										$elm$html$Html$Attributes$class('btn-primary')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Submit Ticket')
+									]))
+							]))
+					]))
+			]));
 };
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $author$project$View$viewHeader = A2(
@@ -6093,80 +6242,6 @@ var $author$project$View$viewHeader = A2(
 					$elm$html$Html$text('Ticket Management System')
 				]))
 		]));
-var $author$project$Types$ByStatus = function (a) {
-	return {$: 'ByStatus', a: a};
-};
-var $author$project$Msg$SetFilter = function (a) {
-	return {$: 'SetFilter', a: a};
-};
-var $author$project$View$viewNav = A2(
-	$elm$html$Html$div,
-	_List_fromArray(
-		[
-			$elm$html$Html$Attributes$class('toolbar')
-		]),
-	_List_fromArray(
-		[
-			A2(
-			$elm$html$Html$button,
-			_List_fromArray(
-				[
-					$elm$html$Html$Events$onClick(
-					$author$project$Msg$SetFilter($author$project$Types$All))
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text('All')
-				])),
-			A2(
-			$elm$html$Html$button,
-			_List_fromArray(
-				[
-					$elm$html$Html$Events$onClick(
-					$author$project$Msg$SetFilter(
-						$author$project$Types$ByStatus($author$project$Types$Open)))
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Open')
-				])),
-			A2(
-			$elm$html$Html$button,
-			_List_fromArray(
-				[
-					$elm$html$Html$Events$onClick(
-					$author$project$Msg$SetFilter(
-						$author$project$Types$ByStatus($author$project$Types$InProgress)))
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text('In Progress')
-				])),
-			A2(
-			$elm$html$Html$button,
-			_List_fromArray(
-				[
-					$elm$html$Html$Events$onClick(
-					$author$project$Msg$SetFilter(
-						$author$project$Types$ByStatus($author$project$Types$Resolved)))
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Resolved')
-				])),
-			A2(
-			$elm$html$Html$button,
-			_List_fromArray(
-				[
-					$elm$html$Html$Events$onClick(
-					$author$project$Msg$SetFilter(
-						$author$project$Types$ByStatus($author$project$Types$Closed)))
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Closed')
-				]))
-		]));
 var $author$project$View$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -6177,8 +6252,8 @@ var $author$project$View$view = function (model) {
 		_List_fromArray(
 			[
 				$author$project$View$viewHeader,
-				$author$project$View$viewNav,
-				$author$project$View$viewBody(model)
+				$author$project$View$viewBody(model),
+				model.showForm ? $author$project$View$viewFormModal(model) : $elm$html$Html$text('')
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$sandbox(

@@ -14,6 +14,7 @@ type alias Model =
     , filter : FilterState
     , searchQuery : String
     , selectedTicket : Maybe Int
+    , showForm : Bool
     , formTitle : String
     , formDescription : String
     , formPriority : Priority
@@ -34,6 +35,7 @@ init =
     , filter = All
     , searchQuery = ""
     , selectedTicket = Nothing
+    , showForm = False
     , formTitle = ""
     , formDescription = ""
     , formPriority = Medium

@@ -1,23 +1,30 @@
 module View exposing (view)
 
-import Html exposing (Html, button, div, h1, h2, input, li, p, span, text, textarea, ul)
+import Html exposing (Html, button, div, h1, h2, input, label, li, p, span, text, textarea, ul)
 import Html.Attributes exposing (class, placeholder, value)
 import Html.Events exposing (onClick, onInput)
+import Json.Decode
 import Model exposing (Model)
 import Msg exposing (Msg(..))
 import Types exposing (FilterState(..), Priority(..), Ticket, TicketStatus(..))
 
 
 
--- Root view. Renders the full application layout.
+-- Root view. Renders the full application layout and, when needed, the modal overlay.
 
 
 view : Model -> Html Msg
 view model =
     div [ class "app" ]
         [ viewHeader
-        , viewNav
         , viewBody model
+        , -- The modal sits outside the normal flow and covers the whole screen.
+          -- It is only rendered when showForm is True.
+          if model.showForm then
+            viewFormModal model
+
+          else
+            text ""
         ]
 
 
@@ -30,21 +37,6 @@ viewHeader =
     div [ class "header" ]
         [ h1 [] [ text "IT Service Desk" ]
         , p [] [ text "Ticket Management System" ]
-        ]
-
-
-
--- Navigation bar with filter buttons and search input.
-
-
-viewNav : Html Msg
-viewNav =
-    div [ class "toolbar" ]
-        [ button [ onClick (SetFilter All) ] [ text "All" ]
-        , button [ onClick (SetFilter (ByStatus Open)) ] [ text "Open" ]
-        , button [ onClick (SetFilter (ByStatus InProgress)) ] [ text "In Progress" ]
-        , button [ onClick (SetFilter (ByStatus Resolved)) ] [ text "Resolved" ]
-        , button [ onClick (SetFilter (ByStatus Closed)) ] [ text "Closed" ]
         ]
 
 
@@ -77,7 +69,7 @@ findTicket id tickets =
 
 
 
--- The main ticket list with search bar, create button, and ticket cards.
+-- The main ticket list with filter toolbar, search bar, create button, and ticket cards.
 
 
 viewTicketList : Model -> Html Msg
@@ -87,7 +79,9 @@ viewTicketList model =
             applyFilter model.filter model.searchQuery model.tickets
     in
     div [ class "main" ]
-        [ div [ class "search-row" ]
+        [ -- Filter toolbar - passes the active filter so each button can style itself.
+          viewToolbar model.filter
+        , div [ class "list-header" ]
             [ input
                 [ placeholder "Search tickets..."
                 , value model.searchQuery
@@ -95,10 +89,49 @@ viewTicketList model =
                 , class "search-input"
                 ]
                 []
+            , button [ onClick OpenForm, class "btn-create" ] [ text "+ New Ticket" ]
             ]
-        , viewCreateForm model
         , ul [ class "ticket-list" ] (List.map viewTicketCard visible)
         ]
+
+
+
+-- Filter toolbar.
+-- The active FilterState is compared against each button's own target so the
+-- matching button receives the "filter-btn-active" class.
+
+
+viewToolbar : FilterState -> Html Msg
+viewToolbar active =
+    div [ class "toolbar" ]
+        [ filterBtn "All" All active
+        , filterBtn "Open" (ByStatus Open) active
+        , filterBtn "In Progress" (ByStatus InProgress) active
+        , filterBtn "Resolved" (ByStatus Resolved) active
+        , filterBtn "Closed" (ByStatus Closed) active
+        ]
+
+
+
+-- A single filter button.
+-- Compares its own target against the currently active FilterState to decide
+-- whether to apply the highlighted style.
+
+
+filterBtn : String -> FilterState -> FilterState -> Html Msg
+filterBtn lbl target active =
+    let
+        isActive =
+            target == active
+
+        cls =
+            if isActive then
+                "filter-btn filter-btn-active"
+
+            else
+                "filter-btn"
+    in
+    button [ onClick (SetFilter target), class cls ] [ text lbl ]
 
 
 
@@ -185,35 +218,48 @@ viewNextStatusButton ticket =
 
 
 
--- The create-ticket form panel.
--- Inline validation error is shown when formError is Just a message.
+-- The modal overlay for the create-ticket form.
+-- Clicking the dark backdrop sends CloseForm, so the user can dismiss by clicking outside.
+-- Clicks inside the white box are stopped from bubbling to the backdrop via stopPropagationOn.
 
 
-viewCreateForm : Model -> Html Msg
-viewCreateForm model =
-    div [ class "form-panel" ]
-        [ h2 [] [ text "Create New Ticket" ]
-        , viewFormError model.formError
-        , input
-            [ placeholder "Title (min 5 characters)"
-            , value model.formTitle
-            , onInput UpdateFormTitle
-            , class "form-input"
+viewFormModal : Model -> Html Msg
+viewFormModal model =
+    div [ class "modal-backdrop", onClick CloseForm ]
+        [ div
+            [ class "modal-box"
+            , Html.Events.stopPropagationOn "click" (Json.Decode.succeed ( NoOp, True ))
             ]
-            []
-        , textarea
-            [ placeholder "Description (min 10 characters)"
-            , value model.formDescription
-            , onInput UpdateFormDescription
-            , class "form-input"
+            [ div [ class "modal-header" ]
+                [ h2 [] [ text "New Ticket" ]
+                , button [ onClick CloseForm, class "modal-close" ] [ text "x" ]
+                ]
+            , viewFormError model.formError
+            , label [ class "form-label" ] [ text "Title" ]
+            , input
+                [ placeholder "Min 5 characters"
+                , value model.formTitle
+                , onInput UpdateFormTitle
+                , class "form-input"
+                ]
+                []
+            , label [ class "form-label" ] [ text "Description" ]
+            , textarea
+                [ placeholder "Min 10 characters"
+                , value model.formDescription
+                , onInput UpdateFormDescription
+                , class "form-input form-textarea"
+                ]
+                []
+            , div [ class "form-row" ]
+                [ viewPrioritySelector model.formPriority
+                , viewCategorySelector model.formCategory
+                ]
+            , div [ class "modal-footer" ]
+                [ button [ onClick CloseForm, class "btn-secondary" ] [ text "Cancel" ]
+                , button [ onClick SubmitTicket, class "btn-primary" ] [ text "Submit Ticket" ]
+                ]
             ]
-            []
-        , div [ class "form-row" ]
-            [ viewPrioritySelector model.formPriority
-            , viewCategorySelector model.formCategory
-            ]
-        , button [ onClick SubmitTicket, class "btn-primary" ]
-            [ text "Submit Ticket" ]
         ]
 
 
@@ -238,52 +284,29 @@ viewFormError maybeError =
 viewPrioritySelector : Priority -> Html Msg
 viewPrioritySelector current =
     div [ class "selector" ]
-        [ p [] [ text "Priority" ]
-        , button
-            [ onClick (UpdateFormPriority Low)
-            , class
-                (if current == Low then
-                    "btn-active"
-
-                 else
-                    "btn-option"
-                )
+        [ p [ class "selector-label" ] [ text "Priority" ]
+        , div [ class "selector-btns" ]
+            [ priorityBtn Low current
+            , priorityBtn Medium current
+            , priorityBtn High current
+            , priorityBtn Critical current
             ]
-            [ text "Low" ]
-        , button
-            [ onClick (UpdateFormPriority Medium)
-            , class
-                (if current == Medium then
-                    "btn-active"
-
-                 else
-                    "btn-option"
-                )
-            ]
-            [ text "Medium" ]
-        , button
-            [ onClick (UpdateFormPriority High)
-            , class
-                (if current == High then
-                    "btn-active"
-
-                 else
-                    "btn-option"
-                )
-            ]
-            [ text "High" ]
-        , button
-            [ onClick (UpdateFormPriority Critical)
-            , class
-                (if current == Critical then
-                    "btn-active"
-
-                 else
-                    "btn-option"
-                )
-            ]
-            [ text "Critical" ]
         ]
+
+
+priorityBtn : Priority -> Priority -> Html Msg
+priorityBtn target current =
+    button
+        [ onClick (UpdateFormPriority target)
+        , class
+            (if target == current then
+                "btn-active"
+
+             else
+                "btn-option"
+            )
+        ]
+        [ text (priorityLabel target) ]
 
 
 
@@ -293,12 +316,14 @@ viewPrioritySelector current =
 viewCategorySelector : String -> Html Msg
 viewCategorySelector current =
     div [ class "selector" ]
-        [ p [] [ text "Category" ]
-        , viewCategoryBtn "Hardware" current
-        , viewCategoryBtn "Software" current
-        , viewCategoryBtn "Network" current
-        , viewCategoryBtn "Access" current
-        , viewCategoryBtn "Other" current
+        [ p [ class "selector-label" ] [ text "Category" ]
+        , div [ class "selector-btns" ]
+            [ viewCategoryBtn "Hardware" current
+            , viewCategoryBtn "Software" current
+            , viewCategoryBtn "Network" current
+            , viewCategoryBtn "Access" current
+            , viewCategoryBtn "Other" current
+            ]
         ]
 
 
