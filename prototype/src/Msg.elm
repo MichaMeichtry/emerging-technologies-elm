@@ -1,13 +1,28 @@
 module Msg exposing (Msg(..))
 
-import Model exposing (Ticket)
+import Types exposing (FilterState, Priority, TicketStatus)
+
+
+
+-- Every user interaction is represented as a Msg variant.
+-- The update function handles each one with a dedicated case branch.
+
 
 type Msg
-    = TakeTicket
-    | ChangeStatus Int
-    | ToggleStatusCloseOrOpen Int
-    | GoToDashboard
-    | GoToTickets
-    | SelectTicket Ticket
+    = -- Form field updates - each input is wired to its own Msg
+      UpdateFormTitle String
+    | UpdateFormDescription String
+    | UpdateFormPriority Priority
+    | UpdateFormCategory String
+      -- Submitting the form validates inputs and either creates a ticket or sets formError
+    | SubmitTicket
+      -- Ticket lifecycle - ChangeStatus carries the ticket id and the new status
+    | ChangeStatus Int TicketStatus
+      -- Detail view - SelectTicket stores the ticket id in selectedTicket (Just id)
+    | SelectTicket Int
+      -- CloseDetail sets selectedTicket back to Nothing
     | CloseDetail
-    
+      -- Filtering and search - SetFilter replaces the active FilterState
+    | SetFilter FilterState
+      -- UpdateSearch updates the live search query string
+    | UpdateSearch String

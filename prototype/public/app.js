@@ -4378,6 +4378,9 @@ function _Browser_load(url)
 		}
 	}));
 }
+var $author$project$Types$All = {$: 'All'};
+var $author$project$Types$Medium = {$: 'Medium'};
+var $elm$core$Maybe$Nothing = {$: 'Nothing'};
 var $elm$core$List$cons = _List_cons;
 var $elm$core$Elm$JsArray$foldr = _JsArray_foldr;
 var $elm$core$Array$foldr = F3(
@@ -4458,24 +4461,51 @@ var $elm$core$Set$toList = function (_v0) {
 var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
-var $author$project$Model$Closed = {$: 'Closed'};
-var $author$project$Model$Dashboard = {$: 'Dashboard'};
-var $author$project$Model$InProgress = {$: 'InProgress'};
-var $elm$core$Maybe$Nothing = {$: 'Nothing'};
-var $author$project$Model$Open = {$: 'Open'};
-var $author$project$Model$Resolved = {$: 'Resolved'};
-var $author$project$Model$init = {
-	nextId: 5,
-	page: $author$project$Model$Dashboard,
-	selectedTicket: $elm$core$Maybe$Nothing,
-	tickets: _List_fromArray(
-		[
-			{id: 3, status: $author$project$Model$Open},
-			{id: 2, status: $author$project$Model$InProgress},
-			{id: 1, status: $author$project$Model$Resolved},
-			{id: 0, status: $author$project$Model$Closed}
-		])
+var $author$project$Types$Closed = {$: 'Closed'};
+var $author$project$Types$Critical = {$: 'Critical'};
+var $author$project$Types$High = {$: 'High'};
+var $author$project$Types$InProgress = {$: 'InProgress'};
+var $elm$core$Maybe$Just = function (a) {
+	return {$: 'Just', a: a};
 };
+var $author$project$Types$Low = {$: 'Low'};
+var $author$project$Types$Open = {$: 'Open'};
+var $author$project$Types$Resolved = {$: 'Resolved'};
+var $author$project$Model$seedTickets = _List_fromArray(
+	[
+		{assignedTo: $elm$core$Maybe$Nothing, category: 'Network', createdAt: '2025-04-20', description: 'Since the last update I am unable to connect to the corporate VPN from home. I get error code 800.', id: 1, priority: $author$project$Types$High, status: $author$project$Types$Open, title: 'Cannot connect to VPN'},
+		{
+		assignedTo: $elm$core$Maybe$Just('Alice Martin'),
+		category: 'Software',
+		createdAt: '2025-04-21',
+		description: 'Outlook 365 crashes immediately after the splash screen. Reinstalling did not fix the problem.',
+		id: 2,
+		priority: $author$project$Types$Critical,
+		status: $author$project$Types$InProgress,
+		title: 'Outlook crashes on startup'
+	},
+		{
+		assignedTo: $elm$core$Maybe$Just('Bob Chen'),
+		category: 'Hardware',
+		createdAt: '2025-04-22',
+		description: 'Several keys on my keyboard are stuck. I need a replacement before the end of the week.',
+		id: 3,
+		priority: $author$project$Types$Low,
+		status: $author$project$Types$Resolved,
+		title: 'Request new keyboard'
+	},
+		{
+		assignedTo: $elm$core$Maybe$Just('Alice Martin'),
+		category: 'Access',
+		createdAt: '2025-04-23',
+		description: 'My domain account is locked after too many failed login attempts. Please reset.',
+		id: 4,
+		priority: $author$project$Types$Medium,
+		status: $author$project$Types$Closed,
+		title: 'Reset domain password'
+	}
+	]);
+var $author$project$Model$init = {filter: $author$project$Types$All, formCategory: 'Software', formDescription: '', formError: $elm$core$Maybe$Nothing, formPriority: $author$project$Types$Medium, formTitle: '', nextId: 5, searchQuery: '', selectedTicket: $elm$core$Maybe$Nothing, tickets: $author$project$Model$seedTickets};
 var $elm$core$Result$Err = function (a) {
 	return {$: 'Err', a: a};
 };
@@ -4499,9 +4529,6 @@ var $elm$json$Json$Decode$OneOf = function (a) {
 };
 var $elm$core$Basics$False = {$: 'False'};
 var $elm$core$Basics$add = _Basics_add;
-var $elm$core$Maybe$Just = function (a) {
-	return {$: 'Just', a: a};
-};
 var $elm$core$String$all = _String_all;
 var $elm$core$Basics$and = _Basics_and;
 var $elm$core$Basics$append = _Utils_append;
@@ -5205,96 +5232,108 @@ var $elm$browser$Browser$sandbox = function (impl) {
 			view: impl.view
 		});
 };
-var $author$project$Model$TicketsPage = {$: 'TicketsPage'};
-var $author$project$Update$toggleStatusHelp = function (status) {
-	if (status.$ === 'Closed') {
-		return $author$project$Model$Open;
-	} else {
-		return $author$project$Model$Closed;
-	}
-};
-var $author$project$Update$toggleStatus = F2(
-	function (id, ticket) {
-		return _Utils_eq(ticket.id, id) ? _Utils_update(
+var $author$project$Update$applyStatusChange = F3(
+	function (targetId, newStatus, ticket) {
+		return _Utils_eq(ticket.id, targetId) ? _Utils_update(
 			ticket,
-			{
-				status: $author$project$Update$toggleStatusHelp(ticket.status)
-			}) : ticket;
+			{status: newStatus}) : ticket;
 	});
-var $author$project$Update$nextStatus = function (status) {
-	switch (status.$) {
-		case 'Open':
-			return $author$project$Model$InProgress;
-		case 'InProgress':
-			return $author$project$Model$Resolved;
-		case 'Resolved':
-			return $author$project$Model$Open;
-		default:
-			return $author$project$Model$Closed;
-	}
+var $elm$core$String$trim = _String_trim;
+var $author$project$Update$validateForm = function (model) {
+	return ($elm$core$String$length(
+		$elm$core$String$trim(model.formTitle)) < 5) ? $elm$core$Maybe$Just('Title must be at least 5 characters.') : (($elm$core$String$length(
+		$elm$core$String$trim(model.formDescription)) < 10) ? $elm$core$Maybe$Just('Description must be at least 10 characters.') : $elm$core$Maybe$Nothing);
 };
-var $author$project$Update$updateTicket = F2(
-	function (id, ticket) {
-		return _Utils_eq(ticket.id, id) ? _Utils_update(
-			ticket,
-			{
-				status: $author$project$Update$nextStatus(ticket.status)
-			}) : ticket;
-	});
 var $author$project$Update$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 'TakeTicket':
+			case 'UpdateFormTitle':
+				var title = msg.a;
 				return _Utils_update(
 					model,
-					{
-						nextId: model.nextId + 1,
-						tickets: _Utils_ap(
-							model.tickets,
-							_List_fromArray(
-								[
-									{id: model.nextId, status: $author$project$Model$Open}
-								]))
-					});
+					{formError: $elm$core$Maybe$Nothing, formTitle: title});
+			case 'UpdateFormDescription':
+				var desc = msg.a;
+				return _Utils_update(
+					model,
+					{formDescription: desc, formError: $elm$core$Maybe$Nothing});
+			case 'UpdateFormPriority':
+				var priority = msg.a;
+				return _Utils_update(
+					model,
+					{formPriority: priority});
+			case 'UpdateFormCategory':
+				var category = msg.a;
+				return _Utils_update(
+					model,
+					{formCategory: category});
+			case 'SubmitTicket':
+				var _v1 = $author$project$Update$validateForm(model);
+				if (_v1.$ === 'Just') {
+					var errorMsg = _v1.a;
+					return _Utils_update(
+						model,
+						{
+							formError: $elm$core$Maybe$Just(errorMsg)
+						});
+				} else {
+					var newTicket = {
+						assignedTo: $elm$core$Maybe$Nothing,
+						category: model.formCategory,
+						createdAt: '2025-04-24',
+						description: $elm$core$String$trim(model.formDescription),
+						id: model.nextId,
+						priority: model.formPriority,
+						status: $author$project$Types$Open,
+						title: $elm$core$String$trim(model.formTitle)
+					};
+					return _Utils_update(
+						model,
+						{
+							formCategory: 'Software',
+							formDescription: '',
+							formError: $elm$core$Maybe$Nothing,
+							formPriority: $author$project$Types$Medium,
+							formTitle: '',
+							nextId: model.nextId + 1,
+							tickets: _Utils_ap(
+								model.tickets,
+								_List_fromArray(
+									[newTicket]))
+						});
+				}
 			case 'ChangeStatus':
 				var id = msg.a;
+				var newStatus = msg.b;
 				return _Utils_update(
 					model,
 					{
 						tickets: A2(
 							$elm$core$List$map,
-							$author$project$Update$updateTicket(id),
+							A2($author$project$Update$applyStatusChange, id, newStatus),
 							model.tickets)
 					});
-			case 'ToggleStatusCloseOrOpen':
+			case 'SelectTicket':
 				var id = msg.a;
 				return _Utils_update(
 					model,
 					{
-						tickets: A2(
-							$elm$core$List$map,
-							$author$project$Update$toggleStatus(id),
-							model.tickets)
+						selectedTicket: $elm$core$Maybe$Just(id)
 					});
-			case 'GoToDashboard':
-				return _Utils_update(
-					model,
-					{page: $author$project$Model$Dashboard});
-			case 'GoToTickets':
-				return _Utils_update(
-					model,
-					{page: $author$project$Model$TicketsPage});
-			case 'SelectTicket':
-				var ticket = msg.a;
-				return _Utils_update(
-					model,
-					{
-						selectedTicket: $elm$core$Maybe$Just(ticket)
-					});
-			default:
+			case 'CloseDetail':
 				return _Utils_update(
 					model,
 					{selectedTicket: $elm$core$Maybe$Nothing});
+			case 'SetFilter':
+				var filterState = msg.a;
+				return _Utils_update(
+					model,
+					{filter: filterState});
+			default:
+				var query = msg.a;
+				return _Utils_update(
+					model,
+					{searchQuery: query});
 		}
 	});
 var $elm$json$Json$Encode$string = _Json_wrap;
@@ -5307,10 +5346,730 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
-var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $author$project$View$findTicket = F2(
+	function (id, tickets) {
+		return $elm$core$List$head(
+			A2(
+				$elm$core$List$filter,
+				function (t) {
+					return _Utils_eq(t.id, id);
+				},
+				tickets));
+	});
+var $author$project$Msg$CloseDetail = {$: 'CloseDetail'};
+var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$html$Html$h2 = _VirtualDom_node('h2');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
 var $elm$html$Html$p = _VirtualDom_node('p');
+var $author$project$View$priorityClass = function (priority) {
+	switch (priority.$) {
+		case 'Low':
+			return 'low';
+		case 'Medium':
+			return 'medium';
+		case 'High':
+			return 'high';
+		default:
+			return 'critical';
+	}
+};
+var $author$project$View$priorityLabel = function (priority) {
+	switch (priority.$) {
+		case 'Low':
+			return 'Low';
+		case 'Medium':
+			return 'Medium';
+		case 'High':
+			return 'High';
+		default:
+			return 'Critical';
+	}
+};
+var $elm$html$Html$span = _VirtualDom_node('span');
+var $author$project$View$statusClass = function (status) {
+	switch (status.$) {
+		case 'Open':
+			return 'open';
+		case 'InProgress':
+			return 'inprogress';
+		case 'Resolved':
+			return 'resolved';
+		default:
+			return 'closed';
+	}
+};
+var $author$project$View$statusLabel = function (status) {
+	switch (status.$) {
+		case 'Open':
+			return 'Open';
+		case 'InProgress':
+			return 'In Progress';
+		case 'Resolved':
+			return 'Resolved';
+		default:
+			return 'Closed';
+	}
+};
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Msg$ChangeStatus = F2(
+	function (a, b) {
+		return {$: 'ChangeStatus', a: a, b: b};
+	});
+var $author$project$View$viewNextStatusButton = function (ticket) {
+	var _v0 = ticket.status;
+	switch (_v0.$) {
+		case 'Open':
+			return A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						A2($author$project$Msg$ChangeStatus, ticket.id, $author$project$Types$InProgress)),
+						$elm$html$Html$Attributes$class('btn-primary')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Start')
+					]));
+		case 'InProgress':
+			return A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						A2($author$project$Msg$ChangeStatus, ticket.id, $author$project$Types$Resolved)),
+						$elm$html$Html$Attributes$class('btn-primary')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Resolve')
+					]));
+		case 'Resolved':
+			return A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						A2($author$project$Msg$ChangeStatus, ticket.id, $author$project$Types$Closed)),
+						$elm$html$Html$Attributes$class('btn-primary')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Close')
+					]));
+		default:
+			return A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						A2($author$project$Msg$ChangeStatus, ticket.id, $author$project$Types$Open)),
+						$elm$html$Html$Attributes$class('btn-secondary')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Reopen')
+					]));
+	}
+};
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var $author$project$View$viewDetail = function (ticket) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('detail-panel')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick($author$project$Msg$CloseDetail),
+						$elm$html$Html$Attributes$class('btn-secondary')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Back')
+					])),
+				A2(
+				$elm$html$Html$h2,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(ticket.title)
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('detail-meta')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$span,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class(
+								'badge status-' + $author$project$View$statusClass(ticket.status))
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								$author$project$View$statusLabel(ticket.status))
+							])),
+						A2(
+						$elm$html$Html$span,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class(
+								'badge priority-' + $author$project$View$priorityClass(ticket.priority))
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								$author$project$View$priorityLabel(ticket.priority))
+							])),
+						A2(
+						$elm$html$Html$span,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('  Category: ' + ticket.category)
+							])),
+						A2(
+						$elm$html$Html$span,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								'  ID: #' + $elm$core$String$fromInt(ticket.id))
+							])),
+						A2(
+						$elm$html$Html$span,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('  Created: ' + ticket.createdAt)
+							]))
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('detail-assigned')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						'Assigned to: ' + A2($elm$core$Maybe$withDefault, 'Unassigned', ticket.assignedTo))
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('detail-description')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(ticket.description)
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('detail-actions')
+					]),
+				_List_fromArray(
+					[
+						$author$project$View$viewNextStatusButton(ticket)
+					]))
+			]));
+};
+var $author$project$Msg$UpdateSearch = function (a) {
+	return {$: 'UpdateSearch', a: a};
+};
+var $elm$core$String$toLower = _String_toLower;
+var $author$project$View$applyFilter = F3(
+	function (filterState, query, tickets) {
+		var q = $elm$core$String$toLower(
+			$elm$core$String$trim(query));
+		var afterFilter = function () {
+			switch (filterState.$) {
+				case 'All':
+					return tickets;
+				case 'ByStatus':
+					var status = filterState.a;
+					return A2(
+						$elm$core$List$filter,
+						function (t) {
+							return _Utils_eq(t.status, status);
+						},
+						tickets);
+				default:
+					var priority = filterState.a;
+					return A2(
+						$elm$core$List$filter,
+						function (t) {
+							return _Utils_eq(t.priority, priority);
+						},
+						tickets);
+			}
+		}();
+		return $elm$core$String$isEmpty(q) ? afterFilter : A2(
+			$elm$core$List$filter,
+			function (t) {
+				return A2(
+					$elm$core$String$contains,
+					q,
+					$elm$core$String$toLower(t.title)) || A2(
+					$elm$core$String$contains,
+					q,
+					$elm$core$String$toLower(t.description));
+			},
+			afterFilter);
+	});
+var $elm$html$Html$input = _VirtualDom_node('input');
+var $elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 'MayStopPropagation', a: a};
+};
+var $elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $elm$html$Html$Events$targetValue = A2(
+	$elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	$elm$json$Json$Decode$string);
+var $elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		$elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			$elm$json$Json$Decode$map,
+			$elm$html$Html$Events$alwaysStop,
+			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
+};
+var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
+var $elm$html$Html$ul = _VirtualDom_node('ul');
+var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
+var $author$project$Msg$SubmitTicket = {$: 'SubmitTicket'};
+var $author$project$Msg$UpdateFormDescription = function (a) {
+	return {$: 'UpdateFormDescription', a: a};
+};
+var $author$project$Msg$UpdateFormTitle = function (a) {
+	return {$: 'UpdateFormTitle', a: a};
+};
+var $elm$html$Html$textarea = _VirtualDom_node('textarea');
+var $author$project$Msg$UpdateFormCategory = function (a) {
+	return {$: 'UpdateFormCategory', a: a};
+};
+var $author$project$View$viewCategoryBtn = F2(
+	function (cat, current) {
+		return A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Events$onClick(
+					$author$project$Msg$UpdateFormCategory(cat)),
+					$elm$html$Html$Attributes$class(
+					_Utils_eq(cat, current) ? 'btn-active' : 'btn-option')
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(cat)
+				]));
+	});
+var $author$project$View$viewCategorySelector = function (current) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('selector')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Category')
+					])),
+				A2($author$project$View$viewCategoryBtn, 'Hardware', current),
+				A2($author$project$View$viewCategoryBtn, 'Software', current),
+				A2($author$project$View$viewCategoryBtn, 'Network', current),
+				A2($author$project$View$viewCategoryBtn, 'Access', current),
+				A2($author$project$View$viewCategoryBtn, 'Other', current)
+			]));
+};
+var $author$project$View$viewFormError = function (maybeError) {
+	if (maybeError.$ === 'Nothing') {
+		return $elm$html$Html$text('');
+	} else {
+		var msg = maybeError.a;
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('form-error')
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(msg)
+				]));
+	}
+};
+var $author$project$Msg$UpdateFormPriority = function (a) {
+	return {$: 'UpdateFormPriority', a: a};
+};
+var $author$project$View$viewPrioritySelector = function (current) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('selector')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Priority')
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						$author$project$Msg$UpdateFormPriority($author$project$Types$Low)),
+						$elm$html$Html$Attributes$class(
+						_Utils_eq(current, $author$project$Types$Low) ? 'btn-active' : 'btn-option')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Low')
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						$author$project$Msg$UpdateFormPriority($author$project$Types$Medium)),
+						$elm$html$Html$Attributes$class(
+						_Utils_eq(current, $author$project$Types$Medium) ? 'btn-active' : 'btn-option')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Medium')
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						$author$project$Msg$UpdateFormPriority($author$project$Types$High)),
+						$elm$html$Html$Attributes$class(
+						_Utils_eq(current, $author$project$Types$High) ? 'btn-active' : 'btn-option')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('High')
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						$author$project$Msg$UpdateFormPriority($author$project$Types$Critical)),
+						$elm$html$Html$Attributes$class(
+						_Utils_eq(current, $author$project$Types$Critical) ? 'btn-active' : 'btn-option')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Critical')
+					]))
+			]));
+};
+var $author$project$View$viewCreateForm = function (model) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('form-panel')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$h2,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Create New Ticket')
+					])),
+				$author$project$View$viewFormError(model.formError),
+				A2(
+				$elm$html$Html$input,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$placeholder('Title (min 5 characters)'),
+						$elm$html$Html$Attributes$value(model.formTitle),
+						$elm$html$Html$Events$onInput($author$project$Msg$UpdateFormTitle),
+						$elm$html$Html$Attributes$class('form-input')
+					]),
+				_List_Nil),
+				A2(
+				$elm$html$Html$textarea,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$placeholder('Description (min 10 characters)'),
+						$elm$html$Html$Attributes$value(model.formDescription),
+						$elm$html$Html$Events$onInput($author$project$Msg$UpdateFormDescription),
+						$elm$html$Html$Attributes$class('form-input')
+					]),
+				_List_Nil),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('form-row')
+					]),
+				_List_fromArray(
+					[
+						$author$project$View$viewPrioritySelector(model.formPriority),
+						$author$project$View$viewCategorySelector(model.formCategory)
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick($author$project$Msg$SubmitTicket),
+						$elm$html$Html$Attributes$class('btn-primary')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Submit Ticket')
+					]))
+			]));
+};
+var $author$project$Msg$SelectTicket = function (a) {
+	return {$: 'SelectTicket', a: a};
+};
+var $elm$html$Html$li = _VirtualDom_node('li');
+var $author$project$View$viewTicketCard = function (ticket) {
+	return A2(
+		$elm$html$Html$li,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('ticket-card')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('card-top')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$span,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('ticket-id')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								'#' + $elm$core$String$fromInt(ticket.id))
+							])),
+						A2(
+						$elm$html$Html$span,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class(
+								'badge status-' + $author$project$View$statusClass(ticket.status))
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								$author$project$View$statusLabel(ticket.status))
+							])),
+						A2(
+						$elm$html$Html$span,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class(
+								'badge priority-' + $author$project$View$priorityClass(ticket.priority))
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								$author$project$View$priorityLabel(ticket.priority))
+							]))
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('card-title')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(ticket.title)
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('card-meta')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(ticket.category)
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('card-actions')
+					]),
+				_List_fromArray(
+					[
+						$author$project$View$viewNextStatusButton(ticket),
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Events$onClick(
+								$author$project$Msg$SelectTicket(ticket.id)),
+								$elm$html$Html$Attributes$class('btn-secondary')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('View Details')
+							]))
+					]))
+			]));
+};
+var $author$project$View$viewTicketList = function (model) {
+	var visible = A3($author$project$View$applyFilter, model.filter, model.searchQuery, model.tickets);
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('main')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('search-row')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$input,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$placeholder('Search tickets...'),
+								$elm$html$Html$Attributes$value(model.searchQuery),
+								$elm$html$Html$Events$onInput($author$project$Msg$UpdateSearch),
+								$elm$html$Html$Attributes$class('search-input')
+							]),
+						_List_Nil)
+					])),
+				$author$project$View$viewCreateForm(model),
+				A2(
+				$elm$html$Html$ul,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('ticket-list')
+					]),
+				A2($elm$core$List$map, $author$project$View$viewTicketCard, visible))
+			]));
+};
+var $author$project$View$viewBody = function (model) {
+	var _v0 = model.selectedTicket;
+	if (_v0.$ === 'Just') {
+		var id = _v0.a;
+		var _v1 = A2($author$project$View$findTicket, id, model.tickets);
+		if (_v1.$ === 'Just') {
+			var ticket = _v1.a;
+			return $author$project$View$viewDetail(ticket);
+		} else {
+			return $author$project$View$viewTicketList(model);
+		}
+	} else {
+		return $author$project$View$viewTicketList(model);
+	}
+};
+var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $author$project$View$viewHeader = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -5334,237 +6093,78 @@ var $author$project$View$viewHeader = A2(
 					$elm$html$Html$text('Ticket Management System')
 				]))
 		]));
-var $elm$html$Html$h2 = _VirtualDom_node('h2');
-var $author$project$View$viewIntro = A2(
+var $author$project$Types$ByStatus = function (a) {
+	return {$: 'ByStatus', a: a};
+};
+var $author$project$Msg$SetFilter = function (a) {
+	return {$: 'SetFilter', a: a};
+};
+var $author$project$View$viewNav = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
 		[
-			$elm$html$Html$Attributes$class('intro')
+			$elm$html$Html$Attributes$class('toolbar')
 		]),
-	_List_fromArray(
-		[
-			A2(
-			$elm$html$Html$h2,
-			_List_Nil,
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Overview')
-				])),
-			A2(
-			$elm$html$Html$p,
-			_List_Nil,
-			_List_fromArray(
-				[
-					$elm$html$Html$text('This application allows IT support agents to create, track, and resolve support tickets.')
-				])),
-			A2(
-			$elm$html$Html$p,
-			_List_Nil,
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Use the filters to browse tickets by status or priority, search by keyword, and update ticket states as work progresses.')
-				]))
-		]));
-var $author$project$View$statCard = F3(
-	function (label, count, cardClass) {
-		return A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('stat-card ' + cardClass)
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$div,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('stat-count')
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text(count)
-						])),
-					A2(
-					$elm$html$Html$div,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('stat-label')
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text(label)
-						]))
-				]));
-	});
-var $author$project$View$viewStats = A2(
-	$elm$html$Html$div,
-	_List_fromArray(
-		[
-			$elm$html$Html$Attributes$class('stats')
-		]),
-	_List_fromArray(
-		[
-			A3($author$project$View$statCard, 'Open', '3', 'card-open'),
-			A3($author$project$View$statCard, 'In Progress', '2', 'card-inprogress'),
-			A3($author$project$View$statCard, 'Resolved', '1', 'card-resolved'),
-			A3($author$project$View$statCard, 'Closed', '0', 'card-closed')
-		]));
-var $author$project$View$viewDashboard = function (model) {
-	return A2(
-		$elm$html$Html$div,
-		_List_Nil,
-		_List_fromArray(
-			[$author$project$View$viewHeader, $author$project$View$viewIntro, $author$project$View$viewStats]));
-};
-var $author$project$Msg$TakeTicket = {$: 'TakeTicket'};
-var $elm$html$Html$button = _VirtualDom_node('button');
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 'Normal', a: a};
-};
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var $elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var $elm$html$Html$Events$onClick = function (msg) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
-};
-var $elm$html$Html$ul = _VirtualDom_node('ul');
-var $author$project$Msg$ChangeStatus = function (a) {
-	return {$: 'ChangeStatus', a: a};
-};
-var $author$project$Msg$SelectTicket = function (a) {
-	return {$: 'SelectTicket', a: a};
-};
-var $author$project$Msg$ToggleStatusCloseOrOpen = function (a) {
-	return {$: 'ToggleStatusCloseOrOpen', a: a};
-};
-var $elm$html$Html$li = _VirtualDom_node('li');
-var $author$project$View$statusToString = function (status) {
-	switch (status.$) {
-		case 'Open':
-			return 'Open';
-		case 'InProgress':
-			return 'In Progress';
-		case 'Resolved':
-			return 'Resolved';
-		default:
-			return 'Closed';
-	}
-};
-var $author$project$View$viewTicket = function (ticket) {
-	return A2(
-		$elm$html$Html$li,
-		_List_Nil,
-		_List_fromArray(
-			[
-				$elm$html$Html$text(
-				'Ticket ' + ($elm$core$String$fromInt(ticket.id) + (' - ' + $author$project$View$statusToString(ticket.status)))),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Msg$ChangeStatus(ticket.id))
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Next status')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Msg$ToggleStatusCloseOrOpen(ticket.id))
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Close/Open')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Msg$SelectTicket(ticket))
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('See details')
-					]))
-			]));
-};
-var $author$project$View$viewTickets = function (model) {
-	return A2(
-		$elm$html$Html$div,
-		_List_Nil,
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$h1,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Tickets')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick($author$project$Msg$TakeTicket)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Take a ticket')
-					])),
-				A2(
-				$elm$html$Html$ul,
-				_List_Nil,
-				A2($elm$core$List$map, $author$project$View$viewTicket, model.tickets))
-			]));
-};
-var $author$project$View$content = function (model) {
-	var _v0 = model.page;
-	if (_v0.$ === 'Dashboard') {
-		return $author$project$View$viewDashboard(model);
-	} else {
-		return $author$project$View$viewTickets(model);
-	}
-};
-var $author$project$Msg$GoToDashboard = {$: 'GoToDashboard'};
-var $author$project$Msg$GoToTickets = {$: 'GoToTickets'};
-var $author$project$View$nav = A2(
-	$elm$html$Html$div,
-	_List_Nil,
 	_List_fromArray(
 		[
 			A2(
 			$elm$html$Html$button,
 			_List_fromArray(
 				[
-					$elm$html$Html$Events$onClick($author$project$Msg$GoToDashboard)
+					$elm$html$Html$Events$onClick(
+					$author$project$Msg$SetFilter($author$project$Types$All))
 				]),
 			_List_fromArray(
 				[
-					$elm$html$Html$text('Dashboard')
+					$elm$html$Html$text('All')
 				])),
 			A2(
 			$elm$html$Html$button,
 			_List_fromArray(
 				[
-					$elm$html$Html$Events$onClick($author$project$Msg$GoToTickets)
+					$elm$html$Html$Events$onClick(
+					$author$project$Msg$SetFilter(
+						$author$project$Types$ByStatus($author$project$Types$Open)))
 				]),
 			_List_fromArray(
 				[
-					$elm$html$Html$text('Tickets')
+					$elm$html$Html$text('Open')
+				])),
+			A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Events$onClick(
+					$author$project$Msg$SetFilter(
+						$author$project$Types$ByStatus($author$project$Types$InProgress)))
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('In Progress')
+				])),
+			A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Events$onClick(
+					$author$project$Msg$SetFilter(
+						$author$project$Types$ByStatus($author$project$Types$Resolved)))
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('Resolved')
+				])),
+			A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Events$onClick(
+					$author$project$Msg$SetFilter(
+						$author$project$Types$ByStatus($author$project$Types$Closed)))
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('Closed')
 				]))
 		]));
 var $author$project$View$view = function (model) {
@@ -5576,8 +6176,9 @@ var $author$project$View$view = function (model) {
 			]),
 		_List_fromArray(
 			[
-				$author$project$View$nav,
-				$author$project$View$content(model)
+				$author$project$View$viewHeader,
+				$author$project$View$viewNav,
+				$author$project$View$viewBody(model)
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$sandbox(
