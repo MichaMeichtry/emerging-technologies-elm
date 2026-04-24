@@ -1,86 +1,137 @@
 module Update exposing (update)
 
-import Model exposing (Model, Ticket, Status(..))
+import Model exposing (Model)
 import Msg exposing (Msg(..))
+import Types exposing (Ticket, TicketStatus(..))
+
+
+
+-- The single update function routes every Msg to its handler.
+-- Each branch returns a new model - the old model is never mutated.
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        TakeTicket ->
+        -- No-op - leaves the model unchanged.
+        -- Used by stopPropagationOn in the modal to absorb click events on the box.
+        NoOp ->
+            model
+
+        -- Modal form - OpenForm shows the overlay, CloseForm hides it and resets all fields.
+        OpenForm ->
+            { model | showForm = True }
+
+        CloseForm ->
             { model
-                | tickets =
-                    model.tickets
-                        ++ [ { id = model.nextId, status = Open } ]
-                , nextId = model.nextId + 1
+                | showForm = False
+                , formTitle = ""
+                , formDescription = ""
+                , formPriority = Types.Medium
+                , formCategory = "Software"
+                , formError = Nothing
             }
 
-        ChangeStatus id ->
+        -- Step 6 - form field handlers
+        -- Each one replaces a single field in the model record.
+        UpdateFormTitle title ->
+            { model | formTitle = title, formError = Nothing }
+
+        UpdateFormDescription desc ->
+            { model | formDescription = desc, formError = Nothing }
+
+        UpdateFormPriority priority ->
+            { model | formPriority = priority }
+
+        UpdateFormCategory category ->
+            { model | formCategory = category }
+
+        -- Step 6 - ticket submission with validation
+        -- Validates required fields before creating a ticket.
+        -- On failure, sets formError so the view can display the message.
+        -- On success, the modal is closed and fields are reset.
+        SubmitTicket ->
+            case validateForm model of
+                Just errorMsg ->
+                    { model | formError = Just errorMsg }
+
+                Nothing ->
+                    let
+                        newTicket =
+                            { id = model.nextId
+                            , title = String.trim model.formTitle
+                            , description = String.trim model.formDescription
+                            , status = Open
+                            , priority = model.formPriority
+                            , category = model.formCategory
+                            , createdAt = "2025-04-24"
+                            , assignedTo = Nothing
+                            }
+                    in
+                    { model
+                        | tickets = model.tickets ++ [ newTicket ]
+                        , nextId = model.nextId + 1
+                        , showForm = False
+                        , formTitle = ""
+                        , formDescription = ""
+                        , formPriority = Types.Medium
+                        , formCategory = "Software"
+                        , formError = Nothing
+                    }
+
+        -- Step 7 - status change
+        -- List.map walks every ticket; only the one matching the id is updated.
+        -- All other tickets are returned unchanged - this is immutability in action.
+        ChangeStatus id newStatus ->
             { model
                 | tickets =
-                    List.map (updateTicket id) model.tickets
+                    List.map (applyStatusChange id newStatus) model.tickets
             }
 
-        ToggleStatusCloseOrOpen id ->
-            { model
-                | tickets =
-                    List.map (toggleStatus id) model.tickets
-            }
+        -- Step 8 - open ticket detail
+        -- Stores the ticket id in selectedTicket (Just id).
+        -- The view uses this to decide whether to render the detail panel.
+        SelectTicket id ->
+            { model | selectedTicket = Just id }
 
-        GoToDashboard ->
-            { model | page = Model.Dashboard }
-
-        GoToTickets ->
-            { model | page = Model.TicketsPage }
-
-        SelectTicket ticket ->
-            { model | selectedTicket = Just ticket }
-
+        -- Step 8 - close ticket detail
+        -- Clears selectedTicket back to Nothing.
         CloseDetail ->
             { model | selectedTicket = Nothing }
 
+        -- Step 9 - filter and search
+        SetFilter filterState ->
+            { model | filter = filterState }
 
-updateTicket : Int -> Ticket -> Ticket
-updateTicket id ticket =
-    if ticket.id == id then
-        { ticket | status = nextStatus ticket.status }
+        UpdateSearch query ->
+            { model | searchQuery = query }
 
-    else
-        ticket
 
-nextStatus : Status -> Status
-nextStatus status =
-    case status of
-        Open ->
-            InProgress
 
-        InProgress ->
-            Resolved
+-- Returns the updated ticket when the id matches, or the original ticket unchanged.
 
-        Resolved ->
-            Open
 
-        Closed ->
-            Closed
-
-toggleStatus : Int -> Ticket -> Ticket
-toggleStatus id ticket =
-    if ticket.id == id then
-        { ticket | status = toggleStatusHelp ticket.status }
+applyStatusChange : Int -> TicketStatus -> Ticket -> Ticket
+applyStatusChange targetId newStatus ticket =
+    if ticket.id == targetId then
+        { ticket | status = newStatus }
 
     else
         ticket
 
-toggleStatusHelp : Status -> Status
-toggleStatusHelp status =
-    case status of
-        Closed ->
-            Open
-
-        _ ->
-            Closed
 
 
+-- Validates the create-ticket form.
+-- Returns Nothing when the form is valid, or Just errorMsg when it is not.
 
 
-            
+validateForm : Model -> Maybe String
+validateForm model =
+    if String.length (String.trim model.formTitle) < 5 then
+        Just "Title must be at least 5 characters."
+
+    else if String.length (String.trim model.formDescription) < 10 then
+        Just "Description must be at least 10 characters."
+
+    else
+        Nothing
