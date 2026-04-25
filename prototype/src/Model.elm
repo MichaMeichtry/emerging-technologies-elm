@@ -1,4 +1,4 @@
-module Model exposing (Model, Ticket, Status(..), Page(..), init)
+module Model exposing (Model, Ticket, Status(..), Page(..), init, Filter(..))
 
 type Status
     = Open
@@ -23,9 +23,13 @@ type alias Model =
     , nextId : Int
     , page : Page
     , selectedTicket : Maybe Ticket
-    , filter : Status
+    , filter : Filter
     , search : String
     }
+
+type Filter
+    = All
+    | ByStatus Status
 
 
 init : Model
@@ -38,6 +42,6 @@ init =
     , nextId = 4
     , page = Dashboard
     , selectedTicket = Nothing
-    , filter = Open
+    , filter = All
     , search = ""
     }

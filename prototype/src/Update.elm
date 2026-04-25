@@ -38,9 +38,9 @@ update msg model =
 
         CloseDetail ->
             { model | selectedTicket = Nothing }
-            
-        SetFilter status ->
-            { model | filter = status }
+
+        SetFilter filter ->
+            { model | filter = filter  }
 
         UpdateSearch query ->
             { model | search = query }

@@ -4458,6 +4458,7 @@ var $elm$core$Set$toList = function (_v0) {
 var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
+var $author$project$Model$All = {$: 'All'};
 var $author$project$Model$Closed = {$: 'Closed'};
 var $author$project$Model$Dashboard = {$: 'Dashboard'};
 var $author$project$Model$InProgress = {$: 'InProgress'};
@@ -4465,7 +4466,7 @@ var $elm$core$Maybe$Nothing = {$: 'Nothing'};
 var $author$project$Model$Open = {$: 'Open'};
 var $author$project$Model$Resolved = {$: 'Resolved'};
 var $author$project$Model$init = {
-	filter: $author$project$Model$Open,
+	filter: $author$project$Model$All,
 	nextId: 4,
 	page: $author$project$Model$Dashboard,
 	search: '',
@@ -5298,10 +5299,10 @@ var $author$project$Update$update = F2(
 					model,
 					{selectedTicket: $elm$core$Maybe$Nothing});
 			case 'SetFilter':
-				var status = msg.a;
+				var filter = msg.a;
 				return _Utils_update(
 					model,
-					{filter: status});
+					{filter: filter});
 			default:
 				var query = msg.a;
 				return _Utils_update(
@@ -5497,6 +5498,7 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
+var $elm$core$String$toLower = _String_toLower;
 var $elm$html$Html$ul = _VirtualDom_node('ul');
 var $author$project$Msg$ChangeStatus = function (a) {
 	return {$: 'ChangeStatus', a: a};
@@ -5569,13 +5571,20 @@ var $author$project$View$viewTickets = function (model) {
 		function (t) {
 			return A2(
 				$elm$core$String$contains,
-				model.search,
-				$elm$core$String$fromInt(t.id));
+				$elm$core$String$toLower(model.search),
+				$elm$core$String$toLower(
+					$elm$core$String$fromInt(t.id)));
 		},
 		A2(
 			$elm$core$List$filter,
 			function (t) {
-				return _Utils_eq(t.status, model.filter);
+				var _v0 = model.filter;
+				if (_v0.$ === 'All') {
+					return true;
+				} else {
+					var s = _v0.a;
+					return _Utils_eq(t.status, s);
+				}
 			},
 			model.tickets));
 	return A2(

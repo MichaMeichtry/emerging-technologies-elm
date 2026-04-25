@@ -2,7 +2,7 @@ module View exposing (view)
 
 import Html exposing (Html, button, div, h1, li, text, ul, h2, p, input)
 import Html.Events exposing (onClick, onInput)
-import Model exposing (Model, Ticket, Status(..), Page(..))
+import Model exposing (Model, Ticket, Status(..), Page(..), Filter(..))
 import Msg exposing (Msg(..))
 import Html.Attributes exposing (class, placeholder)
 
@@ -80,9 +80,17 @@ viewTickets model =
     let
         filteredTickets =
             model.tickets
-                |> List.filter (\t -> t.status == model.filter)
                 |> List.filter (\t ->
-                    String.contains model.search (String.fromInt t.id)
+                    case model.filter of
+                        All ->
+                            True
+
+                        ByStatus s ->
+                            t.status == s
+                )
+                |> List.filter (\t ->
+                    String.contains (String.toLower model.search)
+                        (String.toLower (String.fromInt t.id))
                 )
     in
     div []
