@@ -1,11 +1,10 @@
 module View exposing (view)
 
-import Html exposing (Html, button, div, h1, li, text, ul)
-import Html.Events exposing (onClick)
+import Html exposing (Html, button, div, h1, li, text, ul, h2, p, input)
+import Html.Events exposing (onClick, onInput)
 import Model exposing (Model, Ticket, Status(..), Page(..))
 import Msg exposing (Msg(..))
-import Html.Attributes exposing (class)
-import Html exposing (h2, p)
+import Html.Attributes exposing (class, placeholder)
 
 
 view : Model -> Html Msg
@@ -78,10 +77,26 @@ statCard label count cardClass =
 
 viewTickets : Model -> Html Msg
 viewTickets model =
+    let
+        filteredTickets =
+            model.tickets
+                |> List.filter (\t -> t.status == model.filter)
+                |> List.filter (\t ->
+                    String.contains model.search (String.fromInt t.id)
+                )
+    in
     div []
         [ h1 [] [ text "Tickets" ]
+
+        , input
+            [ onInput UpdateSearch
+            , placeholder "Search by ticket id"
+            ]
+            []
+
         , button [ onClick TakeTicket ] [ text "Take a ticket" ]
-        , ul [] (List.map viewTicket model.tickets)
+
+        , ul [] (List.map viewTicket filteredTickets)
         ]
 
 

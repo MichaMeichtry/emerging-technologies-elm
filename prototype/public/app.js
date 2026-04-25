@@ -4465,8 +4465,10 @@ var $elm$core$Maybe$Nothing = {$: 'Nothing'};
 var $author$project$Model$Open = {$: 'Open'};
 var $author$project$Model$Resolved = {$: 'Resolved'};
 var $author$project$Model$init = {
-	nextId: 5,
+	filter: $author$project$Model$Open,
+	nextId: 4,
 	page: $author$project$Model$Dashboard,
+	search: '',
 	selectedTicket: $elm$core$Maybe$Nothing,
 	tickets: _List_fromArray(
 		[
@@ -5291,10 +5293,20 @@ var $author$project$Update$update = F2(
 					{
 						selectedTicket: $elm$core$Maybe$Just(ticket)
 					});
-			default:
+			case 'CloseDetail':
 				return _Utils_update(
 					model,
 					{selectedTicket: $elm$core$Maybe$Nothing});
+			case 'SetFilter':
+				var status = msg.a;
+				return _Utils_update(
+					model,
+					{filter: status});
+			default:
+				var query = msg.a;
+				return _Utils_update(
+					model,
+					{search: query});
 		}
 	});
 var $elm$json$Json$Encode$string = _Json_wrap;
@@ -5418,7 +5430,22 @@ var $author$project$View$viewDashboard = function (model) {
 			[$author$project$View$viewHeader, $author$project$View$viewIntro, $author$project$View$viewStats]));
 };
 var $author$project$Msg$TakeTicket = {$: 'TakeTicket'};
+var $author$project$Msg$UpdateSearch = function (a) {
+	return {$: 'UpdateSearch', a: a};
+};
 var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -5436,6 +5463,40 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		'click',
 		$elm$json$Json$Decode$succeed(msg));
 };
+var $elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 'MayStopPropagation', a: a};
+};
+var $elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $elm$html$Html$Events$targetValue = A2(
+	$elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	$elm$json$Json$Decode$string);
+var $elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		$elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			$elm$json$Json$Decode$map,
+			$elm$html$Html$Events$alwaysStop,
+			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
+};
+var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $elm$html$Html$ul = _VirtualDom_node('ul');
 var $author$project$Msg$ChangeStatus = function (a) {
 	return {$: 'ChangeStatus', a: a};
@@ -5503,6 +5564,20 @@ var $author$project$View$viewTicket = function (ticket) {
 			]));
 };
 var $author$project$View$viewTickets = function (model) {
+	var filteredTickets = A2(
+		$elm$core$List$filter,
+		function (t) {
+			return A2(
+				$elm$core$String$contains,
+				model.search,
+				$elm$core$String$fromInt(t.id));
+		},
+		A2(
+			$elm$core$List$filter,
+			function (t) {
+				return _Utils_eq(t.status, model.filter);
+			},
+			model.tickets));
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
@@ -5516,6 +5591,14 @@ var $author$project$View$viewTickets = function (model) {
 						$elm$html$Html$text('Tickets')
 					])),
 				A2(
+				$elm$html$Html$input,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onInput($author$project$Msg$UpdateSearch),
+						$elm$html$Html$Attributes$placeholder('Search by ticket id')
+					]),
+				_List_Nil),
+				A2(
 				$elm$html$Html$button,
 				_List_fromArray(
 					[
@@ -5528,7 +5611,7 @@ var $author$project$View$viewTickets = function (model) {
 				A2(
 				$elm$html$Html$ul,
 				_List_Nil,
-				A2($elm$core$List$map, $author$project$View$viewTicket, model.tickets))
+				A2($elm$core$List$map, $author$project$View$viewTicket, filteredTickets))
 			]));
 };
 var $author$project$View$content = function (model) {

@@ -1,6 +1,6 @@
 module Msg exposing (Msg(..))
 
-import Model exposing (Ticket)
+import Model exposing (Ticket, Status)
 
 type Msg
     = TakeTicket
@@ -10,4 +10,6 @@ type Msg
     | GoToTickets
     | SelectTicket Ticket
     | CloseDetail
+    | SetFilter Status
+    | UpdateSearch String
     

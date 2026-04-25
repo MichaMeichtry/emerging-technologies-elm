@@ -23,6 +23,8 @@ type alias Model =
     , nextId : Int
     , page : Page
     , selectedTicket : Maybe Ticket
+    , filter : Status
+    , search : String
     }
 
 
@@ -33,7 +35,9 @@ init =
         , { id = 1, status = Resolved }
         , { id = 0, status = Closed }
     ]
-    , nextId = 5
+    , nextId = 4
     , page = Dashboard
     , selectedTicket = Nothing
+    , filter = Open
+    , search = ""
     }

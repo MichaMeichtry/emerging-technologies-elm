@@ -38,6 +38,12 @@ update msg model =
 
         CloseDetail ->
             { model | selectedTicket = Nothing }
+            
+        SetFilter status ->
+            { model | filter = status }
+
+        UpdateSearch query ->
+            { model | search = query }
 
 
 updateTicket : Int -> Ticket -> Ticket
