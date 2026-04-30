@@ -70,9 +70,9 @@ findTicket id tickets =
 
 -- A fonction used by the main ticket list 
 
-visibleTickets : Model -> List Ticket
-visibleTickets model =
-    applyFilter model.filter model.searchQuery model.tickets
+visibleTickets : FilterState -> String -> List Ticket -> List Ticket
+visibleTickets filterState query tickets =
+    applyFilter filterState query tickets
 
 
 
@@ -82,7 +82,7 @@ visibleTickets model =
 viewTicketList : Model -> Html Msg
 viewTicketList model =
     div [ class "main" ]
-        [ viewToolbar model.filter
+        [ viewToolbar model.filter model.tickets
         , div [ class "list-header" ]
             [ input
                 [ placeholder "Search tickets..."
@@ -95,7 +95,9 @@ viewTicketList model =
                 [ text "+ New Ticket" ]
             ]
         , ul [ class "ticket-list" ]
-            (List.map viewTicketCard (visibleTickets model))
+            (List.map viewTicketCard
+                (visibleTickets model.filter model.searchQuery model.tickets)
+            )
         ]
 
 
@@ -105,14 +107,14 @@ viewTicketList model =
 -- matching button receives the "filter-btn-active" class.
 
 
-viewToolbar : FilterState -> Html Msg
-viewToolbar active =
+viewToolbar : FilterState -> List Ticket -> Html Msg
+viewToolbar active tickets =
     div [ class "toolbar" ]
-        [ filterBtn "All" All active
-        , filterBtn "Open" (ByStatus Open) active
-        , filterBtn "In Progress" (ByStatus InProgress) active
-        , filterBtn "Resolved" (ByStatus Resolved) active
-        , filterBtn "Closed" (ByStatus Closed) active
+        [ filterBtn ("All (" ++ String.fromInt (List.length tickets) ++ ")") All active
+        , filterBtn ("Open (" ++ String.fromInt (countByStatus Open tickets) ++ ")") (ByStatus Open) active
+        , filterBtn ("In Progress (" ++ String.fromInt (countByStatus InProgress tickets) ++ ")") (ByStatus InProgress) active
+        , filterBtn ("Resolved (" ++ String.fromInt (countByStatus Resolved tickets) ++ ")") (ByStatus Resolved) active
+        , filterBtn ("Closed (" ++ String.fromInt (countByStatus Closed tickets) ++ ")") (ByStatus Closed) active
         ]
 
 
@@ -171,6 +173,11 @@ applyFilter filterState query tickets =
             )
             afterFilter
 
+
+countByStatus : TicketStatus -> List Ticket -> Int
+countByStatus status tickets =
+    List.filter (\t -> t.status == status) tickets
+        |> List.length
 
 
 -- A single ticket card showing the key fields and action buttons.

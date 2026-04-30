@@ -5789,6 +5789,16 @@ var $author$project$View$viewTicketCard = function (ticket) {
 var $author$project$Types$ByStatus = function (a) {
 	return {$: 'ByStatus', a: a};
 };
+var $author$project$View$countByStatus = F2(
+	function (status, tickets) {
+		return $elm$core$List$length(
+			A2(
+				$elm$core$List$filter,
+				function (t) {
+					return _Utils_eq(t.status, status);
+				},
+				tickets));
+	});
 var $author$project$Msg$SetFilter = function (a) {
 	return {$: 'SetFilter', a: a};
 };
@@ -5809,38 +5819,48 @@ var $author$project$View$filterBtn = F3(
 					$elm$html$Html$text(lbl)
 				]));
 	});
-var $author$project$View$viewToolbar = function (active) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('toolbar')
-			]),
-		_List_fromArray(
-			[
-				A3($author$project$View$filterBtn, 'All', $author$project$Types$All, active),
-				A3(
-				$author$project$View$filterBtn,
-				'Open',
-				$author$project$Types$ByStatus($author$project$Types$Open),
-				active),
-				A3(
-				$author$project$View$filterBtn,
-				'In Progress',
-				$author$project$Types$ByStatus($author$project$Types$InProgress),
-				active),
-				A3(
-				$author$project$View$filterBtn,
-				'Resolved',
-				$author$project$Types$ByStatus($author$project$Types$Resolved),
-				active),
-				A3(
-				$author$project$View$filterBtn,
-				'Closed',
-				$author$project$Types$ByStatus($author$project$Types$Closed),
-				active)
-			]));
-};
+var $author$project$View$viewToolbar = F2(
+	function (active, tickets) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('toolbar')
+				]),
+			_List_fromArray(
+				[
+					A3(
+					$author$project$View$filterBtn,
+					'All (' + ($elm$core$String$fromInt(
+						$elm$core$List$length(tickets)) + ')'),
+					$author$project$Types$All,
+					active),
+					A3(
+					$author$project$View$filterBtn,
+					'Open (' + ($elm$core$String$fromInt(
+						A2($author$project$View$countByStatus, $author$project$Types$Open, tickets)) + ')'),
+					$author$project$Types$ByStatus($author$project$Types$Open),
+					active),
+					A3(
+					$author$project$View$filterBtn,
+					'In Progress (' + ($elm$core$String$fromInt(
+						A2($author$project$View$countByStatus, $author$project$Types$InProgress, tickets)) + ')'),
+					$author$project$Types$ByStatus($author$project$Types$InProgress),
+					active),
+					A3(
+					$author$project$View$filterBtn,
+					'Resolved (' + ($elm$core$String$fromInt(
+						A2($author$project$View$countByStatus, $author$project$Types$Resolved, tickets)) + ')'),
+					$author$project$Types$ByStatus($author$project$Types$Resolved),
+					active),
+					A3(
+					$author$project$View$filterBtn,
+					'Closed (' + ($elm$core$String$fromInt(
+						A2($author$project$View$countByStatus, $author$project$Types$Closed, tickets)) + ')'),
+					$author$project$Types$ByStatus($author$project$Types$Closed),
+					active)
+				]));
+	});
 var $elm$core$String$toLower = _String_toLower;
 var $author$project$View$applyFilter = F3(
 	function (filterState, query, tickets) {
@@ -5881,9 +5901,10 @@ var $author$project$View$applyFilter = F3(
 			},
 			afterFilter);
 	});
-var $author$project$View$visibleTickets = function (model) {
-	return A3($author$project$View$applyFilter, model.filter, model.searchQuery, model.tickets);
-};
+var $author$project$View$visibleTickets = F3(
+	function (filterState, query, tickets) {
+		return A3($author$project$View$applyFilter, filterState, query, tickets);
+	});
 var $author$project$View$viewTicketList = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -5893,7 +5914,7 @@ var $author$project$View$viewTicketList = function (model) {
 			]),
 		_List_fromArray(
 			[
-				$author$project$View$viewToolbar(model.filter),
+				A2($author$project$View$viewToolbar, model.filter, model.tickets),
 				A2(
 				$elm$html$Html$div,
 				_List_fromArray(
@@ -5933,7 +5954,7 @@ var $author$project$View$viewTicketList = function (model) {
 				A2(
 					$elm$core$List$map,
 					$author$project$View$viewTicketCard,
-					$author$project$View$visibleTickets(model)))
+					A3($author$project$View$visibleTickets, model.filter, model.searchQuery, model.tickets)))
 			]));
 };
 var $author$project$View$viewBody = function (model) {
