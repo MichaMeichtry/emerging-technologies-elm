@@ -5340,11 +5340,28 @@ var $author$project$Update$update = F2(
 				return _Utils_update(
 					model,
 					{filter: filterState});
-			default:
+			case 'UpdateSearch':
 				var query = msg.a;
 				return _Utils_update(
 					model,
 					{searchQuery: query});
+			default:
+				var id = msg.a;
+				var agent = msg.b;
+				return _Utils_update(
+					model,
+					{
+						tickets: A2(
+							$elm$core$List$map,
+							function (t) {
+								return _Utils_eq(t.id, id) ? _Utils_update(
+									t,
+									{
+										assignedTo: $elm$core$Maybe$Just(agent)
+									}) : t;
+							},
+							model.tickets)
+					});
 		}
 	});
 var $elm$json$Json$Encode$string = _Json_wrap;
@@ -5389,9 +5406,15 @@ var $author$project$View$findTicket = F2(
 				},
 				tickets));
 	});
+var $author$project$Msg$ChangeAssignedTo = F2(
+	function (a, b) {
+		return {$: 'ChangeAssignedTo', a: a, b: b};
+	});
 var $author$project$Msg$CloseDetail = {$: 'CloseDetail'};
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
+var $elm$html$Html$input = _VirtualDom_node('input');
+var $elm$html$Html$label = _VirtualDom_node('label');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -5409,7 +5432,41 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		'click',
 		$elm$json$Json$Decode$succeed(msg));
 };
+var $elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 'MayStopPropagation', a: a};
+};
+var $elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $elm$html$Html$Events$targetValue = A2(
+	$elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	$elm$json$Json$Decode$string);
+var $elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		$elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			$elm$json$Json$Decode$map,
+			$elm$html$Html$Events$alwaysStop,
+			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
+};
 var $elm$html$Html$p = _VirtualDom_node('p');
+var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $author$project$View$priorityClass = function (priority) {
 	switch (priority.$) {
 		case 'Low':
@@ -5459,43 +5516,11 @@ var $author$project$View$statusLabel = function (status) {
 			return 'Closed';
 	}
 };
+var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Msg$ChangeStatus = F2(
 	function (a, b) {
 		return {$: 'ChangeStatus', a: a, b: b};
 	});
-var $elm$html$Html$Events$alwaysStop = function (x) {
-	return _Utils_Tuple2(x, true);
-};
-var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
-	return {$: 'MayStopPropagation', a: a};
-};
-var $elm$html$Html$Events$stopPropagationOn = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
-	});
-var $elm$json$Json$Decode$field = _Json_decodeField;
-var $elm$json$Json$Decode$at = F2(
-	function (fields, decoder) {
-		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
-	});
-var $elm$json$Json$Decode$string = _Json_decodeString;
-var $elm$html$Html$Events$targetValue = A2(
-	$elm$json$Json$Decode$at,
-	_List_fromArray(
-		['target', 'value']),
-	$elm$json$Json$Decode$string);
-var $elm$html$Html$Events$onInput = function (tagger) {
-	return A2(
-		$elm$html$Html$Events$stopPropagationOn,
-		'input',
-		A2(
-			$elm$json$Json$Decode$map,
-			$elm$html$Html$Events$alwaysStop,
-			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
-};
 var $elm$html$Html$option = _VirtualDom_node('option');
 var $elm$html$Html$select = _VirtualDom_node('select');
 var $elm$json$Json$Encode$bool = _Json_wrap;
@@ -5533,7 +5558,6 @@ var $author$project$View$stringToStatus = function (str) {
 			return $author$project$Types$Open;
 	}
 };
-var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$View$viewStatusDropdown = function (ticket) {
 	return A2(
 		$elm$html$Html$select,
@@ -5700,8 +5724,26 @@ var $author$project$View$viewDetail = function (ticket) {
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text(
-						'Assigned to: ' + A2($elm$core$Maybe$withDefault, 'Unassigned', ticket.assignedTo))
+						A2(
+						$elm$html$Html$label,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Assigned to: ')
+							])),
+						A2(
+						$elm$html$Html$input,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$value(
+								A2($elm$core$Maybe$withDefault, '', ticket.assignedTo)),
+								$elm$html$Html$Events$onInput(
+								function (v) {
+									return A2($author$project$Msg$ChangeAssignedTo, ticket.id, v);
+								}),
+								$elm$html$Html$Attributes$placeholder('Assign agent...')
+							]),
+						_List_Nil)
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -5729,8 +5771,6 @@ var $author$project$Msg$OpenForm = {$: 'OpenForm'};
 var $author$project$Msg$UpdateSearch = function (a) {
 	return {$: 'UpdateSearch', a: a};
 };
-var $elm$html$Html$input = _VirtualDom_node('input');
-var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $elm$html$Html$ul = _VirtualDom_node('ul');
 var $author$project$Msg$SelectTicket = function (a) {
 	return {$: 'SelectTicket', a: a};
@@ -6028,7 +6068,6 @@ var $author$project$Msg$UpdateFormDescription = function (a) {
 var $author$project$Msg$UpdateFormTitle = function (a) {
 	return {$: 'UpdateFormTitle', a: a};
 };
-var $elm$html$Html$label = _VirtualDom_node('label');
 var $elm$html$Html$textarea = _VirtualDom_node('textarea');
 var $author$project$Msg$UpdateFormCategory = function (a) {
 	return {$: 'UpdateFormCategory', a: a};

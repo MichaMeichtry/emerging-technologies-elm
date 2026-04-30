@@ -404,10 +404,13 @@ viewDetail ticket =
             , span [] [ text ("  Created: " ++ ticket.createdAt) ]
             ]
         , div [ class "detail-assigned" ]
-            [ text
-                ("Assigned to: "
-                    ++ Maybe.withDefault "Unassigned" ticket.assignedTo
-                )
+            [ label [] [ text "Assigned to: " ]
+            , input
+                [ value (Maybe.withDefault "" ticket.assignedTo)
+                , onInput (\v -> ChangeAssignedTo ticket.id v)
+                , placeholder "Assign agent..."
+                ]
+                []
             ]
         , p [ class "detail-description" ] [ text ticket.description ]
         , div [ class "detail-actions" ]

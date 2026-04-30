@@ -106,6 +106,22 @@ update msg model =
         UpdateSearch query ->
             { model | searchQuery = query }
 
+        -- Change ticket Affiliation
+
+        ChangeAssignedTo id agent ->
+            { model
+                | tickets =
+                    List.map
+                        (\t ->
+                            if t.id == id then
+                                { t | assignedTo = Just agent }
+
+                            else
+                                t
+                        )
+                        model.tickets
+            }
+
 
 
 -- Returns the updated ticket when the id matches, or the original ticket unchanged.
@@ -135,3 +151,5 @@ validateForm model =
 
     else
         Nothing
+
+

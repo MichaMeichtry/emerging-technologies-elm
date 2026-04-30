@@ -23,6 +23,8 @@ type Msg
     | SubmitTicket
       -- Ticket lifecycle - ChangeStatus carries the ticket id and the new status
     | ChangeStatus Int TicketStatus
+      -- Change Ticket Affiliation
+    | ChangeAssignedTo Int String
       -- Detail view - SelectTicket stores the ticket id in selectedTicket (Just id)
     | SelectTicket Int
       -- CloseDetail sets selectedTicket back to Nothing
