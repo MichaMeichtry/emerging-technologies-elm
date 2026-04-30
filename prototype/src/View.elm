@@ -137,8 +137,35 @@ filterBtn lbl target active =
             else
                 "filter-btn"
     in
-    button [ onClick (SetFilter target), class cls ] [ text lbl ]
+    button
+    [ onClick (SetFilter target)
+    , class (cls ++ " " ++ filterClass target)
+    ]
+    [ text lbl ]
 
+
+--Change the color of the button with status
+
+filterClass : FilterState -> String
+filterClass filter =
+    case filter of
+        All ->
+            ""
+
+        ByStatus Open ->
+            "status-open"
+
+        ByStatus InProgress ->
+            "status-inprogress"
+
+        ByStatus Resolved ->
+            "status-resolved"
+
+        ByStatus Closed ->
+            "status-closed"
+
+        ByPriority _ ->
+            ""
 
 
 -- Applies the active filter and search query to the full ticket list.

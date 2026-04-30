@@ -5889,6 +5889,29 @@ var $author$project$View$countByStatus = F2(
 var $author$project$Msg$SetFilter = function (a) {
 	return {$: 'SetFilter', a: a};
 };
+var $author$project$View$filterClass = function (filter) {
+	switch (filter.$) {
+		case 'All':
+			return '';
+		case 'ByStatus':
+			switch (filter.a.$) {
+				case 'Open':
+					var _v1 = filter.a;
+					return 'status-open';
+				case 'InProgress':
+					var _v2 = filter.a;
+					return 'status-inprogress';
+				case 'Resolved':
+					var _v3 = filter.a;
+					return 'status-resolved';
+				default:
+					var _v4 = filter.a;
+					return 'status-closed';
+			}
+		default:
+			return '';
+	}
+};
 var $author$project$View$filterBtn = F3(
 	function (lbl, target, active) {
 		var isActive = _Utils_eq(target, active);
@@ -5899,7 +5922,8 @@ var $author$project$View$filterBtn = F3(
 				[
 					$elm$html$Html$Events$onClick(
 					$author$project$Msg$SetFilter(target)),
-					$elm$html$Html$Attributes$class(cls)
+					$elm$html$Html$Attributes$class(
+					cls + (' ' + $author$project$View$filterClass(target)))
 				]),
 			_List_fromArray(
 				[
