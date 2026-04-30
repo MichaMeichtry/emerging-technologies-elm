@@ -68,19 +68,21 @@ findTicket id tickets =
     List.head (List.filter (\t -> t.id == id) tickets)
 
 
+-- A fonction used by the main ticket list 
+
+visibleTickets : Model -> List Ticket
+visibleTickets model =
+    applyFilter model.filter model.searchQuery model.tickets
+
+
 
 -- The main ticket list with filter toolbar, search bar, create button, and ticket cards.
 
 
 viewTicketList : Model -> Html Msg
 viewTicketList model =
-    let
-        visible =
-            applyFilter model.filter model.searchQuery model.tickets
-    in
     div [ class "main" ]
-        [ -- Filter toolbar - passes the active filter so each button can style itself.
-          viewToolbar model.filter
+        [ viewToolbar model.filter
         , div [ class "list-header" ]
             [ input
                 [ placeholder "Search tickets..."
@@ -89,9 +91,11 @@ viewTicketList model =
                 , class "search-input"
                 ]
                 []
-            , button [ onClick OpenForm, class "btn-create" ] [ text "+ New Ticket" ]
+            , button [ onClick OpenForm, class "btn-create" ]
+                [ text "+ New Ticket" ]
             ]
-        , ul [ class "ticket-list" ] (List.map viewTicketCard visible)
+        , ul [ class "ticket-list" ]
+            (List.map viewTicketCard (visibleTickets model))
         ]
 
 

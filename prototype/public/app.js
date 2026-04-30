@@ -5648,46 +5648,6 @@ var $author$project$Msg$OpenForm = {$: 'OpenForm'};
 var $author$project$Msg$UpdateSearch = function (a) {
 	return {$: 'UpdateSearch', a: a};
 };
-var $elm$core$String$toLower = _String_toLower;
-var $author$project$View$applyFilter = F3(
-	function (filterState, query, tickets) {
-		var q = $elm$core$String$toLower(
-			$elm$core$String$trim(query));
-		var afterFilter = function () {
-			switch (filterState.$) {
-				case 'All':
-					return tickets;
-				case 'ByStatus':
-					var status = filterState.a;
-					return A2(
-						$elm$core$List$filter,
-						function (t) {
-							return _Utils_eq(t.status, status);
-						},
-						tickets);
-				default:
-					var priority = filterState.a;
-					return A2(
-						$elm$core$List$filter,
-						function (t) {
-							return _Utils_eq(t.priority, priority);
-						},
-						tickets);
-			}
-		}();
-		return $elm$core$String$isEmpty(q) ? afterFilter : A2(
-			$elm$core$List$filter,
-			function (t) {
-				return A2(
-					$elm$core$String$contains,
-					q,
-					$elm$core$String$toLower(t.title)) || A2(
-					$elm$core$String$contains,
-					q,
-					$elm$core$String$toLower(t.description));
-			},
-			afterFilter);
-	});
 var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$html$Html$Events$alwaysStop = function (x) {
 	return _Utils_Tuple2(x, true);
@@ -5881,8 +5841,50 @@ var $author$project$View$viewToolbar = function (active) {
 				active)
 			]));
 };
+var $elm$core$String$toLower = _String_toLower;
+var $author$project$View$applyFilter = F3(
+	function (filterState, query, tickets) {
+		var q = $elm$core$String$toLower(
+			$elm$core$String$trim(query));
+		var afterFilter = function () {
+			switch (filterState.$) {
+				case 'All':
+					return tickets;
+				case 'ByStatus':
+					var status = filterState.a;
+					return A2(
+						$elm$core$List$filter,
+						function (t) {
+							return _Utils_eq(t.status, status);
+						},
+						tickets);
+				default:
+					var priority = filterState.a;
+					return A2(
+						$elm$core$List$filter,
+						function (t) {
+							return _Utils_eq(t.priority, priority);
+						},
+						tickets);
+			}
+		}();
+		return $elm$core$String$isEmpty(q) ? afterFilter : A2(
+			$elm$core$List$filter,
+			function (t) {
+				return A2(
+					$elm$core$String$contains,
+					q,
+					$elm$core$String$toLower(t.title)) || A2(
+					$elm$core$String$contains,
+					q,
+					$elm$core$String$toLower(t.description));
+			},
+			afterFilter);
+	});
+var $author$project$View$visibleTickets = function (model) {
+	return A3($author$project$View$applyFilter, model.filter, model.searchQuery, model.tickets);
+};
 var $author$project$View$viewTicketList = function (model) {
-	var visible = A3($author$project$View$applyFilter, model.filter, model.searchQuery, model.tickets);
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -5928,7 +5930,10 @@ var $author$project$View$viewTicketList = function (model) {
 					[
 						$elm$html$Html$Attributes$class('ticket-list')
 					]),
-				A2($elm$core$List$map, $author$project$View$viewTicketCard, visible))
+				A2(
+					$elm$core$List$map,
+					$author$project$View$viewTicketCard,
+					$author$project$View$visibleTickets(model)))
 			]));
 };
 var $author$project$View$viewBody = function (model) {
