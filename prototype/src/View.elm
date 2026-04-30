@@ -1,7 +1,7 @@
 module View exposing (view)
 
 import Html exposing (Html, button, div, h1, h2, input, label, li, p, span, text, textarea, ul, select, option)
-import Html.Attributes exposing (class, placeholder, value)
+import Html.Attributes exposing (class, placeholder, value, selected)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode
 import Model exposing (Model)
@@ -214,10 +214,10 @@ viewStatusDropdown ticket =
         [ value (statusToString ticket.status)
         , onInput (\s -> ChangeStatus ticket.id (stringToStatus s))
         ]
-        [ option [ value "Open" ] [ text "Open" ]
-        , option [ value "InProgress" ] [ text "In Progress" ]
-        , option [ value "Resolved" ] [ text "Resolved" ]
-        , option [ value "Closed" ] [ text "Closed" ]
+        [ option [ value "Open", selected (ticket.status == Open) ] [ text "Open" ]
+        , option [ value "InProgress", selected (ticket.status == InProgress) ] [ text "In Progress" ]
+        , option [ value "Resolved", selected (ticket.status == Resolved) ] [ text "Resolved" ]
+        , option [ value "Closed", selected (ticket.status == Closed) ] [ text "Closed" ]
         ]
 
 --fonction to help conversion

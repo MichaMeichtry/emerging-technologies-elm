@@ -5498,6 +5498,15 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 };
 var $elm$html$Html$option = _VirtualDom_node('option');
 var $elm$html$Html$select = _VirtualDom_node('select');
+var $elm$json$Json$Encode$bool = _Json_wrap;
+var $elm$html$Html$Attributes$boolProperty = F2(
+	function (key, bool) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$bool(bool));
+	});
+var $elm$html$Html$Attributes$selected = $elm$html$Html$Attributes$boolProperty('selected');
 var $author$project$View$statusToString = function (status) {
 	switch (status.$) {
 		case 'Open':
@@ -5546,7 +5555,9 @@ var $author$project$View$viewStatusDropdown = function (ticket) {
 				$elm$html$Html$option,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$value('Open')
+						$elm$html$Html$Attributes$value('Open'),
+						$elm$html$Html$Attributes$selected(
+						_Utils_eq(ticket.status, $author$project$Types$Open))
 					]),
 				_List_fromArray(
 					[
@@ -5556,7 +5567,9 @@ var $author$project$View$viewStatusDropdown = function (ticket) {
 				$elm$html$Html$option,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$value('InProgress')
+						$elm$html$Html$Attributes$value('InProgress'),
+						$elm$html$Html$Attributes$selected(
+						_Utils_eq(ticket.status, $author$project$Types$InProgress))
 					]),
 				_List_fromArray(
 					[
@@ -5566,7 +5579,9 @@ var $author$project$View$viewStatusDropdown = function (ticket) {
 				$elm$html$Html$option,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$value('Resolved')
+						$elm$html$Html$Attributes$value('Resolved'),
+						$elm$html$Html$Attributes$selected(
+						_Utils_eq(ticket.status, $author$project$Types$Resolved))
 					]),
 				_List_fromArray(
 					[
@@ -5576,7 +5591,9 @@ var $author$project$View$viewStatusDropdown = function (ticket) {
 				$elm$html$Html$option,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$value('Closed')
+						$elm$html$Html$Attributes$value('Closed'),
+						$elm$html$Html$Attributes$selected(
+						_Utils_eq(ticket.status, $author$project$Types$Closed))
 					]),
 				_List_fromArray(
 					[
