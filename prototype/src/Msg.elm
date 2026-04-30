@@ -3,33 +3,47 @@ module Msg exposing (Msg(..))
 import Types exposing (FilterState, Priority, TicketStatus)
 
 
-
--- Every user interaction is represented as a Msg variant.
--- The update function handles each one with a dedicated case branch.
+-- Every user interaction in the application is represented as a Msg variant.
+-- The update function handles each message with a dedicated case branch,
+-- making state transitions explicit and predictable.
 
 
 type Msg
     = -- No-op used internally by stopPropagationOn to absorb backdrop click events
       NoOp
-      -- Modal form - OpenForm shows the overlay, CloseForm hides it and resets fields
+
+      -- Modal form control messages
+      -- OpenForm displays the modal, CloseForm hides it and resets form state
     | OpenForm
     | CloseForm
-      -- Form field updates - each input is wired to its own Msg
+
+      -- Form field updates - each input field has its own message
     | UpdateFormTitle String
     | UpdateFormDescription String
     | UpdateFormPriority Priority
     | UpdateFormCategory String
-      -- Submitting the form validates inputs and either creates a ticket or sets formError
+
+      -- Form submission
+      -- Validates input and either creates a ticket or sets a form error
     | SubmitTicket
-      -- Ticket lifecycle - ChangeStatus carries the ticket id and the new status
+
+      -- Ticket lifecycle
+      -- ChangeStatus updates the status of a specific ticket
     | ChangeStatus Int TicketStatus
-      -- Change Ticket Affiliation
+
+      -- Assignment update for a ticket (agent name)
     | ChangeAssignedTo Int String
-      -- Detail view - SelectTicket stores the ticket id in selectedTicket (Just id)
+
+      -- Detail view selection
+      -- SelectTicket stores the selected ticket id for the detail panel
     | SelectTicket Int
-      -- CloseDetail sets selectedTicket back to Nothing
+
+      -- CloseDetail clears the selected ticket
     | CloseDetail
-      -- Filtering and search - SetFilter replaces the active FilterState
+
+      -- Filtering system
+      -- SetFilter changes the active filter applied to the ticket list
     | SetFilter FilterState
-      -- UpdateSearch updates the live search query string
+
+      -- Live search input update
     | UpdateSearch String

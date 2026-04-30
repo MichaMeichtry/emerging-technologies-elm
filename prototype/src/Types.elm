@@ -5,8 +5,8 @@ module Types exposing
     , TicketStatus(..)
     )
 
--- The lifecycle of a support ticket.
--- Custom types make invalid states impossible: a ticket can never be in two states at once.
+-- Represents the lifecycle of a support ticket.
+-- A ticket can only be in one status at a time, which prevents invalid states at compile time.
 
 
 type TicketStatus
@@ -16,9 +16,8 @@ type TicketStatus
     | Closed
 
 
-
--- Urgency level of a ticket.
--- Used both for display (badge colour) and for filtering.
+-- Defines the urgency level of a ticket.
+-- Used for visual highlighting (badges) and for filtering tickets by importance.
 
 
 type Priority
@@ -28,9 +27,8 @@ type Priority
     | Critical
 
 
-
--- The active filter applied to the ticket list.
--- ByStatus and ByPriority carry the value being filtered on.
+-- Represents the active filter applied to the ticket list.
+-- Allows filtering either by status or by priority.
 
 
 type FilterState
@@ -39,9 +37,8 @@ type FilterState
     | ByPriority Priority
 
 
-
--- A single support ticket.
--- All fields are typed so the compiler catches misuse at compile time.
+-- Represents a single support ticket in the system.
+-- All fields are strictly typed to ensure data consistency across the application.
 
 
 type alias Ticket =

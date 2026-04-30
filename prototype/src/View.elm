@@ -18,7 +18,7 @@ view model =
     div [ class "app" ]
         [ viewHeader
         , viewBody model
-        , -- The modal sits outside the normal flow and covers the whole screen.
+        , -- The modal sits outside the normal document flow and covers the entire screen.
           -- It is only rendered when showForm is True.
           if model.showForm then
             viewFormModal model
@@ -41,7 +41,7 @@ viewHeader =
 
 
 
--- Decides which main panel to render based on whether a ticket is selected.
+-- Determines which main panel to render based on whether a ticket is selected.
 
 
 viewBody : Model -> Html Msg
@@ -68,7 +68,8 @@ findTicket id tickets =
     List.head (List.filter (\t -> t.id == id) tickets)
 
 
--- A fonction used by the main ticket list 
+-- A function used by the main ticket list.
+
 
 visibleTickets : FilterState -> String -> List Ticket -> List Ticket
 visibleTickets filterState query tickets =
@@ -103,7 +104,7 @@ viewTicketList model =
 
 
 -- Filter toolbar.
--- The active FilterState is compared against each button's own target so the
+-- The active FilterState is compared against each button's target so the
 -- matching button receives the "filter-btn-active" class.
 
 
@@ -120,7 +121,7 @@ viewToolbar active tickets =
 
 
 -- A single filter button.
--- Compares its own target against the currently active FilterState to decide
+-- Compares its target against the currently active FilterState to decide
 -- whether to apply the highlighted style.
 
 
@@ -138,13 +139,14 @@ filterBtn lbl target active =
                 "filter-btn"
     in
     button
-    [ onClick (SetFilter target)
-    , class (cls ++ " " ++ filterClass target)
-    ]
-    [ text lbl ]
+        [ onClick (SetFilter target)
+        , class (cls ++ " " ++ filterClass target)
+        ]
+        [ text lbl ]
 
 
---Change the color of the button with status
+-- Changes the color of the button depending on the filter status.
+
 
 filterClass : FilterState -> String
 filterClass filter =
@@ -169,7 +171,7 @@ filterClass filter =
 
 
 -- Applies the active filter and search query to the full ticket list.
--- Pure function - no side effects, always returns the same output for the same input.
+-- Pure function: no side effects, always returns the same output for the same input.
 
 
 applyFilter : FilterState -> String -> List Ticket -> List Ticket
@@ -207,6 +209,7 @@ countByStatus status tickets =
         |> List.length
 
 
+
 -- A single ticket card showing the key fields and action buttons.
 
 
@@ -231,7 +234,7 @@ viewTicketCard ticket =
 
 
 
--- Renders the next-status button based on the current status.
+-- Renders the status selector based on the current ticket state.
 -- Pattern matching ensures every status variant is handled.
 
 
@@ -247,7 +250,8 @@ viewStatusDropdown ticket =
         , option [ value "Closed", selected (ticket.status == Closed) ] [ text "Closed" ]
         ]
 
---fonction to help conversion
+-- Helper function for conversion
+
 
 stringToStatus : String -> TicketStatus
 stringToStatus str =
@@ -283,9 +287,11 @@ statusToString status =
         Closed ->
             "Closed"
 
+
+
 -- The modal overlay for the create-ticket form.
--- Clicking the dark backdrop sends CloseForm, so the user can dismiss by clicking outside.
--- Clicks inside the white box are stopped from bubbling to the backdrop via stopPropagationOn.
+-- Clicking the dark backdrop sends CloseForm so the user can dismiss it by clicking outside.
+-- Clicks inside the modal box are stopped from bubbling to the backdrop via stopPropagationOn.
 
 
 viewFormModal : Model -> Html Msg
@@ -375,7 +381,7 @@ priorityBtn target current =
 
 
 
--- Category buttons.
+-- Category selector.
 
 
 viewCategorySelector : String -> Html Msg
@@ -413,7 +419,7 @@ viewCategoryBtn cat current =
 
 
 -- The detail view shown when a ticket is selected.
--- Wires Back to CloseDetail and status buttons to ChangeStatus.
+-- Wires the Back button to CloseDetail and status controls to ChangeStatus.
 
 
 viewDetail : Ticket -> Html Msg
