@@ -1,6 +1,6 @@
 module View exposing (view)
 
-import Html exposing (Html, button, div, h1, h2, input, label, li, p, span, text, textarea, ul)
+import Html exposing (Html, button, div, h1, h2, input, label, li, p, span, text, textarea, ul, select, option)
 import Html.Attributes exposing (class, placeholder, value)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode
@@ -196,7 +196,7 @@ viewTicketCard ticket =
         , div [ class "card-title" ] [ text ticket.title ]
         , div [ class "card-meta" ] [ text ticket.category ]
         , div [ class "card-actions" ]
-            [ viewNextStatusButton ticket
+            [ viewStatusDropdown ticket
             , button [ onClick (SelectTicket ticket.id), class "btn-secondary" ]
                 [ text "View Details" ]
             ]
@@ -208,26 +208,53 @@ viewTicketCard ticket =
 -- Pattern matching ensures every status variant is handled.
 
 
-viewNextStatusButton : Ticket -> Html Msg
-viewNextStatusButton ticket =
-    case ticket.status of
+viewStatusDropdown : Ticket -> Html Msg
+viewStatusDropdown ticket =
+    select
+        [ value (statusToString ticket.status)
+        , onInput (\s -> ChangeStatus ticket.id (stringToStatus s))
+        ]
+        [ option [ value "Open" ] [ text "Open" ]
+        , option [ value "InProgress" ] [ text "In Progress" ]
+        , option [ value "Resolved" ] [ text "Resolved" ]
+        , option [ value "Closed" ] [ text "Closed" ]
+        ]
+
+--fonction to help conversion
+
+stringToStatus : String -> TicketStatus
+stringToStatus str =
+    case str of
+        "Open" ->
+            Open
+
+        "InProgress" ->
+            InProgress
+
+        "Resolved" ->
+            Resolved
+
+        "Closed" ->
+            Closed
+
+        _ ->
+            Open
+
+
+statusToString : TicketStatus -> String
+statusToString status =
+    case status of
         Open ->
-            button [ onClick (ChangeStatus ticket.id InProgress), class "btn-primary" ]
-                [ text "Start" ]
+            "Open"
 
         InProgress ->
-            button [ onClick (ChangeStatus ticket.id Resolved), class "btn-primary" ]
-                [ text "Resolve" ]
+            "InProgress"
 
         Resolved ->
-            button [ onClick (ChangeStatus ticket.id Closed), class "btn-primary" ]
-                [ text "Close" ]
+            "Resolved"
 
         Closed ->
-            button [ onClick (ChangeStatus ticket.id Open), class "btn-secondary" ]
-                [ text "Reopen" ]
-
-
+            "Closed"
 
 -- The modal overlay for the create-ticket form.
 -- Clicking the dark backdrop sends CloseForm, so the user can dismiss by clicking outside.
@@ -380,7 +407,7 @@ viewDetail ticket =
             ]
         , p [ class "detail-description" ] [ text ticket.description ]
         , div [ class "detail-actions" ]
-            [ viewNextStatusButton ticket ]
+            [ viewStatusDropdown ticket ]
         ]
 
 

@@ -5463,62 +5463,126 @@ var $author$project$Msg$ChangeStatus = F2(
 	function (a, b) {
 		return {$: 'ChangeStatus', a: a, b: b};
 	});
-var $author$project$View$viewNextStatusButton = function (ticket) {
-	var _v0 = ticket.status;
-	switch (_v0.$) {
+var $elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 'MayStopPropagation', a: a};
+};
+var $elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $elm$html$Html$Events$targetValue = A2(
+	$elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	$elm$json$Json$Decode$string);
+var $elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		$elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			$elm$json$Json$Decode$map,
+			$elm$html$Html$Events$alwaysStop,
+			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
+};
+var $elm$html$Html$option = _VirtualDom_node('option');
+var $elm$html$Html$select = _VirtualDom_node('select');
+var $author$project$View$statusToString = function (status) {
+	switch (status.$) {
 		case 'Open':
-			return A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						A2($author$project$Msg$ChangeStatus, ticket.id, $author$project$Types$InProgress)),
-						$elm$html$Html$Attributes$class('btn-primary')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Start')
-					]));
+			return 'Open';
 		case 'InProgress':
-			return A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						A2($author$project$Msg$ChangeStatus, ticket.id, $author$project$Types$Resolved)),
-						$elm$html$Html$Attributes$class('btn-primary')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Resolve')
-					]));
+			return 'InProgress';
 		case 'Resolved':
-			return A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						A2($author$project$Msg$ChangeStatus, ticket.id, $author$project$Types$Closed)),
-						$elm$html$Html$Attributes$class('btn-primary')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Close')
-					]));
+			return 'Resolved';
 		default:
-			return A2(
-				$elm$html$Html$button,
+			return 'Closed';
+	}
+};
+var $author$project$View$stringToStatus = function (str) {
+	switch (str) {
+		case 'Open':
+			return $author$project$Types$Open;
+		case 'InProgress':
+			return $author$project$Types$InProgress;
+		case 'Resolved':
+			return $author$project$Types$Resolved;
+		case 'Closed':
+			return $author$project$Types$Closed;
+		default:
+			return $author$project$Types$Open;
+	}
+};
+var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
+var $author$project$View$viewStatusDropdown = function (ticket) {
+	return A2(
+		$elm$html$Html$select,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$value(
+				$author$project$View$statusToString(ticket.status)),
+				$elm$html$Html$Events$onInput(
+				function (s) {
+					return A2(
+						$author$project$Msg$ChangeStatus,
+						ticket.id,
+						$author$project$View$stringToStatus(s));
+				})
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$option,
 				_List_fromArray(
 					[
-						$elm$html$Html$Events$onClick(
-						A2($author$project$Msg$ChangeStatus, ticket.id, $author$project$Types$Open)),
-						$elm$html$Html$Attributes$class('btn-secondary')
+						$elm$html$Html$Attributes$value('Open')
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Reopen')
-					]));
-	}
+						$elm$html$Html$text('Open')
+					])),
+				A2(
+				$elm$html$Html$option,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$value('InProgress')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('In Progress')
+					])),
+				A2(
+				$elm$html$Html$option,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$value('Resolved')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Resolved')
+					])),
+				A2(
+				$elm$html$Html$option,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$value('Closed')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Closed')
+					]))
+			]));
 };
 var $elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
@@ -5640,7 +5704,7 @@ var $author$project$View$viewDetail = function (ticket) {
 					]),
 				_List_fromArray(
 					[
-						$author$project$View$viewNextStatusButton(ticket)
+						$author$project$View$viewStatusDropdown(ticket)
 					]))
 			]));
 };
@@ -5649,42 +5713,8 @@ var $author$project$Msg$UpdateSearch = function (a) {
 	return {$: 'UpdateSearch', a: a};
 };
 var $elm$html$Html$input = _VirtualDom_node('input');
-var $elm$html$Html$Events$alwaysStop = function (x) {
-	return _Utils_Tuple2(x, true);
-};
-var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
-	return {$: 'MayStopPropagation', a: a};
-};
-var $elm$html$Html$Events$stopPropagationOn = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
-	});
-var $elm$json$Json$Decode$field = _Json_decodeField;
-var $elm$json$Json$Decode$at = F2(
-	function (fields, decoder) {
-		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
-	});
-var $elm$json$Json$Decode$string = _Json_decodeString;
-var $elm$html$Html$Events$targetValue = A2(
-	$elm$json$Json$Decode$at,
-	_List_fromArray(
-		['target', 'value']),
-	$elm$json$Json$Decode$string);
-var $elm$html$Html$Events$onInput = function (tagger) {
-	return A2(
-		$elm$html$Html$Events$stopPropagationOn,
-		'input',
-		A2(
-			$elm$json$Json$Decode$map,
-			$elm$html$Html$Events$alwaysStop,
-			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
-};
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $elm$html$Html$ul = _VirtualDom_node('ul');
-var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Msg$SelectTicket = function (a) {
 	return {$: 'SelectTicket', a: a};
 };
@@ -5770,7 +5800,7 @@ var $author$project$View$viewTicketCard = function (ticket) {
 					]),
 				_List_fromArray(
 					[
-						$author$project$View$viewNextStatusButton(ticket),
+						$author$project$View$viewStatusDropdown(ticket),
 						A2(
 						$elm$html$Html$button,
 						_List_fromArray(
