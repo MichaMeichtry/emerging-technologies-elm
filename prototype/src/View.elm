@@ -355,12 +355,16 @@ viewCategorySelector : String -> Html Msg
 viewCategorySelector current =
     div [ class "selector" ]
         [ p [ class "selector-label" ] [ text "Category" ]
-        , div [ class "selector-btns" ]
-            [ viewCategoryBtn "Hardware" current
-            , viewCategoryBtn "Software" current
-            , viewCategoryBtn "Network" current
-            , viewCategoryBtn "Access" current
-            , viewCategoryBtn "Other" current
+        , select
+            [ value current
+            , onInput UpdateFormCategory
+            , class "form-input"
+            ]
+            [ option [ value "Hardware" ] [ text "Hardware" ]
+            , option [ value "Software" ] [ text "Software" ]
+            , option [ value "Network" ] [ text "Network" ]
+            , option [ value "Access" ] [ text "Access" ]
+            , option [ value "Other" ] [ text "Other" ]
             ]
         ]
 

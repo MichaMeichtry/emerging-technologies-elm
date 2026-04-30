@@ -6033,22 +6033,6 @@ var $elm$html$Html$textarea = _VirtualDom_node('textarea');
 var $author$project$Msg$UpdateFormCategory = function (a) {
 	return {$: 'UpdateFormCategory', a: a};
 };
-var $author$project$View$viewCategoryBtn = F2(
-	function (cat, current) {
-		return A2(
-			$elm$html$Html$button,
-			_List_fromArray(
-				[
-					$elm$html$Html$Events$onClick(
-					$author$project$Msg$UpdateFormCategory(cat)),
-					$elm$html$Html$Attributes$class(
-					_Utils_eq(cat, current) ? 'btn-active' : 'btn-option')
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text(cat)
-				]));
-	});
 var $author$project$View$viewCategorySelector = function (current) {
 	return A2(
 		$elm$html$Html$div,
@@ -6069,18 +6053,65 @@ var $author$project$View$viewCategorySelector = function (current) {
 						$elm$html$Html$text('Category')
 					])),
 				A2(
-				$elm$html$Html$div,
+				$elm$html$Html$select,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('selector-btns')
+						$elm$html$Html$Attributes$value(current),
+						$elm$html$Html$Events$onInput($author$project$Msg$UpdateFormCategory),
+						$elm$html$Html$Attributes$class('form-input')
 					]),
 				_List_fromArray(
 					[
-						A2($author$project$View$viewCategoryBtn, 'Hardware', current),
-						A2($author$project$View$viewCategoryBtn, 'Software', current),
-						A2($author$project$View$viewCategoryBtn, 'Network', current),
-						A2($author$project$View$viewCategoryBtn, 'Access', current),
-						A2($author$project$View$viewCategoryBtn, 'Other', current)
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$value('Hardware')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Hardware')
+							])),
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$value('Software')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Software')
+							])),
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$value('Network')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Network')
+							])),
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$value('Access')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Access')
+							])),
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$value('Other')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Other')
+							]))
 					]))
 			]));
 };
