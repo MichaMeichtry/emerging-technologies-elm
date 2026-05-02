@@ -5241,8 +5241,8 @@ var $author$project$Update$applyStatusChange = F3(
 var $elm$core$String$trim = _String_trim;
 var $author$project$Update$validateForm = function (model) {
 	return ($elm$core$String$length(
-		$elm$core$String$trim(model.formTitle)) < 5) ? $elm$core$Maybe$Just('Title must be at least 5 characters.') : (($elm$core$String$length(
-		$elm$core$String$trim(model.formDescription)) < 10) ? $elm$core$Maybe$Just('Description must be at least 10 characters.') : $elm$core$Maybe$Nothing);
+		$elm$core$String$trim(model.formTitle)) < 5) ? $elm$core$Maybe$Just('Title must be at least 5 characters long.') : (($elm$core$String$length(
+		$elm$core$String$trim(model.formDescription)) < 10) ? $elm$core$Maybe$Just('Description must be at least 10 characters long.') : $elm$core$Maybe$Nothing);
 };
 var $author$project$Update$update = F2(
 	function (msg, model) {
@@ -5571,7 +5571,9 @@ var $author$project$View$viewStatusDropdown = function (ticket) {
 						$author$project$Msg$ChangeStatus,
 						ticket.id,
 						$author$project$View$stringToStatus(s));
-				})
+				}),
+				$elm$html$Html$Attributes$class(
+				'status-select status-' + $author$project$View$statusClass(ticket.status))
 			]),
 		_List_fromArray(
 			[

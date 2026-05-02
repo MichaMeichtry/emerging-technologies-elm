@@ -221,3 +221,39 @@ button {
 .detail-assigned { font-size: 13px; color: #718096; margin-bottom: 16px; }
 .detail-description { color: #2d3748; line-height: 1.7; font-size: 14px; }
 .detail-actions { margin-top: 20px; display: flex; gap: 8px; }
+
+
+/* select */
+select {
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.status-select {
+    border: 1px solid rgba(0,0,0,0.1);
+    font-weight: bold;
+}
+.status-open {
+    background: #bee3f8;
+    color: #2a69ac;
+}
+.status-inprogress {
+    background: #fefcbf;
+    color: #975a16;
+}
+.status-resolved {
+    background: #c6f6d5;
+    color: #276749;
+}
+.status-closed {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+select:focus {
+    outline: none;
+    border-color: #7c5cff;
+}
+.status-select:hover {
+    filter: brightness(0.97);
+}

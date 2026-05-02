@@ -243,6 +243,7 @@ viewStatusDropdown ticket =
     select
         [ value (statusToString ticket.status)
         , onInput (\s -> ChangeStatus ticket.id (stringToStatus s))
+        , class ("status-select status-" ++ statusClass ticket.status)
         ]
         [ option [ value "Open", selected (ticket.status == Open) ] [ text "Open" ]
         , option [ value "InProgress", selected (ticket.status == InProgress) ] [ text "In Progress" ]
