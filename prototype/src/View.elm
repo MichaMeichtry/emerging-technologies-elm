@@ -457,15 +457,6 @@ viewDetail ticket model =
             , span [] [ text ("  ID: #" ++ String.fromInt ticket.id) ]
             , span [] [ text ("  Created: " ++ ticket.createdAt) ]
             ]
-        , div [ class "detail-assigned" ]
-            [ label [] [ text "Assigned to: " ]
-            , input
-                [ value (Maybe.withDefault "" ticket.assignedTo)
-                , onInput (\v -> ChangeAssignedTo ticket.id v)
-                , placeholder "Assign agent..."
-                ]
-                []
-            ]
         , p [ class "detail-description" ] [ text ticket.description ]
         , div [ class "detail-actions" ]
             [ viewStatusDropdown ticket ]
@@ -493,14 +484,7 @@ viewComments ticket model =
             ul [ class "comment-list" ]
                 (List.map viewComment ticket.comments)
         , div [ class "comment-form" ]
-            [ input
-                [ placeholder "Your name"
-                , value model.commentAuthor
-                , onInput UpdateCommentAuthor
-                , class "form-input comment-author-input"
-                ]
-                []
-            , textarea
+            [ textarea
                 [ placeholder "Add a note..."
                 , value model.commentBody
                 , onInput UpdateCommentBody
@@ -523,9 +507,7 @@ viewComment : TicketComment -> Html Msg
 viewComment comment =
     li [ class "comment-item" ]
         [ div [ class "comment-header" ]
-            [ span [ class "comment-author" ] [ text comment.author ]
-            , span [ class "comment-date" ] [ text comment.postedAt ]
-            ]
+            [ span [ class "comment-date" ] [ text comment.postedAt ] ]
         , p [ class "comment-body" ] [ text comment.body ]
         ]
 
@@ -558,8 +540,7 @@ viewHistoryEntry entry =
             [ span [ class ("badge status-" ++ statusClass entry.from) ] [ text (statusLabel entry.from) ]
             , span [ class "history-arrow" ] [ text " -> " ]
             , span [ class ("badge status-" ++ statusClass entry.to) ] [ text (statusLabel entry.to) ]
-            , span [ class "history-meta" ]
-                [ text (" by " ++ entry.changedBy ++ " - " ++ entry.changedAt) ]
+            , span [ class "history-meta" ] [ text (" - " ++ entry.changedAt) ]
             ]
         ]
 

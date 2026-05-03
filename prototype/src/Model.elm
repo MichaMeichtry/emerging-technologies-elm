@@ -35,7 +35,6 @@ type alias Model =
     , formError : Maybe String
 
     -- State for the comment input on the detail view
-    , commentAuthor : String
     , commentBody : String
     }
 
@@ -59,7 +58,6 @@ init =
     , formCategory = "Software"
     , formDueDate = ""
     , formError = Nothing
-    , commentAuthor = ""
     , commentBody = ""
     }
 
@@ -79,9 +77,8 @@ seedTickets =
       , status = Open
       , priority = High
       , category = "Network"
-      , createdAt = "2025-04-20"
-      , dueDate = Just "2025-04-25"
-      , assignedTo = Nothing
+      , createdAt = "2026-04-20"
+      , dueDate = Just "2026-04-25"
       , comments = []
       , history = []
       }
@@ -91,20 +88,17 @@ seedTickets =
       , status = InProgress
       , priority = Critical
       , category = "Software"
-      , createdAt = "2025-04-21"
-      , dueDate = Just "2025-04-28"
-      , assignedTo = Just "Alice Martin"
+      , createdAt = "2026-04-21"
+      , dueDate = Just "2026-04-28"
       , comments =
-            [ { author = "Alice Martin"
-              , body = "Reproduced the crash. Collecting event logs from the affected machine."
-              , postedAt = "2025-04-21 14:30"
+            [ { body = "Reproduced the crash. Collecting event logs from the affected machine."
+              , postedAt = "2026-04-21 14:30"
               }
             ]
       , history =
             [ { from = Open
               , to = InProgress
-              , changedBy = "Alice Martin"
-              , changedAt = "2025-04-21 14:00"
+              , changedAt = "2026-04-21 14:00"
               }
             ]
       }
@@ -114,29 +108,24 @@ seedTickets =
       , status = Resolved
       , priority = Low
       , category = "Hardware"
-      , createdAt = "2025-04-22"
+      , createdAt = "2026-04-22"
       , dueDate = Nothing
-      , assignedTo = Just "Bob Chen"
       , comments =
-            [ { author = "Bob Chen"
-              , body = "Replacement keyboard ordered. Will arrive tomorrow."
-              , postedAt = "2025-04-22 09:15"
+            [ { body = "Replacement keyboard ordered. Will arrive tomorrow."
+              , postedAt = "2026-04-22 09:15"
               }
-            , { author = "Bob Chen"
-              , body = "Keyboard delivered and confirmed working by user."
-              , postedAt = "2025-04-23 11:00"
+            , { body = "Keyboard delivered and confirmed working by user."
+              , postedAt = "2026-04-23 11:00"
               }
             ]
       , history =
             [ { from = Open
               , to = InProgress
-              , changedBy = "Bob Chen"
-              , changedAt = "2025-04-22 09:00"
+              , changedAt = "2026-04-22 09:00"
               }
             , { from = InProgress
               , to = Resolved
-              , changedBy = "Bob Chen"
-              , changedAt = "2025-04-23 11:05"
+              , changedAt = "2026-04-23 11:05"
               }
             ]
       }
@@ -146,20 +135,17 @@ seedTickets =
       , status = Closed
       , priority = Medium
       , category = "Access"
-      , createdAt = "2025-04-23"
-      , dueDate = Just "2025-04-24"
-      , assignedTo = Just "Alice Martin"
+      , createdAt = "2026-04-23"
+      , dueDate = Just "2026-04-24"
       , comments = []
       , history =
             [ { from = Open
               , to = Resolved
-              , changedBy = "Alice Martin"
-              , changedAt = "2025-04-23 16:45"
+              , changedAt = "2026-04-23 16:45"
               }
             , { from = Resolved
               , to = Closed
-              , changedBy = "Alice Martin"
-              , changedAt = "2025-04-23 17:00"
+              , changedAt = "2026-04-23 17:00"
               }
             ]
       }

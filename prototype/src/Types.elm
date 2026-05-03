@@ -39,26 +39,24 @@ type FilterState
     | ByPriority Priority
 
 
--- A single comment left by an agent on a ticket.
--- Author and timestamp are stored as strings for simplicity
+-- A single comment left on a ticket.
+-- Timestamp is stored as a string for simplicity
 -- (no Time dependency needed in this prototype).
 
 
 type alias TicketComment =
-    { author : String
-    , body : String
+    { body : String
     , postedAt : String
     }
 
 
 -- One entry in the status-change history of a ticket.
--- Records who changed the status and when.
+-- Records the transition and when it occurred.
 
 
 type alias TicketHistoryEntry =
     { from : TicketStatus
     , to : TicketStatus
-    , changedBy : String
     , changedAt : String
     }
 
@@ -77,7 +75,6 @@ type alias Ticket =
     , category : String
     , createdAt : String
     , dueDate : Maybe String
-    , assignedTo : Maybe String
     , comments : List TicketComment
     , history : List TicketHistoryEntry
     }

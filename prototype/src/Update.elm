@@ -2,7 +2,7 @@ module Update exposing (update)
 
 import Model exposing (Model)
 import Msg exposing (Msg(..))
-import Types exposing (Ticket, TicketComment, TicketHistoryEntry, TicketStatus(..))
+import Types exposing (Ticket, TicketHistoryEntry, TicketStatus(..))
 
 
 -- The main update function.
@@ -78,7 +78,6 @@ update msg model =
                             , category = model.formCategory
                             , createdAt = "2025-04-24"
                             , dueDate = maybeDue
-                            , assignedTo = Nothing
                             , comments = []
                             , history = []
                             }
@@ -107,11 +106,10 @@ update msg model =
         SelectTicket id ->
             { model | selectedTicket = Just id }
 
-        -- Closes the detail view and resets the comment input fields
+        -- Closes the detail view and resets the comment input field
         CloseDetail ->
             { model
                 | selectedTicket = Nothing
-                , commentAuthor = ""
                 , commentBody = ""
             }
 
@@ -123,46 +121,24 @@ update msg model =
         UpdateSearch query ->
             { model | searchQuery = query }
 
-        -- Assignment update for a ticket - updates the assigned agent for a specific ticket
-        ChangeAssignedTo id agent ->
-            { model
-                | tickets =
-                    List.map
-                        (\t ->
-                            if t.id == id then
-                                { t | assignedTo = Just agent }
-
-                            else
-                                t
-                        )
-                        model.tickets
-            }
-
-        -- Comment field updates for the detail view
-        UpdateCommentAuthor author ->
-            { model | commentAuthor = author }
-
+        -- Comment field update for the detail view
         UpdateCommentBody body ->
             { model | commentBody = body }
 
-        -- Submits a comment if both author and body are non-empty.
-        -- Appends the comment to the ticket's comment list and resets input fields.
+        -- Submits a comment if the body is non-empty.
+        -- Appends the comment to the ticket's comment list and resets the input field.
         SubmitComment id ->
             let
-                author =
-                    String.trim model.commentAuthor
-
                 body =
                     String.trim model.commentBody
             in
-            if String.isEmpty author || String.isEmpty body then
+            if String.isEmpty body then
                 model
 
             else
                 let
                     newComment =
-                        { author = author
-                        , body = body
+                        { body = body
                         , postedAt = "2025-04-24 12:00"
                         }
                 in
@@ -193,7 +169,6 @@ applyStatusChange targetId newStatus ticket =
             entry =
                 { from = ticket.status
                 , to = newStatus
-                , changedBy = "Agent"
                 , changedAt = "2025-04-24 12:00"
                 }
         in
