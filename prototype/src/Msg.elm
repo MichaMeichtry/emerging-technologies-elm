@@ -22,23 +22,21 @@ type Msg
     | UpdateFormDescription String
     | UpdateFormPriority Priority
     | UpdateFormCategory String
+    | UpdateFormDueDate String
 
       -- Form submission
       -- Validates input and either creates a ticket or sets a form error
     | SubmitTicket
 
       -- Ticket lifecycle
-      -- ChangeStatus updates the status of a specific ticket
+      -- ChangeStatus updates the status of a specific ticket and appends a history entry
     | ChangeStatus Int TicketStatus
-
-      -- Assignment update for a ticket (agent name)
-    | ChangeAssignedTo Int String
 
       -- Detail view selection
       -- SelectTicket stores the selected ticket id for the detail panel
     | SelectTicket Int
 
-      -- CloseDetail clears the selected ticket
+      -- CloseDetail clears the selected ticket and resets comment input fields
     | CloseDetail
 
       -- Filtering system
@@ -47,3 +45,9 @@ type Msg
 
       -- Live search input update
     | UpdateSearch String
+
+      -- Comment field update for the detail view
+    | UpdateCommentBody String
+
+      -- Submits the comment and appends it to the ticket's comment list
+    | SubmitComment Int

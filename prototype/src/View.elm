@@ -1,13 +1,30 @@
 module View exposing (view)
 
-import Html exposing (Html, button, div, h1, h2, input, label, li, p, span, text, textarea, ul, select, option)
-import Html.Attributes exposing (class, placeholder, value, selected)
+import Html exposing (Html, button, div, h1, h2, h3, input, label, li, p, span, text, textarea, ul, select, option)
+import Html.Attributes exposing (class, placeholder, value, selected, type_)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode
 import Model exposing (Model)
 import Msg exposing (Msg(..))
-import Types exposing (FilterState(..), Priority(..), Ticket, TicketStatus(..))
+import Types exposing (FilterState(..), Priority(..), Ticket, TicketComment, TicketHistoryEntry, TicketStatus(..))
 
+
+-- Today's date used for overdue comparison.
+-- In a real app this would come from a Time subscription;
+-- here it is hardcoded to keep the prototype dependency-free.
+
+
+today : String
+today =
+    "2026-04-24"
+
+
+-- Returns True when a due date string is strictly before today.
+
+
+isOverdue : String -> Bool
+isOverdue dueDate =
+    dueDate < today
 
 
 -- Root view. Renders the full application layout and, when needed, the modal overlay.
@@ -28,7 +45,6 @@ view model =
         ]
 
 
-
 -- Top header bar.
 
 
@@ -40,7 +56,6 @@ viewHeader =
         ]
 
 
-
 -- Determines which main panel to render based on whether a ticket is selected.
 
 
@@ -50,14 +65,13 @@ viewBody model =
         Just id ->
             case findTicket id model.tickets of
                 Just ticket ->
-                    viewDetail ticket
+                    viewDetail ticket model
 
                 Nothing ->
                     viewTicketList model
 
         Nothing ->
             viewTicketList model
-
 
 
 -- Finds a ticket by id in a list. Returns Nothing if not found.
@@ -74,7 +88,6 @@ findTicket id tickets =
 visibleTickets : FilterState -> String -> List Ticket -> List Ticket
 visibleTickets filterState query tickets =
     applyFilter filterState query tickets
-
 
 
 -- The main ticket list with filter toolbar, search bar, create button, and ticket cards.
@@ -102,7 +115,6 @@ viewTicketList model =
         ]
 
 
-
 -- Filter toolbar.
 -- The active FilterState is compared against each button's target so the
 -- matching button receives the "filter-btn-active" class.
@@ -117,7 +129,6 @@ viewToolbar active tickets =
         , filterBtn ("Resolved (" ++ String.fromInt (countByStatus Resolved tickets) ++ ")") (ByStatus Resolved) active
         , filterBtn ("Closed (" ++ String.fromInt (countByStatus Closed tickets) ++ ")") (ByStatus Closed) active
         ]
-
 
 
 -- A single filter button.
@@ -145,7 +156,7 @@ filterBtn lbl target active =
         [ text lbl ]
 
 
--- Changes the color of the button depending on the filter status.
+-- Returns a CSS class suffix based on the filter's status for color coding.
 
 
 filterClass : FilterState -> String
@@ -209,8 +220,8 @@ countByStatus status tickets =
         |> List.length
 
 
-
 -- A single ticket card showing the key fields and action buttons.
+-- Includes the due date badge when a deadline is set.
 
 
 viewTicketCard : Ticket -> Html Msg
@@ -222,6 +233,7 @@ viewTicketCard ticket =
                 [ text (statusLabel ticket.status) ]
             , span [ class ("badge priority-" ++ priorityClass ticket.priority) ]
                 [ text (priorityLabel ticket.priority) ]
+            , viewDueDateBadge ticket.dueDate
             ]
         , div [ class "card-title" ] [ text ticket.title ]
         , div [ class "card-meta" ] [ text ticket.category ]
@@ -232,6 +244,24 @@ viewTicketCard ticket =
             ]
         ]
 
+
+-- Renders the due date as a badge.
+-- Red "Overdue" badge when the date is in the past, grey otherwise.
+-- Returns empty text when no due date is set.
+
+
+viewDueDateBadge : Maybe String -> Html Msg
+viewDueDateBadge maybeDue =
+    case maybeDue of
+        Nothing ->
+            text ""
+
+        Just due ->
+            if isOverdue due then
+                span [ class "badge due-overdue" ] [ text ("Overdue - " ++ due) ]
+
+            else
+                span [ class "badge due-ok" ] [ text ("Due " ++ due) ]
 
 
 -- Renders the status selector based on the current ticket state.
@@ -251,7 +281,8 @@ viewStatusDropdown ticket =
         , option [ value "Closed", selected (ticket.status == Closed) ] [ text "Closed" ]
         ]
 
--- Helper function for conversion
+
+-- Helper functions for status string conversion
 
 
 stringToStatus : String -> TicketStatus
@@ -287,7 +318,6 @@ statusToString status =
 
         Closed ->
             "Closed"
-
 
 
 -- The modal overlay for the create-ticket form.
@@ -327,13 +357,20 @@ viewFormModal model =
                 [ viewPrioritySelector model.formPriority
                 , viewCategorySelector model.formCategory
                 ]
+            , label [ class "form-label" ] [ text "Due Date (optional)" ]
+            , input
+                [ type_ "date"
+                , value model.formDueDate
+                , onInput UpdateFormDueDate
+                , class "form-input"
+                ]
+                []
             , div [ class "modal-footer" ]
                 [ button [ onClick CloseForm, class "btn-secondary" ] [ text "Cancel" ]
                 , button [ onClick SubmitTicket, class "btn-primary" ] [ text "Submit Ticket" ]
                 ]
             ]
         ]
-
 
 
 -- Renders the validation error if present.
@@ -347,7 +384,6 @@ viewFormError maybeError =
 
         Just msg ->
             div [ class "form-error" ] [ text msg ]
-
 
 
 -- Priority radio-style buttons.
@@ -381,8 +417,7 @@ priorityBtn target current =
         [ text (priorityLabel target) ]
 
 
-
--- Category selector.
+-- Category dropdown selector.
 
 
 viewCategorySelector : String -> Html Msg
@@ -403,28 +438,12 @@ viewCategorySelector current =
         ]
 
 
-viewCategoryBtn : String -> String -> Html Msg
-viewCategoryBtn cat current =
-    button
-        [ onClick (UpdateFormCategory cat)
-        , class
-            (if cat == current then
-                "btn-active"
-
-             else
-                "btn-option"
-            )
-        ]
-        [ text cat ]
-
-
-
 -- The detail view shown when a ticket is selected.
--- Wires the Back button to CloseDetail and status controls to ChangeStatus.
+-- Includes status controls, due date, comments, and history timeline.
 
 
-viewDetail : Ticket -> Html Msg
-viewDetail ticket =
+viewDetail : Ticket -> Model -> Html Msg
+viewDetail ticket model =
     div [ class "detail-panel" ]
         [ button [ onClick CloseDetail, class "btn-secondary" ] [ text "Back" ]
         , h2 [] [ text ticket.title ]
@@ -433,24 +452,97 @@ viewDetail ticket =
                 [ text (statusLabel ticket.status) ]
             , span [ class ("badge priority-" ++ priorityClass ticket.priority) ]
                 [ text (priorityLabel ticket.priority) ]
+            , viewDueDateBadge ticket.dueDate
             , span [] [ text ("  Category: " ++ ticket.category) ]
             , span [] [ text ("  ID: #" ++ String.fromInt ticket.id) ]
             , span [] [ text ("  Created: " ++ ticket.createdAt) ]
             ]
-        , div [ class "detail-assigned" ]
-            [ label [] [ text "Assigned to: " ]
-            , input
-                [ value (Maybe.withDefault "" ticket.assignedTo)
-                , onInput (\v -> ChangeAssignedTo ticket.id v)
-                , placeholder "Assign agent..."
-                ]
-                []
-            ]
         , p [ class "detail-description" ] [ text ticket.description ]
         , div [ class "detail-actions" ]
             [ viewStatusDropdown ticket ]
+
+        -- Comments section
+        , viewComments ticket model
+
+        -- History / activity log section
+        , viewHistory ticket.history
         ]
 
+
+-- Renders the comments section with existing comments and the add-comment form.
+
+
+viewComments : Ticket -> Model -> Html Msg
+viewComments ticket model =
+    div [ class "section-block" ]
+        [ h3 [ class "section-title" ]
+            [ text ("Comments (" ++ String.fromInt (List.length ticket.comments) ++ ")") ]
+        , if List.isEmpty ticket.comments then
+            p [ class "empty-state" ] [ text "No comments yet." ]
+
+          else
+            ul [ class "comment-list" ]
+                (List.map viewComment ticket.comments)
+        , div [ class "comment-form" ]
+            [ textarea
+                [ placeholder "Add a note..."
+                , value model.commentBody
+                , onInput UpdateCommentBody
+                , class "form-input form-textarea"
+                ]
+                []
+            , button
+                [ onClick (SubmitComment ticket.id)
+                , class "btn-primary"
+                ]
+                [ text "Post Comment" ]
+            ]
+        ]
+
+
+-- Renders a single comment entry.
+
+
+viewComment : TicketComment -> Html Msg
+viewComment comment =
+    li [ class "comment-item" ]
+        [ div [ class "comment-header" ]
+            [ span [ class "comment-date" ] [ text comment.postedAt ] ]
+        , p [ class "comment-body" ] [ text comment.body ]
+        ]
+
+
+-- Renders the history timeline.
+-- Each entry shows the status transition with the agent name and timestamp.
+
+
+viewHistory : List TicketHistoryEntry -> Html Msg
+viewHistory entries =
+    div [ class "section-block" ]
+        [ h3 [ class "section-title" ] [ text "History" ]
+        , if List.isEmpty entries then
+            p [ class "empty-state" ] [ text "No status changes recorded yet." ]
+
+          else
+            ul [ class "history-list" ]
+                (List.map viewHistoryEntry entries)
+        ]
+
+
+-- Renders a single history entry as a timeline item.
+
+
+viewHistoryEntry : TicketHistoryEntry -> Html Msg
+viewHistoryEntry entry =
+    li [ class "history-item" ]
+        [ div [ class "history-dot" ] []
+        , div [ class "history-content" ]
+            [ span [ class ("badge status-" ++ statusClass entry.from) ] [ text (statusLabel entry.from) ]
+            , span [ class "history-arrow" ] [ text " -> " ]
+            , span [ class ("badge status-" ++ statusClass entry.to) ] [ text (statusLabel entry.to) ]
+            , span [ class "history-meta" ] [ text (" - " ++ entry.changedAt) ]
+            ]
+        ]
 
 
 -- Helper: CSS class suffix for each status.
@@ -472,7 +564,6 @@ statusClass status =
             "closed"
 
 
-
 -- Helper: human-readable label for each status.
 
 
@@ -492,7 +583,6 @@ statusLabel status =
             "Closed"
 
 
-
 -- Helper: CSS class suffix for each priority.
 
 
@@ -510,7 +600,6 @@ priorityClass priority =
 
         Critical ->
             "critical"
-
 
 
 -- Helper: human-readable label for each priority.

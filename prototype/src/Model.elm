@@ -1,8 +1,6 @@
 module Model exposing (Model, init)
 
-import Types exposing (FilterState(..), Priority(..), Ticket, TicketStatus(..))
-
-
+import Types exposing (FilterState(..), Priority(..), Ticket, TicketComment, TicketHistoryEntry, TicketStatus(..))
 
 
 -- The full application state.
@@ -31,11 +29,14 @@ type alias Model =
     , formDescription : String
     , formPriority : Priority
     , formCategory : String
+    , formDueDate : String
 
     -- Holds validation error message for the form (if any)
     , formError : Maybe String
-    }
 
+    -- State for the comment input on the detail view
+    , commentBody : String
+    }
 
 
 -- The initial state of the application.
@@ -55,14 +56,17 @@ init =
     , formDescription = ""
     , formPriority = Medium
     , formCategory = "Software"
+    , formDueDate = ""
     , formError = Nothing
+    , commentBody = ""
     }
-
 
 
 -- Example tickets that populate the app on startup.
 -- Each ticket is designed to demonstrate a different status and priority,
 -- ensuring all UI states are visible for testing and demonstration.
+-- Some tickets have due dates and pre-seeded comments/history to showcase
+-- all new features immediately on load.
 
 
 seedTickets : List Ticket
@@ -73,8 +77,10 @@ seedTickets =
       , status = Open
       , priority = High
       , category = "Network"
-      , createdAt = "2025-04-20"
-      , assignedTo = Nothing
+      , createdAt = "2026-04-20"
+      , dueDate = Just "2026-04-25"
+      , comments = []
+      , history = []
       }
     , { id = 2
       , title = "Outlook crashes on startup"
@@ -82,8 +88,19 @@ seedTickets =
       , status = InProgress
       , priority = Critical
       , category = "Software"
-      , createdAt = "2025-04-21"
-      , assignedTo = Just "Alice Martin"
+      , createdAt = "2026-04-21"
+      , dueDate = Just "2026-04-28"
+      , comments =
+            [ { body = "Reproduced the crash. Collecting event logs from the affected machine."
+              , postedAt = "2026-04-21 14:30"
+              }
+            ]
+      , history =
+            [ { from = Open
+              , to = InProgress
+              , changedAt = "2026-04-21 14:00"
+              }
+            ]
       }
     , { id = 3
       , title = "Request new keyboard"
@@ -91,8 +108,26 @@ seedTickets =
       , status = Resolved
       , priority = Low
       , category = "Hardware"
-      , createdAt = "2025-04-22"
-      , assignedTo = Just "Bob Chen"
+      , createdAt = "2026-04-22"
+      , dueDate = Nothing
+      , comments =
+            [ { body = "Replacement keyboard ordered. Will arrive tomorrow."
+              , postedAt = "2026-04-22 09:15"
+              }
+            , { body = "Keyboard delivered and confirmed working by user."
+              , postedAt = "2026-04-23 11:00"
+              }
+            ]
+      , history =
+            [ { from = Open
+              , to = InProgress
+              , changedAt = "2026-04-22 09:00"
+              }
+            , { from = InProgress
+              , to = Resolved
+              , changedAt = "2026-04-23 11:05"
+              }
+            ]
       }
     , { id = 4
       , title = "Reset domain password"
@@ -100,7 +135,18 @@ seedTickets =
       , status = Closed
       , priority = Medium
       , category = "Access"
-      , createdAt = "2025-04-23"
-      , assignedTo = Just "Alice Martin"
+      , createdAt = "2026-04-23"
+      , dueDate = Just "2026-04-24"
+      , comments = []
+      , history =
+            [ { from = Open
+              , to = Resolved
+              , changedAt = "2026-04-23 16:45"
+              }
+            , { from = Resolved
+              , to = Closed
+              , changedAt = "2026-04-23 17:00"
+              }
+            ]
       }
     ]

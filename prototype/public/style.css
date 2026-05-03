@@ -106,7 +106,7 @@ button {
     border-radius: 8px;
     padding: 16px;
 }
-.card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
 .ticket-id { font-size: 12px; color: #718096; font-weight: 600; }
 .card-title { font-size: 15px; font-weight: 600; color: #1a202c; margin-bottom: 4px; }
 .card-meta  { font-size: 13px; color: #718096; margin-bottom: 12px; }
@@ -127,6 +127,10 @@ button {
 .priority-medium   { background: #feebc8; color: #7b341e; }
 .priority-high     { background: #fed7d7; color: #9b2c2c; }
 .priority-critical { background: #feb2b2; color: #742a2a; }
+
+/* Due date badges */
+.due-ok      { background: #e6fffa; color: #276749; }
+.due-overdue { background: #fff5f5; color: #9b2c2c; border: 1px solid #fc8181; font-weight: 700; }
 
 /* Modal backdrop - full-screen dark overlay */
 .modal-backdrop {
@@ -218,12 +222,117 @@ button {
 }
 .detail-panel h2 { margin: 16px 0 12px; font-size: 20px; }
 .detail-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px; color: #4a5568; margin-bottom: 12px; }
-.detail-assigned { font-size: 13px; color: #718096; margin-bottom: 16px; }
 .detail-description { color: #2d3748; line-height: 1.7; font-size: 14px; }
 .detail-actions { margin-top: 20px; display: flex; gap: 8px; }
 
+/* Shared section block for comments and history */
+.section-block {
+    margin-top: 32px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+}
+.section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0 0 14px;
+}
+.empty-state {
+    font-size: 13px;
+    color: #a0aec0;
+    margin: 0 0 16px;
+}
 
-/* select */
+/* Comments */
+.comment-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.comment-item {
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 12px 14px;
+}
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+.comment-date {
+    font-size: 12px;
+    color: #a0aec0;
+}
+.comment-body {
+    font-size: 14px;
+    color: #4a5568;
+    line-height: 1.6;
+    margin: 0;
+}
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* History timeline */
+.history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+.history-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    position: relative;
+    padding-bottom: 16px;
+}
+/* Vertical line connecting history dots */
+.history-item:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 18px;
+    bottom: 0;
+    width: 2px;
+    background: #e2e8f0;
+}
+.history-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #3182ce;
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px #bee3f8;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+.history-content {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 13px;
+}
+.history-arrow {
+    color: #a0aec0;
+    font-weight: 600;
+}
+.history-meta {
+    color: #718096;
+    font-size: 12px;
+}
+
+/* Select element */
 select {
     border-radius: 8px;
     padding: 8px 12px;
@@ -233,22 +342,6 @@ select {
 .status-select {
     border: 1px solid rgba(0,0,0,0.1);
     font-weight: bold;
-}
-.status-open {
-    background: #bee3f8;
-    color: #2a69ac;
-}
-.status-inprogress {
-    background: #fefcbf;
-    color: #975a16;
-}
-.status-resolved {
-    background: #c6f6d5;
-    color: #276749;
-}
-.status-closed {
-    background: #e2e8f0;
-    color: #4a5568;
 }
 select:focus {
     outline: none;
