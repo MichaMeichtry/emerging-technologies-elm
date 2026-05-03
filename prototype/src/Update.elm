@@ -76,7 +76,7 @@ update msg model =
                             , status = Open
                             , priority = model.formPriority
                             , category = model.formCategory
-                            , createdAt = "2025-04-24"
+                            , createdAt = "2026-04-24"
                             , dueDate = maybeDue
                             , comments = []
                             , history = []
@@ -139,7 +139,7 @@ update msg model =
                 let
                     newComment =
                         { body = body
-                        , postedAt = "2025-04-24 12:00"
+                        , postedAt = "2026-04-24 12:00"
                         }
                 in
                 { model
@@ -169,7 +169,7 @@ applyStatusChange targetId newStatus ticket =
             entry =
                 { from = ticket.status
                 , to = newStatus
-                , changedAt = "2025-04-24 12:00"
+                , changedAt = "2026-04-24 12:00"
                 }
         in
         { ticket

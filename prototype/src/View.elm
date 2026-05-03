@@ -16,7 +16,7 @@ import Types exposing (FilterState(..), Priority(..), Ticket, TicketComment, Tic
 
 today : String
 today =
-    "2025-04-24"
+    "2026-04-24"
 
 
 -- Returns True when a due date string is strictly before today.

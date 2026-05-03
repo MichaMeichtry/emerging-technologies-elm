@@ -5270,7 +5270,7 @@ var $elm$browser$Browser$sandbox = function (impl) {
 var $author$project$Update$applyStatusChange = F3(
 	function (targetId, newStatus, ticket) {
 		if (_Utils_eq(ticket.id, targetId)) {
-			var entry = {changedAt: '2025-04-24 12:00', from: ticket.status, to: newStatus};
+			var entry = {changedAt: '2026-04-24 12:00', from: ticket.status, to: newStatus};
 			return _Utils_update(
 				ticket,
 				{
@@ -5344,7 +5344,7 @@ var $author$project$Update$update = F2(
 					var newTicket = {
 						category: model.formCategory,
 						comments: _List_Nil,
-						createdAt: '2025-04-24',
+						createdAt: '2026-04-24',
 						description: $elm$core$String$trim(model.formDescription),
 						dueDate: maybeDue,
 						history: _List_Nil,
@@ -5413,7 +5413,7 @@ var $author$project$Update$update = F2(
 				if ($elm$core$String$isEmpty(body)) {
 					return model;
 				} else {
-					var newComment = {body: body, postedAt: '2025-04-24 12:00'};
+					var newComment = {body: body, postedAt: '2026-04-24 12:00'};
 					return _Utils_update(
 						model,
 						{
@@ -5710,7 +5710,7 @@ var $author$project$View$viewComments = F2(
 						]))
 				]));
 	});
-var $author$project$View$today = '2025-04-24';
+var $author$project$View$today = '2026-04-24';
 var $author$project$View$isOverdue = function (dueDate) {
 	return _Utils_cmp(dueDate, $author$project$View$today) < 0;
 };
