@@ -6,22 +6,25 @@ import Types exposing (Ticket, TicketStatus(..))
 
 
 
--- The single update function routes every Msg to its handler.
--- Each branch returns a new model - the old model is never mutated.
+-- The main update function.
+-- It routes every incoming Msg to the appropriate handler.
+-- Each branch returns a new Model (immutability is enforced by Elm).
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        -- No-op - leaves the model unchanged.
-        -- Used by stopPropagationOn in the modal to absorb click events on the box.
+        -- No-op used internally by stopPropagationOn to prevent click propagation
+        -- without triggering any state change.
         NoOp ->
             model
 
-        -- Modal form - OpenForm shows the overlay, CloseForm hides it and resets all fields.
+        -- Modal form handling
+        -- OpenForm shows the ticket creation modal
         OpenForm ->
             { model | showForm = True }
 
+        -- CloseForm hides the modal and resets all form fields to default values
         CloseForm ->
             { model
                 | showForm = False
@@ -32,8 +35,8 @@ update msg model =
                 , formError = Nothing
             }
 
-        -- Step 6 - form field handlers
-        -- Each one replaces a single field in the model record.
+        -- Form field updates
+        -- Each message updates a single field in the form state
         UpdateFormTitle title ->
             { model | formTitle = title, formError = Nothing }
 
@@ -46,10 +49,9 @@ update msg model =
         UpdateFormCategory category ->
             { model | formCategory = category }
 
-        -- Step 6 - ticket submission with validation
-        -- Validates required fields before creating a ticket.
-        -- On failure, sets formError so the view can display the message.
-        -- On success, the modal is closed and fields are reset.
+        -- Ticket creation
+        -- Validates form input before creating a new ticket
+        -- If invalid, stores an error message; otherwise adds the ticket to the list
         SubmitTicket ->
             case validateForm model of
                 Just errorMsg ->
@@ -79,36 +81,51 @@ update msg model =
                         , formError = Nothing
                     }
 
-        -- Step 7 - status change
-        -- List.map walks every ticket; only the one matching the id is updated.
-        -- All other tickets are returned unchanged - this is immutability in action.
+        -- Ticket status update
+        -- Updates only the targeted ticket while leaving others unchanged
         ChangeStatus id newStatus ->
             { model
                 | tickets =
                     List.map (applyStatusChange id newStatus) model.tickets
             }
 
-        -- Step 8 - open ticket detail
-        -- Stores the ticket id in selectedTicket (Just id).
-        -- The view uses this to decide whether to render the detail panel.
+        -- Ticket selection for detail view
+        -- Stores the selected ticket id
         SelectTicket id ->
             { model | selectedTicket = Just id }
 
-        -- Step 8 - close ticket detail
-        -- Clears selectedTicket back to Nothing.
+        -- Closes the detail view by clearing selection
         CloseDetail ->
             { model | selectedTicket = Nothing }
 
-        -- Step 9 - filter and search
+        -- Filtering system
+        -- Updates the active filter applied to the ticket list
         SetFilter filterState ->
             { model | filter = filterState }
 
+        -- Updates the search query used to filter tickets
         UpdateSearch query ->
             { model | searchQuery = query }
 
+        -- Assignment update for a ticket
+        -- Updates the assigned agent for a specific ticket
+        ChangeAssignedTo id agent ->
+            { model
+                | tickets =
+                    List.map
+                        (\t ->
+                            if t.id == id then
+                                { t | assignedTo = Just agent }
+
+                            else
+                                t
+                        )
+                        model.tickets
+            }
 
 
--- Returns the updated ticket when the id matches, or the original ticket unchanged.
+-- Updates a ticket's status if its id matches the target id.
+-- Otherwise returns the ticket unchanged.
 
 
 applyStatusChange : Int -> TicketStatus -> Ticket -> Ticket
@@ -120,18 +137,17 @@ applyStatusChange targetId newStatus ticket =
         ticket
 
 
-
--- Validates the create-ticket form.
--- Returns Nothing when the form is valid, or Just errorMsg when it is not.
+-- Validates the ticket creation form.
+-- Returns Nothing if valid, or Just error message if invalid.
 
 
 validateForm : Model -> Maybe String
 validateForm model =
     if String.length (String.trim model.formTitle) < 5 then
-        Just "Title must be at least 5 characters."
+        Just "Title must be at least 5 characters long."
 
     else if String.length (String.trim model.formDescription) < 10 then
-        Just "Description must be at least 10 characters."
+        Just "Description must be at least 10 characters long."
 
     else
         Nothing

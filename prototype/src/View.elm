@@ -1,7 +1,7 @@
 module View exposing (view)
 
-import Html exposing (Html, button, div, h1, h2, input, label, li, p, span, text, textarea, ul)
-import Html.Attributes exposing (class, placeholder, value)
+import Html exposing (Html, button, div, h1, h2, input, label, li, p, span, text, textarea, ul, select, option)
+import Html.Attributes exposing (class, placeholder, value, selected)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode
 import Model exposing (Model)
@@ -18,7 +18,7 @@ view model =
     div [ class "app" ]
         [ viewHeader
         , viewBody model
-        , -- The modal sits outside the normal flow and covers the whole screen.
+        , -- The modal sits outside the normal document flow and covers the entire screen.
           -- It is only rendered when showForm is True.
           if model.showForm then
             viewFormModal model
@@ -41,7 +41,7 @@ viewHeader =
 
 
 
--- Decides which main panel to render based on whether a ticket is selected.
+-- Determines which main panel to render based on whether a ticket is selected.
 
 
 viewBody : Model -> Html Msg
@@ -68,19 +68,22 @@ findTicket id tickets =
     List.head (List.filter (\t -> t.id == id) tickets)
 
 
+-- A function used by the main ticket list.
+
+
+visibleTickets : FilterState -> String -> List Ticket -> List Ticket
+visibleTickets filterState query tickets =
+    applyFilter filterState query tickets
+
+
 
 -- The main ticket list with filter toolbar, search bar, create button, and ticket cards.
 
 
 viewTicketList : Model -> Html Msg
 viewTicketList model =
-    let
-        visible =
-            applyFilter model.filter model.searchQuery model.tickets
-    in
     div [ class "main" ]
-        [ -- Filter toolbar - passes the active filter so each button can style itself.
-          viewToolbar model.filter
+        [ viewToolbar model.filter model.tickets
         , div [ class "list-header" ]
             [ input
                 [ placeholder "Search tickets..."
@@ -89,32 +92,36 @@ viewTicketList model =
                 , class "search-input"
                 ]
                 []
-            , button [ onClick OpenForm, class "btn-create" ] [ text "+ New Ticket" ]
+            , button [ onClick OpenForm, class "btn-create" ]
+                [ text "+ New Ticket" ]
             ]
-        , ul [ class "ticket-list" ] (List.map viewTicketCard visible)
+        , ul [ class "ticket-list" ]
+            (List.map viewTicketCard
+                (visibleTickets model.filter model.searchQuery model.tickets)
+            )
         ]
 
 
 
 -- Filter toolbar.
--- The active FilterState is compared against each button's own target so the
+-- The active FilterState is compared against each button's target so the
 -- matching button receives the "filter-btn-active" class.
 
 
-viewToolbar : FilterState -> Html Msg
-viewToolbar active =
+viewToolbar : FilterState -> List Ticket -> Html Msg
+viewToolbar active tickets =
     div [ class "toolbar" ]
-        [ filterBtn "All" All active
-        , filterBtn "Open" (ByStatus Open) active
-        , filterBtn "In Progress" (ByStatus InProgress) active
-        , filterBtn "Resolved" (ByStatus Resolved) active
-        , filterBtn "Closed" (ByStatus Closed) active
+        [ filterBtn ("All (" ++ String.fromInt (List.length tickets) ++ ")") All active
+        , filterBtn ("Open (" ++ String.fromInt (countByStatus Open tickets) ++ ")") (ByStatus Open) active
+        , filterBtn ("In Progress (" ++ String.fromInt (countByStatus InProgress tickets) ++ ")") (ByStatus InProgress) active
+        , filterBtn ("Resolved (" ++ String.fromInt (countByStatus Resolved tickets) ++ ")") (ByStatus Resolved) active
+        , filterBtn ("Closed (" ++ String.fromInt (countByStatus Closed tickets) ++ ")") (ByStatus Closed) active
         ]
 
 
 
 -- A single filter button.
--- Compares its own target against the currently active FilterState to decide
+-- Compares its target against the currently active FilterState to decide
 -- whether to apply the highlighted style.
 
 
@@ -131,12 +138,40 @@ filterBtn lbl target active =
             else
                 "filter-btn"
     in
-    button [ onClick (SetFilter target), class cls ] [ text lbl ]
+    button
+        [ onClick (SetFilter target)
+        , class (cls ++ " " ++ filterClass target)
+        ]
+        [ text lbl ]
 
+
+-- Changes the color of the button depending on the filter status.
+
+
+filterClass : FilterState -> String
+filterClass filter =
+    case filter of
+        All ->
+            ""
+
+        ByStatus Open ->
+            "status-open"
+
+        ByStatus InProgress ->
+            "status-inprogress"
+
+        ByStatus Resolved ->
+            "status-resolved"
+
+        ByStatus Closed ->
+            "status-closed"
+
+        ByPriority _ ->
+            ""
 
 
 -- Applies the active filter and search query to the full ticket list.
--- Pure function - no side effects, always returns the same output for the same input.
+-- Pure function: no side effects, always returns the same output for the same input.
 
 
 applyFilter : FilterState -> String -> List Ticket -> List Ticket
@@ -168,6 +203,12 @@ applyFilter filterState query tickets =
             afterFilter
 
 
+countByStatus : TicketStatus -> List Ticket -> Int
+countByStatus status tickets =
+    List.filter (\t -> t.status == status) tickets
+        |> List.length
+
+
 
 -- A single ticket card showing the key fields and action buttons.
 
@@ -185,7 +226,7 @@ viewTicketCard ticket =
         , div [ class "card-title" ] [ text ticket.title ]
         , div [ class "card-meta" ] [ text ticket.category ]
         , div [ class "card-actions" ]
-            [ viewNextStatusButton ticket
+            [ viewStatusDropdown ticket
             , button [ onClick (SelectTicket ticket.id), class "btn-secondary" ]
                 [ text "View Details" ]
             ]
@@ -193,34 +234,65 @@ viewTicketCard ticket =
 
 
 
--- Renders the next-status button based on the current status.
+-- Renders the status selector based on the current ticket state.
 -- Pattern matching ensures every status variant is handled.
 
 
-viewNextStatusButton : Ticket -> Html Msg
-viewNextStatusButton ticket =
-    case ticket.status of
+viewStatusDropdown : Ticket -> Html Msg
+viewStatusDropdown ticket =
+    select
+        [ value (statusToString ticket.status)
+        , onInput (\s -> ChangeStatus ticket.id (stringToStatus s))
+        , class ("status-select status-" ++ statusClass ticket.status)
+        ]
+        [ option [ value "Open", selected (ticket.status == Open) ] [ text "Open" ]
+        , option [ value "InProgress", selected (ticket.status == InProgress) ] [ text "In Progress" ]
+        , option [ value "Resolved", selected (ticket.status == Resolved) ] [ text "Resolved" ]
+        , option [ value "Closed", selected (ticket.status == Closed) ] [ text "Closed" ]
+        ]
+
+-- Helper function for conversion
+
+
+stringToStatus : String -> TicketStatus
+stringToStatus str =
+    case str of
+        "Open" ->
+            Open
+
+        "InProgress" ->
+            InProgress
+
+        "Resolved" ->
+            Resolved
+
+        "Closed" ->
+            Closed
+
+        _ ->
+            Open
+
+
+statusToString : TicketStatus -> String
+statusToString status =
+    case status of
         Open ->
-            button [ onClick (ChangeStatus ticket.id InProgress), class "btn-primary" ]
-                [ text "Start" ]
+            "Open"
 
         InProgress ->
-            button [ onClick (ChangeStatus ticket.id Resolved), class "btn-primary" ]
-                [ text "Resolve" ]
+            "InProgress"
 
         Resolved ->
-            button [ onClick (ChangeStatus ticket.id Closed), class "btn-primary" ]
-                [ text "Close" ]
+            "Resolved"
 
         Closed ->
-            button [ onClick (ChangeStatus ticket.id Open), class "btn-secondary" ]
-                [ text "Reopen" ]
+            "Closed"
 
 
 
 -- The modal overlay for the create-ticket form.
--- Clicking the dark backdrop sends CloseForm, so the user can dismiss by clicking outside.
--- Clicks inside the white box are stopped from bubbling to the backdrop via stopPropagationOn.
+-- Clicking the dark backdrop sends CloseForm so the user can dismiss it by clicking outside.
+-- Clicks inside the modal box are stopped from bubbling to the backdrop via stopPropagationOn.
 
 
 viewFormModal : Model -> Html Msg
@@ -310,19 +382,23 @@ priorityBtn target current =
 
 
 
--- Category buttons.
+-- Category selector.
 
 
 viewCategorySelector : String -> Html Msg
 viewCategorySelector current =
     div [ class "selector" ]
         [ p [ class "selector-label" ] [ text "Category" ]
-        , div [ class "selector-btns" ]
-            [ viewCategoryBtn "Hardware" current
-            , viewCategoryBtn "Software" current
-            , viewCategoryBtn "Network" current
-            , viewCategoryBtn "Access" current
-            , viewCategoryBtn "Other" current
+        , select
+            [ value current
+            , onInput UpdateFormCategory
+            , class "form-input"
+            ]
+            [ option [ value "Hardware" ] [ text "Hardware" ]
+            , option [ value "Software" ] [ text "Software" ]
+            , option [ value "Network" ] [ text "Network" ]
+            , option [ value "Access" ] [ text "Access" ]
+            , option [ value "Other" ] [ text "Other" ]
             ]
         ]
 
@@ -344,7 +420,7 @@ viewCategoryBtn cat current =
 
 
 -- The detail view shown when a ticket is selected.
--- Wires Back to CloseDetail and status buttons to ChangeStatus.
+-- Wires the Back button to CloseDetail and status controls to ChangeStatus.
 
 
 viewDetail : Ticket -> Html Msg
@@ -362,14 +438,17 @@ viewDetail ticket =
             , span [] [ text ("  Created: " ++ ticket.createdAt) ]
             ]
         , div [ class "detail-assigned" ]
-            [ text
-                ("Assigned to: "
-                    ++ Maybe.withDefault "Unassigned" ticket.assignedTo
-                )
+            [ label [] [ text "Assigned to: " ]
+            , input
+                [ value (Maybe.withDefault "" ticket.assignedTo)
+                , onInput (\v -> ChangeAssignedTo ticket.id v)
+                , placeholder "Assign agent..."
+                ]
+                []
             ]
         , p [ class "detail-description" ] [ text ticket.description ]
         , div [ class "detail-actions" ]
-            [ viewNextStatusButton ticket ]
+            [ viewStatusDropdown ticket ]
         ]
 
 

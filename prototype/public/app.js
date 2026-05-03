@@ -5241,8 +5241,8 @@ var $author$project$Update$applyStatusChange = F3(
 var $elm$core$String$trim = _String_trim;
 var $author$project$Update$validateForm = function (model) {
 	return ($elm$core$String$length(
-		$elm$core$String$trim(model.formTitle)) < 5) ? $elm$core$Maybe$Just('Title must be at least 5 characters.') : (($elm$core$String$length(
-		$elm$core$String$trim(model.formDescription)) < 10) ? $elm$core$Maybe$Just('Description must be at least 10 characters.') : $elm$core$Maybe$Nothing);
+		$elm$core$String$trim(model.formTitle)) < 5) ? $elm$core$Maybe$Just('Title must be at least 5 characters long.') : (($elm$core$String$length(
+		$elm$core$String$trim(model.formDescription)) < 10) ? $elm$core$Maybe$Just('Description must be at least 10 characters long.') : $elm$core$Maybe$Nothing);
 };
 var $author$project$Update$update = F2(
 	function (msg, model) {
@@ -5340,11 +5340,28 @@ var $author$project$Update$update = F2(
 				return _Utils_update(
 					model,
 					{filter: filterState});
-			default:
+			case 'UpdateSearch':
 				var query = msg.a;
 				return _Utils_update(
 					model,
 					{searchQuery: query});
+			default:
+				var id = msg.a;
+				var agent = msg.b;
+				return _Utils_update(
+					model,
+					{
+						tickets: A2(
+							$elm$core$List$map,
+							function (t) {
+								return _Utils_eq(t.id, id) ? _Utils_update(
+									t,
+									{
+										assignedTo: $elm$core$Maybe$Just(agent)
+									}) : t;
+							},
+							model.tickets)
+					});
 		}
 	});
 var $elm$json$Json$Encode$string = _Json_wrap;
@@ -5389,9 +5406,15 @@ var $author$project$View$findTicket = F2(
 				},
 				tickets));
 	});
+var $author$project$Msg$ChangeAssignedTo = F2(
+	function (a, b) {
+		return {$: 'ChangeAssignedTo', a: a, b: b};
+	});
 var $author$project$Msg$CloseDetail = {$: 'CloseDetail'};
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
+var $elm$html$Html$input = _VirtualDom_node('input');
+var $elm$html$Html$label = _VirtualDom_node('label');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -5409,7 +5432,41 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		'click',
 		$elm$json$Json$Decode$succeed(msg));
 };
+var $elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 'MayStopPropagation', a: a};
+};
+var $elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $elm$html$Html$Events$targetValue = A2(
+	$elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	$elm$json$Json$Decode$string);
+var $elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		$elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			$elm$json$Json$Decode$map,
+			$elm$html$Html$Events$alwaysStop,
+			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
+};
 var $elm$html$Html$p = _VirtualDom_node('p');
+var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $author$project$View$priorityClass = function (priority) {
 	switch (priority.$) {
 		case 'Low':
@@ -5459,66 +5516,116 @@ var $author$project$View$statusLabel = function (status) {
 			return 'Closed';
 	}
 };
+var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Msg$ChangeStatus = F2(
 	function (a, b) {
 		return {$: 'ChangeStatus', a: a, b: b};
 	});
-var $author$project$View$viewNextStatusButton = function (ticket) {
-	var _v0 = ticket.status;
-	switch (_v0.$) {
+var $elm$html$Html$option = _VirtualDom_node('option');
+var $elm$html$Html$select = _VirtualDom_node('select');
+var $elm$json$Json$Encode$bool = _Json_wrap;
+var $elm$html$Html$Attributes$boolProperty = F2(
+	function (key, bool) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$bool(bool));
+	});
+var $elm$html$Html$Attributes$selected = $elm$html$Html$Attributes$boolProperty('selected');
+var $author$project$View$statusToString = function (status) {
+	switch (status.$) {
 		case 'Open':
-			return A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						A2($author$project$Msg$ChangeStatus, ticket.id, $author$project$Types$InProgress)),
-						$elm$html$Html$Attributes$class('btn-primary')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Start')
-					]));
+			return 'Open';
 		case 'InProgress':
-			return A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						A2($author$project$Msg$ChangeStatus, ticket.id, $author$project$Types$Resolved)),
-						$elm$html$Html$Attributes$class('btn-primary')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Resolve')
-					]));
+			return 'InProgress';
 		case 'Resolved':
-			return A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						A2($author$project$Msg$ChangeStatus, ticket.id, $author$project$Types$Closed)),
-						$elm$html$Html$Attributes$class('btn-primary')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Close')
-					]));
+			return 'Resolved';
 		default:
-			return A2(
-				$elm$html$Html$button,
+			return 'Closed';
+	}
+};
+var $author$project$View$stringToStatus = function (str) {
+	switch (str) {
+		case 'Open':
+			return $author$project$Types$Open;
+		case 'InProgress':
+			return $author$project$Types$InProgress;
+		case 'Resolved':
+			return $author$project$Types$Resolved;
+		case 'Closed':
+			return $author$project$Types$Closed;
+		default:
+			return $author$project$Types$Open;
+	}
+};
+var $author$project$View$viewStatusDropdown = function (ticket) {
+	return A2(
+		$elm$html$Html$select,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$value(
+				$author$project$View$statusToString(ticket.status)),
+				$elm$html$Html$Events$onInput(
+				function (s) {
+					return A2(
+						$author$project$Msg$ChangeStatus,
+						ticket.id,
+						$author$project$View$stringToStatus(s));
+				}),
+				$elm$html$Html$Attributes$class(
+				'status-select status-' + $author$project$View$statusClass(ticket.status))
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$option,
 				_List_fromArray(
 					[
-						$elm$html$Html$Events$onClick(
-						A2($author$project$Msg$ChangeStatus, ticket.id, $author$project$Types$Open)),
-						$elm$html$Html$Attributes$class('btn-secondary')
+						$elm$html$Html$Attributes$value('Open'),
+						$elm$html$Html$Attributes$selected(
+						_Utils_eq(ticket.status, $author$project$Types$Open))
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Reopen')
-					]));
-	}
+						$elm$html$Html$text('Open')
+					])),
+				A2(
+				$elm$html$Html$option,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$value('InProgress'),
+						$elm$html$Html$Attributes$selected(
+						_Utils_eq(ticket.status, $author$project$Types$InProgress))
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('In Progress')
+					])),
+				A2(
+				$elm$html$Html$option,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$value('Resolved'),
+						$elm$html$Html$Attributes$selected(
+						_Utils_eq(ticket.status, $author$project$Types$Resolved))
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Resolved')
+					])),
+				A2(
+				$elm$html$Html$option,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$value('Closed'),
+						$elm$html$Html$Attributes$selected(
+						_Utils_eq(ticket.status, $author$project$Types$Closed))
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Closed')
+					]))
+			]));
 };
 var $elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
@@ -5619,8 +5726,26 @@ var $author$project$View$viewDetail = function (ticket) {
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text(
-						'Assigned to: ' + A2($elm$core$Maybe$withDefault, 'Unassigned', ticket.assignedTo))
+						A2(
+						$elm$html$Html$label,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Assigned to: ')
+							])),
+						A2(
+						$elm$html$Html$input,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$value(
+								A2($elm$core$Maybe$withDefault, '', ticket.assignedTo)),
+								$elm$html$Html$Events$onInput(
+								function (v) {
+									return A2($author$project$Msg$ChangeAssignedTo, ticket.id, v);
+								}),
+								$elm$html$Html$Attributes$placeholder('Assign agent...')
+							]),
+						_List_Nil)
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -5640,7 +5765,7 @@ var $author$project$View$viewDetail = function (ticket) {
 					]),
 				_List_fromArray(
 					[
-						$author$project$View$viewNextStatusButton(ticket)
+						$author$project$View$viewStatusDropdown(ticket)
 					]))
 			]));
 };
@@ -5648,83 +5773,7 @@ var $author$project$Msg$OpenForm = {$: 'OpenForm'};
 var $author$project$Msg$UpdateSearch = function (a) {
 	return {$: 'UpdateSearch', a: a};
 };
-var $elm$core$String$toLower = _String_toLower;
-var $author$project$View$applyFilter = F3(
-	function (filterState, query, tickets) {
-		var q = $elm$core$String$toLower(
-			$elm$core$String$trim(query));
-		var afterFilter = function () {
-			switch (filterState.$) {
-				case 'All':
-					return tickets;
-				case 'ByStatus':
-					var status = filterState.a;
-					return A2(
-						$elm$core$List$filter,
-						function (t) {
-							return _Utils_eq(t.status, status);
-						},
-						tickets);
-				default:
-					var priority = filterState.a;
-					return A2(
-						$elm$core$List$filter,
-						function (t) {
-							return _Utils_eq(t.priority, priority);
-						},
-						tickets);
-			}
-		}();
-		return $elm$core$String$isEmpty(q) ? afterFilter : A2(
-			$elm$core$List$filter,
-			function (t) {
-				return A2(
-					$elm$core$String$contains,
-					q,
-					$elm$core$String$toLower(t.title)) || A2(
-					$elm$core$String$contains,
-					q,
-					$elm$core$String$toLower(t.description));
-			},
-			afterFilter);
-	});
-var $elm$html$Html$input = _VirtualDom_node('input');
-var $elm$html$Html$Events$alwaysStop = function (x) {
-	return _Utils_Tuple2(x, true);
-};
-var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
-	return {$: 'MayStopPropagation', a: a};
-};
-var $elm$html$Html$Events$stopPropagationOn = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
-	});
-var $elm$json$Json$Decode$field = _Json_decodeField;
-var $elm$json$Json$Decode$at = F2(
-	function (fields, decoder) {
-		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
-	});
-var $elm$json$Json$Decode$string = _Json_decodeString;
-var $elm$html$Html$Events$targetValue = A2(
-	$elm$json$Json$Decode$at,
-	_List_fromArray(
-		['target', 'value']),
-	$elm$json$Json$Decode$string);
-var $elm$html$Html$Events$onInput = function (tagger) {
-	return A2(
-		$elm$html$Html$Events$stopPropagationOn,
-		'input',
-		A2(
-			$elm$json$Json$Decode$map,
-			$elm$html$Html$Events$alwaysStop,
-			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
-};
-var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $elm$html$Html$ul = _VirtualDom_node('ul');
-var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Msg$SelectTicket = function (a) {
 	return {$: 'SelectTicket', a: a};
 };
@@ -5810,7 +5859,7 @@ var $author$project$View$viewTicketCard = function (ticket) {
 					]),
 				_List_fromArray(
 					[
-						$author$project$View$viewNextStatusButton(ticket),
+						$author$project$View$viewStatusDropdown(ticket),
 						A2(
 						$elm$html$Html$button,
 						_List_fromArray(
@@ -5829,8 +5878,41 @@ var $author$project$View$viewTicketCard = function (ticket) {
 var $author$project$Types$ByStatus = function (a) {
 	return {$: 'ByStatus', a: a};
 };
+var $author$project$View$countByStatus = F2(
+	function (status, tickets) {
+		return $elm$core$List$length(
+			A2(
+				$elm$core$List$filter,
+				function (t) {
+					return _Utils_eq(t.status, status);
+				},
+				tickets));
+	});
 var $author$project$Msg$SetFilter = function (a) {
 	return {$: 'SetFilter', a: a};
+};
+var $author$project$View$filterClass = function (filter) {
+	switch (filter.$) {
+		case 'All':
+			return '';
+		case 'ByStatus':
+			switch (filter.a.$) {
+				case 'Open':
+					var _v1 = filter.a;
+					return 'status-open';
+				case 'InProgress':
+					var _v2 = filter.a;
+					return 'status-inprogress';
+				case 'Resolved':
+					var _v3 = filter.a;
+					return 'status-resolved';
+				default:
+					var _v4 = filter.a;
+					return 'status-closed';
+			}
+		default:
+			return '';
+	}
 };
 var $author$project$View$filterBtn = F3(
 	function (lbl, target, active) {
@@ -5842,47 +5924,101 @@ var $author$project$View$filterBtn = F3(
 				[
 					$elm$html$Html$Events$onClick(
 					$author$project$Msg$SetFilter(target)),
-					$elm$html$Html$Attributes$class(cls)
+					$elm$html$Html$Attributes$class(
+					cls + (' ' + $author$project$View$filterClass(target)))
 				]),
 			_List_fromArray(
 				[
 					$elm$html$Html$text(lbl)
 				]));
 	});
-var $author$project$View$viewToolbar = function (active) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('toolbar')
-			]),
-		_List_fromArray(
-			[
-				A3($author$project$View$filterBtn, 'All', $author$project$Types$All, active),
-				A3(
-				$author$project$View$filterBtn,
-				'Open',
-				$author$project$Types$ByStatus($author$project$Types$Open),
-				active),
-				A3(
-				$author$project$View$filterBtn,
-				'In Progress',
-				$author$project$Types$ByStatus($author$project$Types$InProgress),
-				active),
-				A3(
-				$author$project$View$filterBtn,
-				'Resolved',
-				$author$project$Types$ByStatus($author$project$Types$Resolved),
-				active),
-				A3(
-				$author$project$View$filterBtn,
-				'Closed',
-				$author$project$Types$ByStatus($author$project$Types$Closed),
-				active)
-			]));
-};
+var $author$project$View$viewToolbar = F2(
+	function (active, tickets) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('toolbar')
+				]),
+			_List_fromArray(
+				[
+					A3(
+					$author$project$View$filterBtn,
+					'All (' + ($elm$core$String$fromInt(
+						$elm$core$List$length(tickets)) + ')'),
+					$author$project$Types$All,
+					active),
+					A3(
+					$author$project$View$filterBtn,
+					'Open (' + ($elm$core$String$fromInt(
+						A2($author$project$View$countByStatus, $author$project$Types$Open, tickets)) + ')'),
+					$author$project$Types$ByStatus($author$project$Types$Open),
+					active),
+					A3(
+					$author$project$View$filterBtn,
+					'In Progress (' + ($elm$core$String$fromInt(
+						A2($author$project$View$countByStatus, $author$project$Types$InProgress, tickets)) + ')'),
+					$author$project$Types$ByStatus($author$project$Types$InProgress),
+					active),
+					A3(
+					$author$project$View$filterBtn,
+					'Resolved (' + ($elm$core$String$fromInt(
+						A2($author$project$View$countByStatus, $author$project$Types$Resolved, tickets)) + ')'),
+					$author$project$Types$ByStatus($author$project$Types$Resolved),
+					active),
+					A3(
+					$author$project$View$filterBtn,
+					'Closed (' + ($elm$core$String$fromInt(
+						A2($author$project$View$countByStatus, $author$project$Types$Closed, tickets)) + ')'),
+					$author$project$Types$ByStatus($author$project$Types$Closed),
+					active)
+				]));
+	});
+var $elm$core$String$toLower = _String_toLower;
+var $author$project$View$applyFilter = F3(
+	function (filterState, query, tickets) {
+		var q = $elm$core$String$toLower(
+			$elm$core$String$trim(query));
+		var afterFilter = function () {
+			switch (filterState.$) {
+				case 'All':
+					return tickets;
+				case 'ByStatus':
+					var status = filterState.a;
+					return A2(
+						$elm$core$List$filter,
+						function (t) {
+							return _Utils_eq(t.status, status);
+						},
+						tickets);
+				default:
+					var priority = filterState.a;
+					return A2(
+						$elm$core$List$filter,
+						function (t) {
+							return _Utils_eq(t.priority, priority);
+						},
+						tickets);
+			}
+		}();
+		return $elm$core$String$isEmpty(q) ? afterFilter : A2(
+			$elm$core$List$filter,
+			function (t) {
+				return A2(
+					$elm$core$String$contains,
+					q,
+					$elm$core$String$toLower(t.title)) || A2(
+					$elm$core$String$contains,
+					q,
+					$elm$core$String$toLower(t.description));
+			},
+			afterFilter);
+	});
+var $author$project$View$visibleTickets = F3(
+	function (filterState, query, tickets) {
+		return A3($author$project$View$applyFilter, filterState, query, tickets);
+	});
 var $author$project$View$viewTicketList = function (model) {
-	var visible = A3($author$project$View$applyFilter, model.filter, model.searchQuery, model.tickets);
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -5891,7 +6027,7 @@ var $author$project$View$viewTicketList = function (model) {
 			]),
 		_List_fromArray(
 			[
-				$author$project$View$viewToolbar(model.filter),
+				A2($author$project$View$viewToolbar, model.filter, model.tickets),
 				A2(
 				$elm$html$Html$div,
 				_List_fromArray(
@@ -5928,7 +6064,10 @@ var $author$project$View$viewTicketList = function (model) {
 					[
 						$elm$html$Html$Attributes$class('ticket-list')
 					]),
-				A2($elm$core$List$map, $author$project$View$viewTicketCard, visible))
+				A2(
+					$elm$core$List$map,
+					$author$project$View$viewTicketCard,
+					A3($author$project$View$visibleTickets, model.filter, model.searchQuery, model.tickets)))
 			]));
 };
 var $author$project$View$viewBody = function (model) {
@@ -5955,27 +6094,10 @@ var $author$project$Msg$UpdateFormDescription = function (a) {
 var $author$project$Msg$UpdateFormTitle = function (a) {
 	return {$: 'UpdateFormTitle', a: a};
 };
-var $elm$html$Html$label = _VirtualDom_node('label');
 var $elm$html$Html$textarea = _VirtualDom_node('textarea');
 var $author$project$Msg$UpdateFormCategory = function (a) {
 	return {$: 'UpdateFormCategory', a: a};
 };
-var $author$project$View$viewCategoryBtn = F2(
-	function (cat, current) {
-		return A2(
-			$elm$html$Html$button,
-			_List_fromArray(
-				[
-					$elm$html$Html$Events$onClick(
-					$author$project$Msg$UpdateFormCategory(cat)),
-					$elm$html$Html$Attributes$class(
-					_Utils_eq(cat, current) ? 'btn-active' : 'btn-option')
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text(cat)
-				]));
-	});
 var $author$project$View$viewCategorySelector = function (current) {
 	return A2(
 		$elm$html$Html$div,
@@ -5996,18 +6118,65 @@ var $author$project$View$viewCategorySelector = function (current) {
 						$elm$html$Html$text('Category')
 					])),
 				A2(
-				$elm$html$Html$div,
+				$elm$html$Html$select,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('selector-btns')
+						$elm$html$Html$Attributes$value(current),
+						$elm$html$Html$Events$onInput($author$project$Msg$UpdateFormCategory),
+						$elm$html$Html$Attributes$class('form-input')
 					]),
 				_List_fromArray(
 					[
-						A2($author$project$View$viewCategoryBtn, 'Hardware', current),
-						A2($author$project$View$viewCategoryBtn, 'Software', current),
-						A2($author$project$View$viewCategoryBtn, 'Network', current),
-						A2($author$project$View$viewCategoryBtn, 'Access', current),
-						A2($author$project$View$viewCategoryBtn, 'Other', current)
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$value('Hardware')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Hardware')
+							])),
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$value('Software')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Software')
+							])),
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$value('Network')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Network')
+							])),
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$value('Access')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Access')
+							])),
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$value('Other')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Other')
+							]))
 					]))
 			]));
 };

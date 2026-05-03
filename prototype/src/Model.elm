@@ -4,21 +4,35 @@ import Types exposing (FilterState(..), Priority(..), Ticket, TicketStatus(..))
 
 
 
+
 -- The full application state.
 -- Every field that can change over time lives here.
+-- This represents the single source of truth for the entire application.
 
 
 type alias Model =
     { tickets : List Ticket
     , nextId : Int
+
+    -- Current filter applied to the ticket list (status / priority / all)
     , filter : FilterState
+
+    -- Text entered in the search bar used to filter tickets by keyword
     , searchQuery : String
+
+    -- ID of the currently selected ticket (used for detail view)
     , selectedTicket : Maybe Int
+
+    -- Controls whether the "create ticket" modal is visible
     , showForm : Bool
+
+    -- Form state for creating a new ticket
     , formTitle : String
     , formDescription : String
     , formPriority : Priority
     , formCategory : String
+
+    -- Holds validation error message for the form (if any)
     , formError : Maybe String
     }
 
@@ -26,6 +40,7 @@ type alias Model =
 
 -- The initial state of the application.
 -- Seeds 4 example tickets so the list is not empty on first load.
+-- Each field is initialized to a safe default state.
 
 
 init : Model
@@ -46,7 +61,8 @@ init =
 
 
 -- Example tickets that populate the app on startup.
--- Each one exercises a different status and priority so all states are visible.
+-- Each ticket is designed to demonstrate a different status and priority,
+-- ensuring all UI states are visible for testing and demonstration.
 
 
 seedTickets : List Ticket

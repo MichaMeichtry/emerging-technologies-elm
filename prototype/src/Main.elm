@@ -8,10 +8,11 @@ import View exposing (view)
 
 
 
--- Entry point. Wires together the three parts of The Elm Architecture:
--- init supplies the starting model,
--- update handles all messages,
--- view renders the current model to HTML.
+-- Entry point of the application.
+-- This wires together The Elm Architecture (TEA):
+-- - init: provides the initial application state (Model)
+-- - update: handles all incoming messages (state transitions)
+-- - view: renders the current state as HTML
 
 
 main : Program () Model Msg
