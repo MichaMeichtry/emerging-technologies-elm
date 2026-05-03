@@ -2,8 +2,7 @@ module Update exposing (update)
 
 import Model exposing (Model)
 import Msg exposing (Msg(..))
-import Types exposing (Ticket, TicketStatus(..))
-
+import Types exposing (Ticket, TicketComment, TicketHistoryEntry, TicketStatus(..))
 
 
 -- The main update function.
@@ -32,6 +31,7 @@ update msg model =
                 , formDescription = ""
                 , formPriority = Types.Medium
                 , formCategory = "Software"
+                , formDueDate = ""
                 , formError = Nothing
             }
 
@@ -49,9 +49,12 @@ update msg model =
         UpdateFormCategory category ->
             { model | formCategory = category }
 
+        UpdateFormDueDate date ->
+            { model | formDueDate = date }
+
         -- Ticket creation
-        -- Validates form input before creating a new ticket
-        -- If invalid, stores an error message; otherwise adds the ticket to the list
+        -- Validates form input before creating a new ticket.
+        -- If invalid, stores an error message; otherwise adds the ticket to the list.
         SubmitTicket ->
             case validateForm model of
                 Just errorMsg ->
@@ -59,6 +62,13 @@ update msg model =
 
                 Nothing ->
                     let
+                        maybeDue =
+                            if String.isEmpty (String.trim model.formDueDate) then
+                                Nothing
+
+                            else
+                                Just (String.trim model.formDueDate)
+
                         newTicket =
                             { id = model.nextId
                             , title = String.trim model.formTitle
@@ -67,7 +77,10 @@ update msg model =
                             , priority = model.formPriority
                             , category = model.formCategory
                             , createdAt = "2025-04-24"
+                            , dueDate = maybeDue
                             , assignedTo = Nothing
+                            , comments = []
+                            , history = []
                             }
                     in
                     { model
@@ -78,28 +91,31 @@ update msg model =
                         , formDescription = ""
                         , formPriority = Types.Medium
                         , formCategory = "Software"
+                        , formDueDate = ""
                         , formError = Nothing
                     }
 
         -- Ticket status update
-        -- Updates only the targeted ticket while leaving others unchanged
+        -- Appends a history entry recording the transition, then updates the status.
         ChangeStatus id newStatus ->
             { model
                 | tickets =
                     List.map (applyStatusChange id newStatus) model.tickets
             }
 
-        -- Ticket selection for detail view
-        -- Stores the selected ticket id
+        -- Ticket selection for detail view - stores the selected ticket id
         SelectTicket id ->
             { model | selectedTicket = Just id }
 
-        -- Closes the detail view by clearing selection
+        -- Closes the detail view and resets the comment input fields
         CloseDetail ->
-            { model | selectedTicket = Nothing }
+            { model
+                | selectedTicket = Nothing
+                , commentAuthor = ""
+                , commentBody = ""
+            }
 
-        -- Filtering system
-        -- Updates the active filter applied to the ticket list
+        -- Filtering system - updates the active filter applied to the ticket list
         SetFilter filterState ->
             { model | filter = filterState }
 
@@ -107,8 +123,7 @@ update msg model =
         UpdateSearch query ->
             { model | searchQuery = query }
 
-        -- Assignment update for a ticket
-        -- Updates the assigned agent for a specific ticket
+        -- Assignment update for a ticket - updates the assigned agent for a specific ticket
         ChangeAssignedTo id agent ->
             { model
                 | tickets =
@@ -123,15 +138,69 @@ update msg model =
                         model.tickets
             }
 
+        -- Comment field updates for the detail view
+        UpdateCommentAuthor author ->
+            { model | commentAuthor = author }
 
--- Updates a ticket's status if its id matches the target id.
+        UpdateCommentBody body ->
+            { model | commentBody = body }
+
+        -- Submits a comment if both author and body are non-empty.
+        -- Appends the comment to the ticket's comment list and resets input fields.
+        SubmitComment id ->
+            let
+                author =
+                    String.trim model.commentAuthor
+
+                body =
+                    String.trim model.commentBody
+            in
+            if String.isEmpty author || String.isEmpty body then
+                model
+
+            else
+                let
+                    newComment =
+                        { author = author
+                        , body = body
+                        , postedAt = "2025-04-24 12:00"
+                        }
+                in
+                { model
+                    | tickets =
+                        List.map
+                            (\t ->
+                                if t.id == id then
+                                    { t | comments = t.comments ++ [ newComment ] }
+
+                                else
+                                    t
+                            )
+                            model.tickets
+                    , commentBody = ""
+                }
+
+
+-- Updates a ticket's status and appends a history entry if its id matches.
 -- Otherwise returns the ticket unchanged.
 
 
 applyStatusChange : Int -> TicketStatus -> Ticket -> Ticket
 applyStatusChange targetId newStatus ticket =
     if ticket.id == targetId then
-        { ticket | status = newStatus }
+        let
+            entry : TicketHistoryEntry
+            entry =
+                { from = ticket.status
+                , to = newStatus
+                , changedBy = "Agent"
+                , changedAt = "2025-04-24 12:00"
+                }
+        in
+        { ticket
+            | status = newStatus
+            , history = ticket.history ++ [ entry ]
+        }
 
     else
         ticket
