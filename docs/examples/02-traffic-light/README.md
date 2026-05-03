@@ -13,7 +13,7 @@ Click **▶ Compile** to run it. No account or local setup required.
 A traffic light with a single **Next** button.
 
 - Starts at `Red`
-- Each click advances the state: `Red → Green → Yellow → Red`
+- Each click advances the state: `Red > Green > Yellow > Red`
 - The active light is bright, the other two are dimmed to simulate unlit bulbs
 - A label below the housing describes the current state
 
