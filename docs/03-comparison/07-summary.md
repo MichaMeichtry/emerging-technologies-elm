@@ -74,4 +74,4 @@ Elm's answer is the most explicit. It trades flexibility, ecosystem breadth, and
 
 ---
 
-<sub>Previous | [When Elm Is Not a Good Choice](06-when-elm-is-not-a-good-choice.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [Prototype Description](../04-prototype/01-prototype-description.md)</sub>
+<sub>Previous | [When Elm Is Not a Good Choice](06-when-elm-is-not-a-good-choice.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [Prototype Overview](../04-prototype/01-prototype-overview.md)</sub>

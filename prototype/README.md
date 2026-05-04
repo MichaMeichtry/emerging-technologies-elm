@@ -47,10 +47,10 @@ prototype/
 │   └── style.css               # Application styles
 └── src/
     ├── Main.elm                # Entry point: wires together init, update, view
-    ├── Types.elm               # All custom type definitions: Ticket, TicketStatus, Priority, FilterState
     ├── Model.elm               # Model record, init function, and seed tickets
-    ├── Update.elm              # The update function and all Msg handling logic
     ├── Msg.elm                 # All Msg variant declarations
+    ├── Types.elm               # All custom type definitions: Ticket, TicketStatus, Priority, FilterState
+    ├── Update.elm              # The update function and all Msg handling logic
     └── View.elm                # All view functions and HTML rendering logic
 ```
 
@@ -58,4 +58,4 @@ prototype/
 
 ## Documentation
 
-Full prototype documentation is available in [docs/04-prototype/](../docs/04-prototype/).
+Full prototype documentation is available in [docs/04-prototype/01-prototype-overview](../docs/04-prototype/01-prototype-overview.md).

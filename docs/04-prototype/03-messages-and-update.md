@@ -265,13 +265,13 @@ The filtering and rendering logic is deliberately absent from `update`. Update h
 
 | File                                                  | Description                                  |
 | ----------------------------------------------------- | -------------------------------------------- |
-| [Prototype README](../../prototype/README.md)         | Setup and run instructions for the prototype |
-| [Prototype Source](../../prototype/src/)              | All Elm source files                         |
 | [01 - Prototype Overview](01-prototype-overview.md)   | Application features and structure           |
 | [02 - Data Model](02-data-model.md)                   | Types.elm and Model.elm walkthrough          |
-| [03 - Messages and Update](03-messages-and-update.md) | This file                                    |
+| [03 - Messages and Update](03-messages-and-update.md) | Msg.elm and Update.elm walkthrough           |
 | [04 - View](04-view.md)                               | View.elm walkthrough                         |
-| [05 - How to Run and Test](05-how-to-run-and-test.md) | Setup, run commands, and test scenarios      |
+| [05 - Test Scenarios](05-test-scenarios.md)           | This file                                    |
+| [Prototype README](../../prototype/README.md)         | Setup and run instructions for the prototype |
+| [Prototype Source](../../prototype/src/)              | All Elm source files                         |
 
 ---
 

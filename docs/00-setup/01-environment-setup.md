@@ -47,7 +47,7 @@ Expected output: `0.19.1`
 Once Elm is installed, navigate to the prototype folder.
 
 If you have not made any changes to the Elm source files, the application is already compiled.
-You can open `public/index.html` directly in your browser - no build step needed.
+You can open `public/index.html` directly in your browser, no build step needed.
 
 If you have made changes to the Elm source files, recompile first:
 
