@@ -13,6 +13,16 @@ Third, the application is immediately relatable to developers and students, whic
 
 ---
 
+## How to Read This Documentation
+
+This section is a walkthrough of the source code and is most useful when the prototype is running alongside it. Before reading further, it is recommended to open the prototype in your browser. The setup is straight forward and is covered in [prototype/README.md](../../prototype/README.md).
+
+Once it is running, keep it open next to the documentation. The feature descriptions, data model explanations, and update logic all refer to things you can see and interact with directly. Reading this section without the prototype open is possible but loses most of its practical value.
+
+If you prefer to explore interactively before reading the code walkthrough, jump to [Test Scenarios](05-test-scenarios.md) first and use it as a map. Each scenario names the Elm concept it demonstrates, so you can follow the scenarios in the browser and then return here to read how they work.
+
+---
+
 ## Features
 
 ### Ticket list and navigation
