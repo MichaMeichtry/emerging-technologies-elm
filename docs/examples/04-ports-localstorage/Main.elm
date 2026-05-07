@@ -14,12 +14,12 @@ import Html.Events exposing (onInput)
 -- Each port declaration generates a function that Elm can call (outgoing)
 -- or a subscription the app can listen to (incoming).
 
--- Outgoing port: Elm → JavaScript
+-- Outgoing port: Elm > JavaScript
 -- Calling saveNote sends a String to the JS side.
 -- JS subscribes to this port and writes to localStorage.
 port saveNote : String -> Cmd msg
 
--- Incoming port: JavaScript → Elm
+-- Incoming port: JavaScript > Elm
 -- JS calls app.ports.loadNote.send(value) on startup.
 -- Elm subscribes to this port and receives the stored value as a Msg.
 port loadNote : (String -> msg) -> Sub msg

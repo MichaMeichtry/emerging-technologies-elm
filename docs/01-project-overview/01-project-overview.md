@@ -56,7 +56,7 @@ The recommended reading order follows the four layers above:
 2. [Core Concepts](../02-elm-theory/02-core-concepts.md)
 3. [The Elm Architecture](../02-elm-theory/03-the-elm-architecture.md)
 4. [Comparison Overview](../03-comparison/01-comparison-overview.md)
-5. [Prototype Description](../04-prototype/01-prototype-description.md)
+5. [Prototype Overview](../04-prototype/01-prototype-overview.md)
 
 Each file is also written to be readable on its own if you want to jump directly to a specific topic.
 

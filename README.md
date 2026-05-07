@@ -53,10 +53,10 @@ emerging-technologies-elm/
 │   │   └── 07-summary.md
 │   │
 │   ├── 04-prototype/                               # Documentation of the prototype
-│   │   ├── 01-prototype-description.md
-│   │   ├── 02-architecture.md
-│   │   ├── 03-features.md
-│   │   ├── 04-how-to-run.md
+│   │   ├── 01-prototype-overview.md
+│   │   ├── 02-data-model.md
+│   │   ├── 03-messages-and-update.md
+│   │   ├── 04-view.md
 │   │   └── 05-test-scenarios.md
 │   │
 │   └── examples/                                   # Small code examples
@@ -77,8 +77,9 @@ emerging-technologies-elm/
     │   └── index.html
     └── src/
         ├── Main.elm
-        ├── Types.elm
         ├── Model.elm
+        ├── Msg.elm
+        ├── Types.elm
         ├── Update.elm
         └── View.elm
 ```
@@ -98,7 +99,7 @@ Start with the theory section in order:
 1. [What is Elm?](docs/02-elm-theory/01-what-is-elm.md)
 2. [Core Concepts](docs/02-elm-theory/02-core-concepts.md)
 3. [The Elm Architecture](docs/02-elm-theory/03-the-elm-architecture.md)
-3. [The Elm Ecosystem](docs/02-elm-theory/04-elm-ecosystem.md)
+4. [The Elm Ecosystem](docs/02-elm-theory/04-elm-ecosystem.md)
 
 #### If You Want to See How Elm Compares to Other Technologies
 
@@ -117,6 +118,7 @@ Go to the comparison section:
 Go directly to the prototype:
 
 [Prototype README - setup and run instructions](prototype/README.md)
+[Prototype Documentation](docs/04-prototype/01-prototype-overview.md)
 
 The prototype is an **IT Service Desk Ticket System** built entirely in Elm. It demonstrates The Elm Architecture, custom types, pattern matching, form validation, filtering, and search, all in a browser application with no backend.
 
@@ -172,7 +174,7 @@ This project covers the following requirements:
 
 ## Resources
 
-Research sources and recommended further reading are listed in [docs/99-resources/01-resources.md](docs/99-resources/01-resources.md).
+Research sources are provided in the concrete files and recommended further reading are listed in [docs/99-resources/01-resources.md](docs/99-resources/01-resources.md).
 
 ---
 
