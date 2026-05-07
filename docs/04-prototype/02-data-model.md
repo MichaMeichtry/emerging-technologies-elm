@@ -126,7 +126,7 @@ Several fields are worth examining individually.
 
 `comments` and `history` are typed as `List TicketComment` and `List TicketHistoryEntry`. An empty list is the default for both, no separate boolean or nullable field is needed to indicate whether comments or history exist.
 
-For more on `Maybe` and how Elm handles absent values, see [Core Concepts - Maybe and Result](../02-elm-theory/02-core-concepts.md).
+For more on `Maybe` and how Elm handles absent values, see [Core Concepts - Maybe and Result](../02-elm-theory/02-core-concepts.md#maybe-and-result---no-null-no-exceptions).
 
 ---
 
