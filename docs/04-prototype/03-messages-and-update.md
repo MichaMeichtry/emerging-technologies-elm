@@ -190,7 +190,7 @@ applyStatusChange targetId newStatus ticket =
         ticket
 ```
 
-This is a direct demonstration of immutable record updates in Elm. The existing ticket is not modified. A new record is returned with the `status` and `history` fields replaced. The original record is discarded. For more on immutability, see [Core Concepts - Immutability](../02-elm-theory/02-core-concepts.md).
+This is a direct demonstration of immutable record updates in Elm. The existing ticket is not modified. A new record is returned with the `status` and `history` fields replaced. The original record is discarded. For more on immutability, see [Core Concepts - Immutability](../02-elm-theory/02-core-concepts.md#immutability).
 
 ### Detail view navigation
 
