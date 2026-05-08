@@ -156,7 +156,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-## Related Files
+### Related Files
 
 | File                                                  | Description                                  |
 | ----------------------------------------------------- | -------------------------------------------- |
