@@ -63,11 +63,14 @@ emerging-technologies-elm/
 │   │   ├── 01-counter/                             # Elm Architecture
 │   │   ├── 02-traffic-light/                       # Custom types + pattern matching
 │   │   ├── 03-temperature-converter/               # Maybe + form input
-│   │   └── 04-ports-localstorage/                  # JS interop trade-off
+│   │   ├── 04-ports-localstorage/                  # JS interop trade-off
 │   │   └── 05-weather-app/                         # External data sources
 │   │
 │   └── 99-resources/                               # Research sources and further reading
 │       └── 01-resources.md
+│
+├── presentation/                                   # Presentation materials (28.05.2026)
+│   └── README.md
 │
 └── prototype/                                      # The working Elm application
     ├── README.md                                   # How to install and run the prototype
@@ -169,6 +172,7 @@ This project covers the following requirements:
 | Test core functionalities                | [docs/04-prototype/05-test-scenarios.md](docs/04-prototype/05-test-scenarios.md) |
 | Create a prototype to showcase potential | [prototype/](prototype/)                                                         |
 | Document the process                     | [docs/](docs/)                                                                   |
+| Present the project                      | [presentation/README.md](presentation/README.md)                                 |
 
 ---
 
