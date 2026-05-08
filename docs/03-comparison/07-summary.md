@@ -41,7 +41,7 @@ The cost of that removal is consistent across every comparison: a smaller ecosys
 
 ---
 
-## Adoption vs. Admiration
+## Adoption vs Admiration
 
 The Stack Overflow Developer Survey 2024 captures Elm's position more precisely than any comparison criterion can.
 

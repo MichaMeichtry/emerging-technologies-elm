@@ -66,7 +66,7 @@ update msg model =
 
 The `case` expression must cover every `Msg` variant. The compiler verifies this at compile time. A missing branch is a compile error, not a runtime failure.
 
-### Form control
+### Form Control
 
 `OpenForm` and `CloseForm` are straightforward record updates. `CloseForm` resets all form-related fields simultaneously so the form is always in a clean state when it opens again.
 
@@ -90,7 +90,7 @@ UpdateFormTitle title ->
     { model | formTitle = title, formError = Nothing }
 ```
 
-### Ticket creation and validation
+### Ticket Creation and Validation
 
 `SubmitTicket` is the most involved handler. It first calls `validateForm` to check the input. If validation fails, `formError` is set to `Just errorMsg` and the model is otherwise unchanged. If validation passes, a new `Ticket` record is constructed and appended to the ticket list.
 
@@ -156,7 +156,7 @@ let
             Just (String.trim model.formDueDate)
 ```
 
-### Status changes and history
+### Status Changes and History
 
 `ChangeStatus` takes the target ticket ID and the new status. It maps over the full ticket list and applies `applyStatusChange` to each ticket. Only the ticket with the matching ID is modified, all others are returned unchanged.
 
@@ -192,7 +192,7 @@ applyStatusChange targetId newStatus ticket =
 
 This is a direct demonstration of immutable record updates in Elm. The existing ticket is not modified. A new record is returned with the `status` and `history` fields replaced. The original record is discarded. For more on immutability, see [Core Concepts - Immutability](../02-elm-theory/02-core-concepts.md#immutability).
 
-### Detail view navigation
+### Detail View Navigation
 
 `SelectTicket` stores the ticket ID in `selectedTicket` as `Just id`. `CloseDetail` sets it back to `Nothing` and clears the comment input. The `view` function checks `selectedTicket` to decide whether to render the list or the detail panel - this is covered in detail in [View](04-view.md).
 
@@ -204,7 +204,7 @@ CloseDetail ->
     { model | selectedTicket = Nothing, commentBody = "" }
 ```
 
-### Filtering and search
+### Filtering and Search
 
 `SetFilter` replaces the active `FilterState`. `UpdateSearch` updates `searchQuery`. Neither triggers any direct computation - both simply store the new value in the model. The filtering logic runs in the `view` function on the next render, which keeps `update` free of rendering concerns.
 

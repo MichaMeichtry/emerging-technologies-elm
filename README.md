@@ -12,7 +12,7 @@ The goal of the module is to discover, evaluate, and transmit an emerging techno
 
 ---
 
-## What is Elm?
+## What Is Elm?
 
 Elm is a functional programming language that compiles to JavaScript. It is designed for building reliable web applications with no runtime errors, a strong type system, and a clear architecture pattern called The Elm Architecture (TEA).
 

@@ -2,7 +2,7 @@
 
 A note that survives page reloads using `localStorage`. It demonstrates **ports** - Elm's only mechanism for communicating with JavaScript - and explains why that boundary exists and what it costs.
 
-## Run it locally (Ellie does not support ports)
+## Run it Locally (Ellie Does Not Support Ports)
 
 Ellie has no access to a custom `index.html` and therefore cannot run this example.
 
@@ -16,7 +16,7 @@ elm make Main.elm --output=main.js
 
 If you modify `Main.elm` and want to see your changes, you will need to re-run that command. This requires [Elm to be installed](https://guide.elm-lang.org/install/elm.html).
 
-## What this example does
+## What This Example Does
 
 A single textarea where the user types a note.
 
@@ -25,7 +25,7 @@ A single textarea where the user types a note.
 - A character count below the textarea confirms how many characters are stored
 - If nothing has been saved yet, a neutral message is shown instead
 
-## Verify it is working
+## Verify it Is Working
 
 Type something into the textarea, then open your browser's DevTools to confirm the value is actually stored in localStorage.
 
@@ -37,9 +37,9 @@ You should see the key `elm-note` with your text as the value, exactly as shown 
 
 Try reloading the page - the note should reappear, confirming that the full round-trip through the ports works correctly.
 
-## How the code is structured
+## How the Code Is Structured
 
-### Why `Browser.element` instead of `Browser.sandbox`
+### Why `Browser.element` Instead of `Browser.sandbox`
 
 The previous examples used `Browser.sandbox`. This example cannot - `sandbox` has no support for `Cmd` or `Sub`, which are required to use ports.
 
@@ -59,7 +59,7 @@ main =
 - `update` returns `(Model, Cmd Msg)` instead of just `Model`
 - A `subscriptions` function is required
 
-### Ports: the explicit JS boundary
+### Ports: the Explicit JS Boundary
 
 Ports are declared at the top of the file. The module must be declared `port module` instead of `module`.
 
@@ -94,7 +94,7 @@ var stored = localStorage.getItem("elm-note") || "";
 app.ports.loadNote.send(stored);
 ```
 
-### Update: issuing a Cmd
+### Update: Issuing a Cmd
 
 ```elm
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -119,13 +119,13 @@ subscriptions _ =
 
 `loadNote NoteLoaded` tells Elm: whenever JS sends a value through the `loadNote` port, wrap it in a `NoteLoaded` message and deliver it to `update`. Without this subscription, JS sends would be silently ignored.
 
-## The explicit boundary: why it exists
+## The Explicit Boundary: Why it Exists
 
 Elm cannot access `localStorage` directly. This is intentional. Elm's guarantee of no runtime errors holds only within its own type-checked code. Every interaction with the browser or with JavaScript is a potential source of untyped, unpredictable values. By routing all JS interop through ports, Elm enforces a clear contract: data that crosses the boundary must be declared, typed, and explicitly handled on both sides.
 
 The analogy used in the Elm documentation is a foreign function interface (FFI). The boundary is not a workaround - it is the mechanism by which Elm keeps its safety guarantee intact even when the application must talk to an unsafe outside world.
 
-## The trade-off
+## The Trade-off
 
 This is a real cost. Something that takes one line in JavaScript:
 
@@ -137,7 +137,7 @@ takes two files and a message-passing protocol in Elm: a port declaration, a JS 
 
 Whether this cost is worth it depends on the project. For long-lived applications with complex state, the guarantee is valuable. For small utilities that are mostly glue code between browser APIs, the verbosity may not be justified.
 
-## Key takeaway
+## Key Takeaway
 
 Ports are the only way Elm communicates with JavaScript. The boundary is explicit, typed, and intentional - it is what allows Elm to maintain its no-runtime-errors guarantee even in applications that must interact with the outside world. The trade-off is a more verbose integration layer compared to JavaScript.
 

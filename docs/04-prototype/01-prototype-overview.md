@@ -1,6 +1,6 @@
 # Prototype Overview
 
-## What is the Prototype?
+## What Is the Prototype?
 
 The prototype is an IT Service Desk Ticket Management System built entirely in Elm. It runs in the browser with no backend, all data lives in the Elm model in memory. The application allows users to create support tickets, track their status across a defined lifecycle, filter and search the ticket list, view full ticket details, post comments, and inspect the history of every status change.
 
@@ -15,7 +15,7 @@ Third, the application is immediately relatable to developers and students, whic
 
 ## How to Read This Documentation
 
-This section is a walkthrough of the source code and is most useful when the prototype is running alongside it. Before reading further, it is recommended to open the prototype in your browser. The setup is straight forward and is covered in [prototype/README.md](../../prototype/README.md).
+This section is a walkthrough of the source code and is most useful when the prototype is running alongside it. Before reading further, it is recommended to open the prototype in your browser. The setup is straightforward and is covered in [prototype/README.md](../../prototype/README.md).
 
 Once it is running, keep it open next to the documentation. The feature descriptions, data model explanations, and update logic all refer to things you can see and interact with directly. Reading this section without the prototype open is possible but loses most of its practical value.
 
@@ -25,31 +25,31 @@ If you prefer to explore interactively before reading the code walkthrough, jump
 
 ## Features
 
-### Ticket list and navigation
+### Ticket List and Navigation
 
 The ticket list view shows all tickets and updates in real time as filters or search terms are applied. Each ticket card displays the ticket ID, title, status badge, priority badge, category, and an optional due date badge. A status dropdown on each card allows changing the ticket status without opening the detail view.
 
 ![Ticket list showing multiple tickets with status and priority badges](../images/prototype-ticket-list.png)
 
-### Filtering and search
+### Filtering and Search
 
 The filter toolbar allows narrowing the list by status All, Open, In Progress, Resolved, or Closed. Each button shows a live count of matching tickets. The search input filters by keyword across the ticket title and description simultaneously, and the results update on every keystroke without any button press.
 
 ![Filter toolbar with active filter and search input](../images/prototype-filter-search.png)
 
-### Create ticket form
+### Create Ticket Form
 
 The create ticket form opens as a modal overlay. It collects a title, description, priority, category, and an optional due date. Inline validation prevents submission if the title is shorter than five characters or the description is shorter than ten, and a clear error message is shown in both cases. On successful submission the form resets and the new ticket appears in the list.
 
 ![Create ticket modal form with validation error visible](../images/prototype-create-form.png)
 
-### Ticket detail view
+### Ticket Detail View
 
 The detail view opens when the user clicks View Details on a ticket card. It shows the full ticket information including title, description, status, priority, category, ID, and creation date. A status dropdown in the detail view allows changing the status from this panel as well.
 
 ![Ticket detail view showing full ticket information](../images/prototype-detail-view.png)
 
-### Due date and overdue badge
+### Due Date and Overdue Badge
 
 The due date field is optional on every ticket. When a due date is set and the date has passed, the ticket card and detail view display a red overdue badge. When the date is in the future, a grey badge shows the deadline. When no due date is set, nothing is shown.
 
@@ -63,13 +63,13 @@ The comment system allows posting notes on any ticket from the detail view. Comm
 
 ![Detail view showing comment list and comment input](../images/prototype-comments.png)
 
-### Status history timeline
+### Status History Timeline
 
 Every status transition is recorded automatically. Each time a status changes, a history entry is appended to the ticket containing the previous status, the new status, and a timestamp. The detail view renders these entries as a vertical timeline with colour-coded status badges, giving a full audit trail of the ticket's lifecycle.
 
 ![History timeline in the detail view showing status transitions](../images/prototype-history.png)
 
-### Seed data
+### Seed Data
 
 Four example tickets load on startup, one in each status so the application is immediately populated and all UI states are visible without creating tickets manually. Two of the seed tickets include pre-populated comments and history entries to demonstrate those features from the first load.
 

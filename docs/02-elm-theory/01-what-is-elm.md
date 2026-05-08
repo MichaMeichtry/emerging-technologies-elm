@@ -1,4 +1,4 @@
-# What is Elm?
+# What Is Elm?
 
 ## Definition
 
@@ -8,7 +8,7 @@ Its most advertised feature is the absence of runtime exceptions in practice, a 
 
 ## Origins
 
-Elm was developed by Evan Czaplicki as his senior thesis at Harvard University's John A. Paulson School of Engineering and Applied Sciences in 2012. The thesis was entitled *'Elm: Concurrent FRP for Functional GUIs"* and was completed in
+Elm was developed by Evan Czaplicki as his senior thesis at Harvard University's John A. Paulson School of Engineering and Applied Sciences in 2012. The thesis was entitled _'Elm: Concurrent FRP for Functional GUIs"_ and was completed in
 collaboration with Stephen Chong, associate professor of computer science [1][2].
 
 The motivation behind Elm was to establish a connection between academic programming language research and mainstream web development. Czaplicki's research highlighted that many of the most innovative ideas developed by academic computer scientists rarely gained traction in mainstream programming [2].
@@ -36,18 +36,19 @@ Elm resolves these issues by ensuring that reliability is built into the languag
 
 ## Sources
 
-[1] Czaplicki, E. *Elm: Concurrent FRP for Functional GUIs*. Harvard thesis (2012).
-    https://elm-lang.org/assets/papers/concurrent-frp.pdf
+[1] Czaplicki, E. _Elm: Concurrent FRP for Functional GUIs_. Harvard thesis (2012).
+https://elm-lang.org/assets/papers/concurrent-frp.pdf
 
-[2] Harvard SEAS. *Alumni profile: Evan Czaplicki, A.B. '12* (2015).
-    https://seas.harvard.edu/news/2015/10/alumni-profile-evan-czaplicki-ab-12
+[2] Harvard SEAS. _Alumni profile: Evan Czaplicki, A.B. '12_ (2015).
+https://seas.harvard.edu/news/2015/10/alumni-profile-evan-czaplicki-ab-12
 
-[3] Yahoo Finance / Prezi. *Prezi Funds Development of New Computer Programming
-    Language* (2013).
-    https://finance.yahoo.com/news/prezi-funds-development-computer-programming-130000626.html
+[3] Yahoo Finance / Prezi. _Prezi Funds Development of New Computer Programming
+Language_ (2013).
+https://finance.yahoo.com/news/prezi-funds-development-computer-programming-130000626.html
 
-[4] Czaplicki, E. *An Introduction to Elm*. Official Elm Guide.
-    https://guide.elm-lang.org/
+[4] Czaplicki, E. _An Introduction to Elm_. Official Elm Guide.
+https://guide.elm-lang.org/
 
 ---
+
 <sub>Previous | [Project Overview](../01-project-overview/01-project-overview.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [Core Concepts](02-core-concepts.md)</sub>

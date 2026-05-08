@@ -50,7 +50,7 @@ The [comparison with ReScript](04-elm-vs-other-functional-options.md) noted that
 
 ---
 
-## Large Teams with Mixed Backgrounds and No Appetite for a Learning Investment
+## Large Teams With Mixed Backgrounds and No Appetite for a Learning Investment
 
 The admiration data from the Stack Overflow Developer Survey 2024 showed that 52.4% of developers who had used Elm wanted to continue using it. That figure reflects developers who had already committed to learning it. It says nothing about the experience of developers who are required to use it without that commitment.
 
@@ -70,7 +70,7 @@ Large teams with mixed experience levels, high turnover, or no organisational in
 | Application built primarily on browser APIs outside Elm's standard packages | Every native API requires port infrastructure, which compounds across the application   |
 | Large team with mixed backgrounds and no structured learning investment     | Enforced constraints generate friction for developers who have not chosen to adopt them |
 
-None of these are arguments that Elm is poorly designed. They are the natural consequence of a language that optimises for a specific set of properties. The constraints that eliminate runtime errors and enforce architectural consistency are the same constraints that make JavaScript interop verbose and onboarding slow. Recognising where those constraints are a poor fit is part of evaluating the technology honestly.
+None of these are arguments that Elm is poorly designed. They are the natural consequence of a language that optimises for a specific set of properties. The constraints that eliminate runtime errors and enforce architectural consistency are the same constraints that make JavaScript interop verbose and onboarding slow. Recognizing where those constraints are a poor fit is part of evaluating the technology honestly.
 
 ---
 

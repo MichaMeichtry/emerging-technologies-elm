@@ -6,7 +6,7 @@ Whether those guarantees are worth their cost is not a universal question. It de
 
 ---
 
-## Applications with Complex, Long-Lived UI State
+## Applications With Complex, Long-Lived UI State
 
 The clearest case for Elm is an application where the UI state is genuinely complex and the application will be maintained over a significant period of time.
 

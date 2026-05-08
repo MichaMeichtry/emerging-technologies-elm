@@ -6,7 +6,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 1. Inspect the seed data
+### 1. Inspect the Seed Data
 
 **Steps:** Open the application. Observe the four pre-loaded tickets on the list.
 
@@ -16,7 +16,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 2. Filter tickets by status
+### 2. Filter Tickets by Status
 
 **Steps:** Click each filter button in the toolbar: Open, In Progress, Resolved, Closed, then All.
 
@@ -26,7 +26,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 3. Search tickets by keyword
+### 3. Search Tickets by Keyword
 
 **Steps:** Type "VPN" in the search input. Then clear it and type "outlook". Then try a term that matches no tickets.
 
@@ -36,7 +36,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 4. Combine filter and search
+### 4. Combine Filter and Search
 
 **Steps:** Click the "In Progress" filter. Then type "outlook" in the search box.
 
@@ -46,7 +46,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 5. Create a valid ticket
+### 5. Create a Valid Ticket
 
 **Steps:** Click "+ New Ticket". Fill in a title of at least five characters, a description of at least ten characters, select a priority and category, and optionally set a due date. Click Submit Ticket.
 
@@ -56,7 +56,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 6. Submit the form with invalid input
+### 6. Submit the Form With Invalid Input
 
 **Steps:** Click "+ New Ticket". Leave the title empty and click Submit Ticket. Then type a title shorter than five characters and click again. Then fill the title correctly but leave the description too short.
 
@@ -66,7 +66,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 7. Dismiss the modal
+### 7. Dismiss the Modal
 
 **Steps:** Open the create ticket form. Click the dark backdrop outside the modal box. Open it again and click the X button. Open it again and click Cancel.
 
@@ -76,7 +76,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 8. Change a ticket status from the list
+### 8. Change a Ticket Status From the List
 
 **Steps:** On any ticket card, use the status dropdown to change the status to a different value.
 
@@ -86,7 +86,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 9. Open the detail view
+### 9. Open the Detail View
 
 **Steps:** Click "View Details" on any ticket card.
 
@@ -96,7 +96,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 10. Change status from the detail view
+### 10. Change Status From the Detail View
 
 **Steps:** From the detail view, use the status dropdown to change the ticket status.
 
@@ -106,7 +106,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 11. Post a comment
+### 11. Post a Comment
 
 **Steps:** From the detail view, type a note in the comment textarea and click Post Comment.
 
@@ -116,7 +116,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 12. Attempt to post an empty comment
+### 12. Attempt to Post an Empty Comment
 
 **Steps:** From the detail view, leave the comment input empty and click Post Comment. Then type only spaces and click again.
 
@@ -126,7 +126,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 13. Navigate back from the detail view
+### 13. Navigate Back From the Detail View
 
 **Steps:** From any detail view, click the Back button.
 
@@ -136,7 +136,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 14. Observe the overdue badge
+### 14. Observe the Overdue Badge
 
 **Steps:** Look at the ticket list on startup. Observe ticket 1 (Cannot connect to VPN), ticket 3 (Request new keyboard), and ticket 4 (Reset domain password).
 
@@ -146,7 +146,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 15. Observe the history timeline
+### 15. Observe the History Timeline
 
 **Steps:** Click View Details on ticket 2 (Outlook crashes) or ticket 3 (Request new keyboard). Scroll to the History section.
 
