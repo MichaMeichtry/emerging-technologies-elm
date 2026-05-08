@@ -81,4 +81,4 @@ Elm is not a language that rewards a team looking for flexibility. It rewards a 
 
 ---
 
-<sub>Previous | [Elm vs Other Functional Options](04-elm-vs-other-functional-options.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [When Elm Is Not a Good Choice](06-when-elm-is-not-a-good-choice.md)</sub>
+<sub>Previous | [Elm vs. Other Functional Options](04-elm-vs-other-functional-options.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [When Elm Is Not a Good Choice](06-when-elm-is-not-a-good-choice.md)</sub>

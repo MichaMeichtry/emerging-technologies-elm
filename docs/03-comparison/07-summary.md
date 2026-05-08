@@ -8,14 +8,14 @@ To answer that, six comparisons were made across a consistent set of criteria - 
 
 ## Comparisons Carried Out
 
-| File                                                                          | What it covers                                |
-| ----------------------------------------------------------------------------- | --------------------------------------------- |
-| [01 - Comparison Overview](01-comparison-overview.md)                         | Criteria and technologies considered          |
-| [02 - Elm vs JavaScript](02-elm-vs-javascript.md)                             | Elm compared to plain JavaScript              |
-| [03 - Elm vs TypeScript Frameworks](03-elm-vs-typescript-frameworks.md)       | Elm compared to React and Vue with TypeScript |
-| [04 - Elm vs Other Functional Options](04-elm-vs-other-functional-options.md) | Elm compared to ReScript and PureScript       |
-| [05 - When Elm Is a Good Choice](05-when-elm-is-a-good-choice.md)             | Scenarios where Elm is a strong fit           |
-| [06 - When Elm Is Not a Good Choice](06-when-elm-is-not-a-good-choice.md)     | Scenarios where Elm is not the right tool     |
+| File                                                                           | What it covers                                |
+| ------------------------------------------------------------------------------ | --------------------------------------------- |
+| [01 - Comparison Overview](01-comparison-overview.md)                          | Criteria and technologies considered          |
+| [02 - Elm vs. JavaScript](02-elm-vs-javascript.md)                             | Elm compared to plain JavaScript              |
+| [03 - Elm vs. TypeScript Frameworks](03-elm-vs-typescript-frameworks.md)       | Elm compared to React and Vue with TypeScript |
+| [04 - Elm vs. Other Functional Options](04-elm-vs-other-functional-options.md) | Elm compared to ReScript and PureScript       |
+| [05 - When Elm Is a Good Choice](05-when-elm-is-a-good-choice.md)              | Scenarios where Elm is a strong fit           |
+| [06 - When Elm Is Not a Good Choice](06-when-elm-is-not-a-good-choice.md)      | Scenarios where Elm is not the right tool     |
 
 ---
 
@@ -41,7 +41,7 @@ The cost of that removal is consistent across every comparison: a smaller ecosys
 
 ---
 
-## Adoption vs Admiration
+## Adoption vs. Admiration
 
 The Stack Overflow Developer Survey 2024 captures Elm's position more precisely than any comparison criterion can.
 

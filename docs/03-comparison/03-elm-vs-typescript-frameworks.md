@@ -1,4 +1,4 @@
-# Elm vs TypeScript Frameworks
+# Elm vs. TypeScript Frameworks
 
 React with TypeScript is a dominant combination for building frontend applications in the industry. Vue with TypeScript occupies a similar space with a different set of trade-offs. Both use TypeScript as an opt-in type layer on top of JavaScript. Elm takes a different position entirely: it is a separate language with a type system that is non-optional and structurally different from TypeScript's.
 
@@ -6,7 +6,7 @@ This comparison focuses on React with TypeScript as the primary subject. Vue wit
 
 ---
 
-## Elm vs React + TypeScript
+## Elm vs. React + TypeScript
 
 ### Type Safety
 
@@ -53,7 +53,7 @@ renderTicket(note); // compiles without error - same shape, treated as compatibl
 Elm's custom types use nominal typing. `TicketStatus` and `Priority` are distinct types even if they happened to share the same set of variants - the compiler distinguishes them by their declared names, not their contents. This means accidentally passing a `Priority` value where a `TicketStatus` is expected is always a compile error, regardless of any structural similarity.
 
 ```elm
--- Elm: nominal typing - Open used as TicketStatus vs Priority would be
+-- Elm: nominal typing - Open used as TicketStatus vs. Priority would be
 -- separate declarations; the compiler tracks them by name, not shape.
 -- Passing the wrong custom type to a function is a compile error.
 changeStatus : Int -> TicketStatus -> Model -> Model
@@ -237,7 +237,7 @@ Elm's initial setup requires understanding TEA before writing any meaningful cod
 
 ---
 
-## Elm vs Vue + TypeScript
+## Elm vs. Vue + TypeScript
 
 Vue with TypeScript occupies a similar position to React with TypeScript. The same type-system trade-offs apply: TypeScript adds optional static typing on top of JavaScript, with the same escape hatches and the same reliance on team discipline to enforce coverage.
 
@@ -304,4 +304,4 @@ For a full picture of where these trade-offs favour Elm and where they do not, s
 
 ---
 
-<sub>Previous | [Elm vs JavaScript](02-elm-vs-javascript.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [Elm vs Other Functional Options](04-elm-vs-other-functional-options.md)</sub>
+<sub>Previous | [Elm vs JavaScript](02-elm-vs-javascript.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [Elm vs. Other Functional Options](04-elm-vs-other-functional-options.md)</sub>
