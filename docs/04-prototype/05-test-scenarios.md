@@ -138,11 +138,11 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ### 14. Observe the overdue badge
 
-**Steps:** Look at the ticket list on startup. Observe ticket 1 (Cannot connect to VPN) and ticket 3 (Request new keyboard).
+**Steps:** Look at the ticket list on startup. Observe ticket 1 (Cannot connect to VPN), ticket 3 (Request new keyboard), and ticket 4 (Reset domain password).
 
-**What to observe:** Ticket 1 has a green "Due 2026-04-25" badge. Ticket 3 also has a green "Due - 2026-04-22" badge because its due date is before the hardcoded reference date of 2026-04-24. Ticket 4 (Reset domain password) also shows an overdue badge for the same reason.
+**What to observe:** Ticket 1 has a grey "Due 2026-04-25" badge because its due date is after the reference date. Ticket 3 has no due date badge because `dueDate` is `Nothing`. Ticket 4 has a red "Overdue - 2026-04-23" badge because its due date is before the reference date of 2026-04-24.
 
-**What it demonstrates:** `viewDueDateBadge` pattern matches on `Maybe String`. `Nothing` produces `text ""` and `Just due` compares the date string against `today` using `<`. This works correctly for ISO date strings because lexicographic ordering matches chronological ordering for the `YYYY-MM-DD` format.
+**What it demonstrates:** `viewDueDateBadge` pattern matches on `Maybe String`. `Nothing` produces `text ""` and `Just due` compares the date string against `today` using `<`. This works correctly for ISO date strings because lexicographic ordering matches chronological ordering for the `YYYY-MM-DD` format. The reference date `today` is hardcoded as `"2026-04-24"` in `View.elm` - in a production application this would be retrieved from the system clock via `elm/time` and a `Task`, but this prototype avoids that dependency to keep the setup simple and the code focused on the concepts being demonstrated.
 
 ---
 

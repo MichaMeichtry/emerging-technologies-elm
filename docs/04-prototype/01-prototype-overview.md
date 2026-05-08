@@ -51,7 +51,9 @@ The detail view opens when the user clicks View Details on a ticket card. It sho
 
 ### Due date and overdue badge
 
-The due date field is optional on every ticket. When a due date is set and the date has passed, the ticket card and detail view display a red overdue badge. When the date is in the future, a grey badge shows the deadline. This uses a string comparison against a hardcoded reference date, keeping the prototype free of the `elm/time` dependency.
+The due date field is optional on every ticket. When a due date is set and the date has passed, the ticket card and detail view display a red overdue badge. When the date is in the future, a grey badge shows the deadline. When no due date is set, nothing is shown.
+
+The comparison uses a hardcoded reference date `today = "2026-04-24"` defined at the top of `View.elm`. In a production application the current date would come from `elm/time` via a `Task` and a subscription, but introducing that dependency would require `Browser.element` instead of `Browser.sandbox` and would shift the focus of the prototype away from the core concepts being demonstrated. The hardcoding is a deliberate simplification, and its location is clearly marked with a comment in the source.
 
 ![Ticket card showing overdue badge in red](../images/prototype-overdue-badge.png)
 

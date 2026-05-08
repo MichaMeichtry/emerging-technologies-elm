@@ -76,6 +76,10 @@ update msg model =
                             , status = Open
                             , priority = model.formPriority
                             , category = model.formCategory
+                            -- createdAt and comment timestamps are hardcoded strings.
+                            -- A real application would use elm/time to get the current date,
+                            -- which requires Browser.element and a Task. This prototype uses
+                            -- Browser.sandbox and avoids that dependency deliberately.
                             , createdAt = "2026-04-24"
                             , dueDate = maybeDue
                             , comments = []
@@ -139,6 +143,7 @@ update msg model =
                 let
                     newComment =
                         { body = body
+                        -- Timestamp is hardcoded for the same reason as createdAt in SubmitTicket
                         , postedAt = "2026-04-24 12:00"
                         }
                 in
@@ -170,6 +175,7 @@ applyStatusChange targetId newStatus ticket =
                 { from = ticket.status
                 , to = newStatus
                 , changedAt = "2026-04-24 12:00"
+                -- Timestamp is hardcoded for the same reason as createdAt in SubmitTicket
                 }
         in
         { ticket
