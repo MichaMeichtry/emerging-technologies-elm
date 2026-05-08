@@ -140,7 +140,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 **Steps:** Look at the ticket list on startup. Observe ticket 1 (Cannot connect to VPN) and ticket 3 (Request new keyboard).
 
-**What to observe:** Ticket 1 has a grey "Due 2026-04-25" badge. Ticket 3 has a red "Overdue - 2026-04-22" badge because its due date is before the hardcoded reference date of 2026-04-24. Ticket 4 (Reset domain password) also shows an overdue badge for the same reason.
+**What to observe:** Ticket 1 has a green "Due 2026-04-25" badge. Ticket 3 also has a green "Due - 2026-04-22" badge because its due date is before the hardcoded reference date of 2026-04-24. Ticket 4 (Reset domain password) also shows an overdue badge for the same reason.
 
 **What it demonstrates:** `viewDueDateBadge` pattern matches on `Maybe String`. `Nothing` produces `text ""` and `Just due` compares the date string against `today` using `<`. This works correctly for ISO date strings because lexicographic ordering matches chronological ordering for the `YYYY-MM-DD` format.
 

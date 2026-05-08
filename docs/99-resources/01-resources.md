@@ -32,7 +32,7 @@ The central registry for all published Elm packages. Each package page includes 
 
 https://ellie-app.com/
 
-A browser-based editor for writing and running Elm code without any local installation. Each example in [docs/examples/01-examples.md](../examples/01-examples.md) links to an Ellie snippet. Useful for quick experimentation and sharing code.
+A browser-based editor for writing and running Elm code without any local installation. Each example in [docs/examples/README.md](../examples/README.md) links to an Ellie snippet. Useful for quick experimentation and sharing code.
 
 ---
 

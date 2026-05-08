@@ -109,11 +109,11 @@ The entry point `Main.elm` is intentionally minimal, it only wires the three TEA
 
 | File                                                  | Description                                  |
 | ----------------------------------------------------- | -------------------------------------------- |
-| [01 - Prototype Overview](01-prototype-overview.md)   | Application features and structure           |
+| [01 - Prototype Overview](01-prototype-overview.md)   | This file                                    |
 | [02 - Data Model](02-data-model.md)                   | Types.elm and Model.elm walkthrough          |
 | [03 - Messages and Update](03-messages-and-update.md) | Msg.elm and Update.elm walkthrough           |
 | [04 - View](04-view.md)                               | View.elm walkthrough                         |
-| [05 - Test Scenarios](05-test-scenarios.md)           | This file                                    |
+| [05 - Test Scenarios](05-test-scenarios.md)           | Test scenarios of the prototype              |
 | [Prototype README](../../prototype/README.md)         | Setup and run instructions for the prototype |
 | [Prototype Source](../../prototype/src/)              | All Elm source files                         |
 
