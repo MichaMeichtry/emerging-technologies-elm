@@ -2,13 +2,13 @@
 
 A live temperature converter from Celsius to Fahrenheit and Kelvin. It demonstrates how Elm handles **uncertain values** using the `Maybe` type, and why the compiler forces you to deal with invalid input explicitly rather than letting it silently propagate.
 
-## Run it instantly (no installation needed)
+## Run It Instantly (No Installation Needed)
 
 Open the example directly in your browser: **[ellie-app.com/ytVm6tFpwSLa1](https://ellie-app.com/ytVm6tFpwSLa1)**
 
 Click **▶ Compile** to run it. No account or local setup required.
 
-## What this example does
+## What This Example Does
 
 A single text input accepts a Celsius value. As the user types, three results appear:
 
@@ -18,7 +18,7 @@ A single text input accepts a Celsius value. As the user types, three results ap
 
 Each result is followed by the formula used to compute it. All values are rounded to two decimal places. If the input is not a valid number, a clear error message is shown instead. No button press is needed - the output updates live.
 
-## Conversion formulas
+## Conversion Formulas
 
 | From | To         | Formula                |
 | ---- | ---------- | ---------------------- |
@@ -27,7 +27,7 @@ Each result is followed by the formula used to compute it. All values are rounde
 
 Celsius is used as the common base. Both target values are derived from it directly.
 
-## How the code is structured
+## How the Code Is Structured
 
 ### Model
 
@@ -84,7 +84,7 @@ round2 n =
 
 All three results are passed through `round2` before display. This avoids floating-point noise like `32.00000000000001` appearing in the output.
 
-### View helpers
+### View Helpers
 
 Two helper functions render each row of output:
 
@@ -93,7 +93,7 @@ Two helper functions render each row of output:
 
 These are pure functions that take strings and return `Html Msg`. They are called once per result in the `Just celsius` branch of the view.
 
-### View branching
+### View Branching
 
 ```elm
 case String.toFloat model.input of
@@ -109,7 +109,7 @@ case String.toFloat model.input of
 
 The empty and invalid cases are handled separately so a blank input on page load does not immediately show an error. Once the user types something that cannot be parsed, the error appears.
 
-## Key takeaway
+## Key Takeaway
 
 `Maybe` makes the possibility of a missing or invalid value visible in the type. You cannot pass a `Maybe Float` where a `Float` is expected - the compiler will not allow it. This eliminates an entire class of bugs that are common in JavaScript: unexpected `NaN` in calculations, `undefined` passed into functions, and silent failures that reach the UI undetected.
 

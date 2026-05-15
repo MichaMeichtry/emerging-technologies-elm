@@ -4529,7 +4529,7 @@ var $author$project$Model$seedTickets = _List_fromArray(
 		comments: _List_Nil,
 		createdAt: '2026-04-23',
 		description: 'My domain account is locked after too many failed login attempts. Please reset.',
-		dueDate: $elm$core$Maybe$Just('2026-04-24'),
+		dueDate: $elm$core$Maybe$Just('2026-04-23'),
 		history: _List_fromArray(
 			[
 				{changedAt: '2026-04-23 16:45', from: $author$project$Types$Open, to: $author$project$Types$Resolved},

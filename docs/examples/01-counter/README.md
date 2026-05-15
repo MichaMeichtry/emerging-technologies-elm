@@ -2,13 +2,13 @@
 
 A minimal Elm counter that demonstrates **The Elm Architecture (TEA)**: the fundamental pattern every Elm application is built on.
 
-## Run it instantly (no installation needed)
+## Run It Instantly (No Installation Needed)
 
 Open the example directly in your browser: **[ellie-app.com/ytSFnWVDs5ka1](https://ellie-app.com/ytSFnWVDs5ka1)**
 
 Click **▶ Compile** to run it. No account or local setup required.
 
-## What this example does
+## What This Example Does
 
 A counter with three buttons: **−**, **Reset**, and **+**.
 
@@ -16,7 +16,7 @@ A counter with three buttons: **−**, **Reset**, and **+**.
 - **+** adds 1 to the count
 - **Reset** sets the count back to 0
 
-## How the code is structured
+## How the Code Is Structured
 
 Every Elm application is made of exactly three parts.
 
@@ -85,7 +85,7 @@ main =
 
 `Browser.sandbox` wires the three parts together and hands control to the Elm runtime. The `sandbox` variant is the simplest entry point - it has no access to the outside world (no HTTP, no ports), which keeps this example focused purely on the TEA loop.
 
-## Key takeaway
+## Key Takeaway
 
 The architecture is not a convention - it is the only way to write an Elm application. This constraint is what makes Elm predictable: you always know where state lives and how it can change.
 

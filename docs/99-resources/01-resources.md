@@ -1,6 +1,9 @@
 # Resources
 
-The following resources were used during research for this project and are recommended for anyone who wants to go deeper into Elm.
+This page lists the general sources used to start the information gathering for this project and for general information gathering. Specific sources are cited inline in the theory and comparison sections at the point where they are referenced, for example:
+
+> [1] Czaplicki, E. _An Introduction to Elm_. Official Elm Guide.
+> https://guide.elm-lang.org/architecture/
 
 ---
 
@@ -18,6 +21,18 @@ https://elm-lang.org/
 
 The official Elm homepage. Contains links to documentation, the package registry, and news about the language.
 
+### Elm Try Online (Playground)
+
+https://elm-lang.org/try
+
+A browser-based Elm playground hosted on the official Elm website. Useful for running small snippets without any local setup.
+
+### Elm News
+
+https://elm-lang.org/news
+
+The official Elm news feed. Contains release announcements and articles written by the Elm core team.
+
 ### Elm Package Registry
 
 https://package.elm-lang.org/
@@ -32,7 +47,7 @@ The central registry for all published Elm packages. Each package page includes 
 
 https://ellie-app.com/
 
-A browser-based editor for writing and running Elm code without any local installation. Each example in [docs/examples/01-examples.md](../examples/01-examples.md) links to an Ellie snippet. Useful for quick experimentation and sharing code.
+A browser-based editor for writing and running Elm code without any local installation. Each example in [docs/examples/README.md](../examples/README.md) links to an Ellie snippet. Useful for quick experimentation and sharing code.
 
 ---
 
@@ -52,4 +67,4 @@ Annual survey of over 49,000 developers. Covers the same categories as the 2024 
 
 ---
 
-<sub>Previous | [Test Scenarios](../04-prototype/05-test-scenarios.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [README](../../README.md)</sub>
+<sub>Previous | [Test Scenarios](../04-prototype/05-test-scenarios.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Back to the Top | [README](../../README.md)</sub>

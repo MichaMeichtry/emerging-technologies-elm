@@ -1,4 +1,4 @@
-# Elm vs Other Functional Options
+# Elm vs. Other Functional Options
 
 JavaScript and TypeScript are not the only alternatives to Elm for building browser applications with functional programming principles. ReScript and PureScript occupy a related but distinct space. Both compile to JavaScript, both bring stronger type guarantees than TypeScript, and both are aimed at developers who want more correctness than the mainstream ecosystem provides. Understanding where Elm, ReScript, and PureScript differ in practice requires looking at more than just their type systems.
 
@@ -6,7 +6,7 @@ This comparison is structured around the same criteria defined in the [Compariso
 
 ---
 
-## Elm vs ReScript
+## Elm vs. ReScript
 
 ReScript is a statically typed language that compiles to readable JavaScript. It originated as BuckleScript [2], the JavaScript backend for the OCaml compiler [3], and was rebranded and repositioned in 2020 under the ReScript name [1]. Its type system is derived from OCaml, which is one of the more mature functional type systems in production use. Unlike Elm, ReScript is not limited to browser applications and can be used anywhere JavaScript runs, including Node.js [1].
 
@@ -139,7 +139,7 @@ For applications with complex internal state that do not require heavy JavaScrip
 
 ---
 
-## Elm vs PureScript
+## Elm vs. PureScript
 
 PureScript is a purely functional, strongly typed language that compiles to JavaScript [6]. It is more closely related to Haskell than to Elm. Where Elm deliberately limits its language surface to reduce the learning barrier, PureScript embraces the full theoretical power of a Haskell-style type system, including higher-kinded types, type classes, and effect systems [7].
 
@@ -266,4 +266,4 @@ For a full picture of where these trade-offs favour Elm and where they do not, s
 
 ---
 
-<sub>Previous | [Elm vs TypeScript Frameworks](03-elm-vs-typescript-frameworks.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [When Elm Is a Good Choice](05-when-elm-is-a-good-choice.md)</sub>
+<sub>Previous | [Elm vs. TypeScript Frameworks](03-elm-vs-typescript-frameworks.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [When Elm Is a Good Choice](05-when-elm-is-a-good-choice.md)</sub>

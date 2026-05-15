@@ -26,14 +26,14 @@ init = 0
 
 ```elm
 -- A form: the state is a record grouping related fields
-type alias Model = { 
+type alias Model = {
     username : String,
     password : String,
     submitted : Bool
 }
 ```
 
-Since values in Elm are immutable, the Model is never modified directly. The `update` function always produces a new Model based on the existing one [2]. See [01-counter/Main.elm](../examples/01-counter/Main.elm) for the simplest possible Model - a plain `Int`.
+Since values in Elm are immutable, the Model is never modified directly. The `update` function always produces a new Model based on the existing one [2]. See [01-counter/README.md](../examples/01-counter/README.md) for the simplest possible Model - a plain `Int`.
 
 ### 2. Msg
 
@@ -46,7 +46,7 @@ type Msg
     | Reset
 ```
 
-Naming is important. `Msg` variants describe *what has happened*, not *what should happen*. `UserClickedButton` or `Increment` clearly communicate intent. Imperative names such as `DoIncrement` are discouraged because they conflate the event with the response [1].
+Naming is important. `Msg` variants describe _what has happened_, not _what should happen_. `UserClickedButton` or `Increment` clearly communicate intent. Imperative names such as `DoIncrement` are discouraged because they conflate the event with the response [1].
 
 ### 3. Update
 
@@ -111,7 +111,7 @@ main =
         }
 ```
 
-See [01-counter/Main.elm](../examples/01-counter/Main.elm) and [02-traffic-light/Main.elm](../examples/02-traffic-light/Main.elm) for complete, working examples of `Browser.sandbox`.
+See [01-counter/README.md](../examples/01-counter/README.md) and [02-traffic-light/README.md](../examples/02-traffic-light/README.md) for complete, working examples of `Browser.sandbox`.
 
 ## Extending TEA: Commands and Subscriptions
 
@@ -140,7 +140,7 @@ update msg model =
             ( { model | state = Failed city (httpErrorToString error) }, Cmd.none )
 ```
 
-The `Http.get` call does not perform the request immediately; instead, it returns a `Cmd` value that describes the request. The Elm runtime then executes the request asynchronously and delivers the result back as a `Msg`. User code never touches the network directly. See [05-weather-app/Main.elm](../examples/05-weather-app/Main.elm) for a complete HTTP example.
+The `Http.get` call does not perform the request immediately; instead, it returns a `Cmd` value that describes the request. The Elm runtime then executes the request asynchronously and delivers the result back as a `Msg`. User code never touches the network directly. See [05-weather-app/README.md](../examples/05-weather-app/README.md) for a complete HTTP example.
 
 ### Subscriptions (Sub)
 
@@ -152,7 +152,7 @@ subscriptions _ =
     loadNote NoteLoaded
 ```
 
-The `subscriptions` function is called with the current Model after every update, meaning that active subscriptions can change based on the state of the application. In [04-ports-localstorage/Main.elm](../examples/04-ports-localstorage/Main.elm), it is the incoming `loadNote` port subscription that allows JavaScript to push the stored note into Elm on startup.
+The `subscriptions` function is called with the current Model after every update, meaning that active subscriptions can change based on the state of the application. In [04-ports-localstorage/READEME.md](../examples/04-ports-localstorage/README.md), it is the incoming `loadNote` port subscription that allows JavaScript to push the stored note into Elm on startup.
 
 ### Browser.element
 
@@ -172,7 +172,7 @@ main =
         }
 ```
 
-[04-ports-localstorage/Main.elm](../examples/04-ports-localstorage/Main.elm) and [05-weather-app/Main.elm](../examples/05-weather-app/Main.elm) both use `Browser.element` for this reason.
+[04-ports-localstorage/README.md](../examples/04-ports-localstorage/README.md) and [05-weather-app/README.md](../examples/05-weather-app/README.md) both use `Browser.element` for this reason.
 
 ## Why This Architecture Works
 
@@ -188,11 +188,12 @@ TEA solves the core problems of front-end state management by enforcing a set of
 
 ## Sources
 
-[1] Czaplicki, E. *An Introduction to Elm*. Official Elm Guide.
-    https://guide.elm-lang.org/architecture/
+[1] Czaplicki, E. _An Introduction to Elm_. Official Elm Guide.
+https://guide.elm-lang.org/architecture/
 
-[2] elmprogramming.com. *The Elm Architecture*.
-    https://elmprogramming.com/elm-architecture.html
+[2] elmprogramming.com. _The Elm Architecture_.
+https://elmprogramming.com/elm-architecture.html
 
 ---
+
 <sub>Previous | [Core Concepts](02-core-concepts.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [Elm Ecosystem](04-elm-ecosystem.md)</sub>

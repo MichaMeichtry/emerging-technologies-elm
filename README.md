@@ -12,7 +12,7 @@ The goal of the module is to discover, evaluate, and transmit an emerging techno
 
 ---
 
-## What is Elm?
+## What Is Elm?
 
 Elm is a functional programming language that compiles to JavaScript. It is designed for building reliable web applications with no runtime errors, a strong type system, and a clear architecture pattern called The Elm Architecture (TEA).
 
@@ -63,11 +63,14 @@ emerging-technologies-elm/
 │   │   ├── 01-counter/                             # Elm Architecture
 │   │   ├── 02-traffic-light/                       # Custom types + pattern matching
 │   │   ├── 03-temperature-converter/               # Maybe + form input
-│   │   └── 04-ports-localstorage/                  # JS interop trade-off
+│   │   ├── 04-ports-localstorage/                  # JS interop trade-off
 │   │   └── 05-weather-app/                         # External data sources
 │   │
 │   └── 99-resources/                               # Research sources and further reading
 │       └── 01-resources.md
+│
+├── presentation/                                   # Presentation materials (28.05.2026)
+│   └── README.md
 │
 └── prototype/                                      # The working Elm application
     ├── README.md                                   # How to install and run the prototype
@@ -106,9 +109,9 @@ Start with the theory section in order:
 Go to the comparison section:
 
 1. [Comparison Overview](docs/03-comparison/01-comparison-overview.md)
-2. [Elm vs JavaScript](docs/03-comparison/02-elm-vs-javascript.md)
-3. [Elm vs TypeScript Frameworks](docs/03-comparison/03-elm-vs-typescript-frameworks.md)
-4. [Elm vs Other Functional Options](docs/03-comparison/04-elm-vs-other-functional-options.md)
+2. [Elm vs. JavaScript](docs/03-comparison/02-elm-vs-javascript.md)
+3. [Elm vs. TypeScript Frameworks](docs/03-comparison/03-elm-vs-typescript-frameworks.md)
+4. [Elm vs. Other Functional Options](docs/03-comparison/04-elm-vs-other-functional-options.md)
 5. [When Elm Is a Good Choice](docs/03-comparison/05-when-elm-is-a-good-choice.md)
 6. [When Elm Is Not a Good Choice](docs/03-comparison/06-when-elm-is-not-a-good-choice.md)
 7. [Summary](docs/03-comparison/07-summary.md)
@@ -169,6 +172,7 @@ This project covers the following requirements:
 | Test core functionalities                | [docs/04-prototype/05-test-scenarios.md](docs/04-prototype/05-test-scenarios.md) |
 | Create a prototype to showcase potential | [prototype/](prototype/)                                                         |
 | Document the process                     | [docs/](docs/)                                                                   |
+| Present the project                      | [presentation/README.md](presentation/README.md)                                 |
 
 ---
 

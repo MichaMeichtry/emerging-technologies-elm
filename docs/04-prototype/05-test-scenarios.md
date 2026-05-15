@@ -6,7 +6,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 1. Inspect the seed data
+### 1. Inspect the Seed Data
 
 **Steps:** Open the application. Observe the four pre-loaded tickets on the list.
 
@@ -16,7 +16,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 2. Filter tickets by status
+### 2. Filter Tickets by Status
 
 **Steps:** Click each filter button in the toolbar: Open, In Progress, Resolved, Closed, then All.
 
@@ -26,7 +26,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 3. Search tickets by keyword
+### 3. Search Tickets by Keyword
 
 **Steps:** Type "VPN" in the search input. Then clear it and type "outlook". Then try a term that matches no tickets.
 
@@ -36,7 +36,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 4. Combine filter and search
+### 4. Combine Filter and Search
 
 **Steps:** Click the "In Progress" filter. Then type "outlook" in the search box.
 
@@ -46,7 +46,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 5. Create a valid ticket
+### 5. Create a Valid Ticket
 
 **Steps:** Click "+ New Ticket". Fill in a title of at least five characters, a description of at least ten characters, select a priority and category, and optionally set a due date. Click Submit Ticket.
 
@@ -56,7 +56,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 6. Submit the form with invalid input
+### 6. Submit the Form With Invalid Input
 
 **Steps:** Click "+ New Ticket". Leave the title empty and click Submit Ticket. Then type a title shorter than five characters and click again. Then fill the title correctly but leave the description too short.
 
@@ -66,7 +66,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 7. Dismiss the modal
+### 7. Dismiss the Modal
 
 **Steps:** Open the create ticket form. Click the dark backdrop outside the modal box. Open it again and click the X button. Open it again and click Cancel.
 
@@ -76,7 +76,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 8. Change a ticket status from the list
+### 8. Change a Ticket Status From the List
 
 **Steps:** On any ticket card, use the status dropdown to change the status to a different value.
 
@@ -86,7 +86,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 9. Open the detail view
+### 9. Open the Detail View
 
 **Steps:** Click "View Details" on any ticket card.
 
@@ -96,7 +96,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 10. Change status from the detail view
+### 10. Change Status From the Detail View
 
 **Steps:** From the detail view, use the status dropdown to change the ticket status.
 
@@ -106,7 +106,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 11. Post a comment
+### 11. Post a Comment
 
 **Steps:** From the detail view, type a note in the comment textarea and click Post Comment.
 
@@ -116,7 +116,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 12. Attempt to post an empty comment
+### 12. Attempt to Post an Empty Comment
 
 **Steps:** From the detail view, leave the comment input empty and click Post Comment. Then type only spaces and click again.
 
@@ -126,7 +126,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 13. Navigate back from the detail view
+### 13. Navigate Back From the Detail View
 
 **Steps:** From any detail view, click the Back button.
 
@@ -136,17 +136,17 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-### 14. Observe the overdue badge
+### 14. Observe the Overdue Badge
 
-**Steps:** Look at the ticket list on startup. Observe ticket 1 (Cannot connect to VPN) and ticket 3 (Request new keyboard).
+**Steps:** Look at the ticket list on startup. Observe ticket 1 (Cannot connect to VPN), ticket 3 (Request new keyboard), and ticket 4 (Reset domain password).
 
-**What to observe:** Ticket 1 has a grey "Due 2026-04-25" badge. Ticket 3 has a red "Overdue - 2026-04-22" badge because its due date is before the hardcoded reference date of 2026-04-24. Ticket 4 (Reset domain password) also shows an overdue badge for the same reason.
+**What to observe:** Ticket 1 has a grey "Due 2026-04-25" badge because its due date is after the reference date. Ticket 3 has no due date badge because `dueDate` is `Nothing`. Ticket 4 has a red "Overdue - 2026-04-23" badge because its due date is before the reference date of 2026-04-24.
 
-**What it demonstrates:** `viewDueDateBadge` pattern matches on `Maybe String`. `Nothing` produces `text ""` and `Just due` compares the date string against `today` using `<`. This works correctly for ISO date strings because lexicographic ordering matches chronological ordering for the `YYYY-MM-DD` format.
+**What it demonstrates:** `viewDueDateBadge` pattern matches on `Maybe String`. `Nothing` produces `text ""` and `Just due` compares the date string against `today` using `<`. This works correctly for ISO date strings because lexicographic ordering matches chronological ordering for the `YYYY-MM-DD` format. The reference date `today` is hardcoded as `"2026-04-24"` in `View.elm` - in a production application this would be retrieved from the system clock via `elm/time` and a `Task`, but this prototype avoids that dependency to keep the setup simple and the code focused on the concepts being demonstrated.
 
 ---
 
-### 15. Observe the history timeline
+### 15. Observe the History Timeline
 
 **Steps:** Click View Details on ticket 2 (Outlook crashes) or ticket 3 (Request new keyboard). Scroll to the History section.
 
@@ -156,7 +156,7 @@ To set up and run the prototype before testing, see [prototype/README.md](../../
 
 ---
 
-## Related Files
+### Related Files
 
 | File                                                  | Description                                  |
 | ----------------------------------------------------- | -------------------------------------------- |

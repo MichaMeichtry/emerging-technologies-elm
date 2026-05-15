@@ -1,4 +1,4 @@
-# Elm vs JavaScript
+# Elm vs. JavaScript
 
 JavaScript is the default language of the web. Every browser runs it natively, no build step is required, and every frontend developer already knows it. Elm compiles to JavaScript [1], which means it targets the same environment but makes fundamentally different choices about how that environment should be used.
 
@@ -261,4 +261,4 @@ For a full picture of where these trade-offs favour Elm and where they do not, s
 
 ---
 
-<sub>Previous | [Comparison Overview](01-comparison-overview.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [Elm vs TypeScript Frameworks](03-elm-vs-typescript-frameworks.md)</sub>
+<sub>Previous | [Comparison Overview](01-comparison-overview.md)</sub> &nbsp;&nbsp;&nbsp; <sub>Next | [Elm vs. TypeScript Frameworks](03-elm-vs-typescript-frameworks.md)</sub>

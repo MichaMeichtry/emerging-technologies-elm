@@ -2,13 +2,13 @@
 
 A traffic light that cycles through its states on button click. It demonstrates **custom types** and **exhaustive pattern matching** - two of Elm's core mechanisms for making invalid states impossible to represent.
 
-## Run it instantly (no installation needed)
+## Run It Instantly (No Installation Needed)
 
 Open the example directly in your browser: **[ellie-app.com/ytTZN6D7h47a1](https://ellie-app.com/ytTZN6D7h47a1)**
 
 Click **▶ Compile** to run it. No account or local setup required.
 
-## What this example does
+## What This Example Does
 
 A traffic light with a single **Next** button.
 
@@ -17,7 +17,7 @@ A traffic light with a single **Next** button.
 - The active light is bright, the other two are dimmed to simulate unlit bulbs
 - A label below the housing describes the current state
 
-## How the code is structured
+## How the Code Is Structured
 
 ### Custom Type
 
@@ -45,7 +45,7 @@ update msg model =
 
 Every transition is listed explicitly. The compiler verifies that all variants of `TrafficLight` are handled. If you add a new variant and forget to handle it here, the code will not compile.
 
-### Helper functions
+### Helper Functions
 
 Two pure helper functions are defined outside the view and called once per render.
 
@@ -89,7 +89,7 @@ The view renders three `circle` elements inside a dark housing div, ordered top 
 
 The same exhaustiveness rule applies wherever a `TrafficLight` value is pattern matched. Adding a new variant requires handling it in `update`, `lightColor`, and `label` - the compiler reports every missing case.
 
-## What happens when you add a fourth state
+## What Happens When You Add a Fourth State
 
 Add `Flashing` to the custom type:
 
@@ -103,7 +103,7 @@ type TrafficLight
 
 The code will not compile until you handle `Flashing` in `update`, `lightColor`, and `label`. The compiler tells you exactly which cases are missing. In JavaScript, a missing `case` in a `switch` silently falls through or does nothing - the bug reaches production undetected.
 
-## Key takeaway
+## Key Takeaway
 
 Custom types combined with exhaustive pattern matching make it structurally impossible to forget a case. This is most valuable in long-lived or team-maintained applications where new states are added over time.
 
