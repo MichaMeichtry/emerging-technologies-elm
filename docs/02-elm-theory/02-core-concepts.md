@@ -23,7 +23,7 @@ The advantages of immutability are concrete [1][2]:
 - **Safer concurrency**: The absence of a shared mutable state eliminates the possibility of race conditions.
 
 Immutability is demonstrated in every example. In
-[01-counter/Main.elm](../examples/01-counter/Main.elm), the `update` function never modifies the existing
+[01-counter/README.md](../examples/01-counter/README.md), the `update` function never modifies the existing
 model; it always returns a brand new one.
 
 ```elm
@@ -51,7 +51,7 @@ The following are direct practical benefits [2]:
 - **Easy to debug**: Should an unexpected output be produced by a function, then the issue must lie within that function's logic and not in any external factors.
 - **Composable**: Simple, pure functions can be combined to solve complex problems.
 
-An excellent example of pure helper functions can be found in [02-traffic-light/Main.elm](../examples/02-traffic-light/Main.elm),
+An excellent example of pure helper functions can be found in [02-traffic-light/README.md](../examples/02-traffic-light/README.md),
 where `lightColor` and `label` are defined outside the view and called once
 per render. The system functions by taking values in and returning values out, with no side effects or shared state.
 
@@ -65,7 +65,7 @@ label model =
 ```
 
 The language itself does not handle side effects (HTTP requests, randomness, etc.). These are managed by the Elm runtime via _commands_ and
-_subscriptions_ [3]. See [05-weather-app/Main.elm](../examples/05-weather-app/Main.elm) for a comprehensive illustration of
+_subscriptions_ [3]. See [05-weather-app/README.md](../examples/05-weather-app/README.md) for a comprehensive illustration of
 HTTP as a side effect expressed as a `Cmd`.
 
 ## Static Typing with Type Inference
@@ -141,7 +141,7 @@ area shape =
 
 This results in unhandled cases being flagged as a compile-time error rather than a runtime issue [4].
 
-The [02-traffic-light/Main.elm](../examples/02-traffic-light/Main.elm) file provides the clearest demonstration of this. The
+The files from example [02-traffic-light/README.md](../examples/02-traffic-light/README.md) provide the clearest demonstration of this. The
 `TrafficLight` custom type has exactly three variants, and the compiler
 verifies that every `case` expression covers all three - in `update`,
 `lightColor`, and `label` independently. The [README](../examples/02-traffic-light/README.md) for the example also
@@ -182,7 +182,7 @@ use `Debug.todo` as a placeholder.
 
 The compiler identifies the unhandled variant by name, explains the consequence (a crash), and offers a concrete workaround (`Debug.todo`). This is representative of how Elm treats compiler output as developer guidance rather than a bare failure report [3].
 
-The same principle applies to the request lifecycle in [05-weather-app/Main.elm](../examples/05-weather-app/Main.elm). The `State` type makes every phase explicit:
+The same principle applies to the request lifecycle in [05-weather-app/README.md](../examples/05-weather-app/README.md). The `State` type makes every phase explicit:
 
 ```elm
 type State
@@ -225,7 +225,7 @@ The compiler ensures that developers must address both `Just`/`Nothing` and
 `Ok`/`Err` cases through pattern matching. It is impossible to overlook
 an error case [3].
 
-[03-temperature-converter/Main.elm](../examples/03-temperature-converter/Main.elm) is a practical example of the use of the `Maybe` type. Note that `String.toFloat` returns a `Maybe Float`, not a `Float`. The view
+[03-temperature-converter/README.md](../examples/03-temperature-converter/README.md) is a practical example of the use of the `Maybe` type. Note that `String.toFloat` returns a `Maybe Float`, not a `Float`. The view
 is required to handle both branches. The conversion functions `toFahrenheit`
 and `toKelvin` only ever receive a plain `Float` after the `Maybe` has already
 been unwrapped:
@@ -239,7 +239,7 @@ case String.toFloat model.input of
         -- celsius is a plain Float, safe to pass to conversion functions
 ```
 
-[05-weather-app/Main.elm](../examples/05-weather-app/Main.elm) shows `Result` within a real HTTP context. The response
+[05-weather-app/README.md](../examples/05-weather-app/README.md) shows `Result` within a real HTTP context. The response
 from the Open-Meteo API is returned as a `Result Http.Error Float`. The system has been configured to handle both success and failure, and the compiler verifies that both are handled in `update`.
 
 ## Sources

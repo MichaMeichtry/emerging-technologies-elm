@@ -1,6 +1,9 @@
 # Resources
 
-The following resources were used during research for this project and are recommended for anyone who wants to go deeper into Elm.
+This page lists the general sources used to start the information gathering for this project and for general information gathering. Specific sources are cited inline in the theory and comparison sections at the point where they are referenced, for example:
+
+> [1] Czaplicki, E. _An Introduction to Elm_. Official Elm Guide.
+> https://guide.elm-lang.org/architecture/
 
 ---
 
@@ -17,6 +20,18 @@ The primary reference for learning Elm. Written by the creator of Elm, it covers
 https://elm-lang.org/
 
 The official Elm homepage. Contains links to documentation, the package registry, and news about the language.
+
+### Elm Try Online (Playground)
+
+https://elm-lang.org/try
+
+A browser-based Elm playground hosted on the official Elm website. Useful for running small snippets without any local setup.
+
+### Elm News
+
+https://elm-lang.org/news
+
+The official Elm news feed. Contains release announcements and articles written by the Elm core team.
 
 ### Elm Package Registry
 
