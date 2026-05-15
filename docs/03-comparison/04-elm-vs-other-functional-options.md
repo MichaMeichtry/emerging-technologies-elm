@@ -139,7 +139,7 @@ For applications with complex internal state that do not require heavy JavaScrip
 
 ---
 
-## Elm . PureScript
+## Elm vs. PureScript
 
 PureScript is a purely functional, strongly typed language that compiles to JavaScript [6]. It is more closely related to Haskell than to Elm. Where Elm deliberately limits its language surface to reduce the learning barrier, PureScript embraces the full theoretical power of a Haskell-style type system, including higher-kinded types, type classes, and effect systems [7].
 
